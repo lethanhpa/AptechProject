@@ -22,6 +22,7 @@ const customerSchema = new Schema({
     },
     required: [true, 'email is required'],
   },
+  password: { type: String, require: true },
   phoneNumber: {
     type: String,
     validate: {

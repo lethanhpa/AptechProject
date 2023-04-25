@@ -275,10 +275,14 @@ router.get('/:id', function (req, res, next) {
 });
 
 // POST
-router.post('/', function (req, res, next) {
+router.post('/', async (req, res, next) => {
   try {
     const data = req.body;
-
+    const email = data.email;
+    const emailUnique = await Employee.findOne({ email });
+    if (emailUnique) {
+      return res.status(404).send({ message: 'Email already exists' });
+    }
     const newItem = new Employee(data);
     newItem
       .save()

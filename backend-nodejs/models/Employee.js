@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const { Schema, model } = mongoose;
+const mongooseLeanVirtuals = require('mongoose-lean-virtuals');
 const bcrypt = require('bcryptjs');
 
 // Mongoose Datatypes:
@@ -34,10 +35,16 @@ const employeeSchema = new Schema({
       // message: (props) => `{props.value} is not a valid email!`,
     },
   },
-  password: { type: String, require: true},
+  password: { type: String, require: true },
   address: { type: String, required: true },
   birthday: { type: Date },
-});
+},
+  {
+    versionKey: false,
+    timestamps: true
+  }
+
+);
 
 employeeSchema.pre('save', async function (next) {
   try {
@@ -53,7 +60,7 @@ employeeSchema.pre('save', async function (next) {
   }
 })
 
-employeeSchema.methods.isValidPass = async function(pass) {
+employeeSchema.methods.isValidPass = async function (pass) {
   try {
     return await bcrypt.compare(pass, this.password);
   } catch (err) {
@@ -87,6 +94,10 @@ employeeSchema.methods.isValidPass = async function(pass) {
 employeeSchema.virtual('fullName').get(function () {
   return this.firstName + ' ' + this.lastName;
 });
-
+// Virtuals in console.log()
+employeeSchema.set('toObject', { virtuals: true });
+// Virtuals in JSON
+employeeSchema.set('toJSON', { virtuals: true });
+employeeSchema.plugin(mongooseLeanVirtuals);
 const Employee = model('Employee', employeeSchema);
 module.exports = Employee;

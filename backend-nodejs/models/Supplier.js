@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
 const { Schema, model } = mongoose;
-
+const mongooseLeanVirtuals = require('mongoose-lean-virtuals');
+const slug = require('mongoose-slug-generator');
+mongoose.plugin(slug);
 // Mongoose Datatypes:
 // https://mongoosejs.com/docs/schematypes.html
 
@@ -33,7 +35,17 @@ const supplierSchema = new Schema({
     },
   },
   address: { type: String, required: true },
+  slug: {
+    type: String,
+    slug: 'name',
+    unique: true
+  }
 });
+supplierSchema.pre("create", function (next) {
+  this.slug = this.name.split(" ").join("-");
+  next();
+});
+supplierSchema.plugin(mongooseLeanVirtuals);
 
 const Supplier = model('Supplier', supplierSchema);
 module.exports = Supplier;

@@ -1,5 +1,6 @@
 const passport = require('passport');
 const express = require('express');
+const yup = require('yup');
 
 const { CONNECTION_STRING } = require('../constants/dbSettings');
 const { default: mongoose } = require('mongoose');
@@ -148,7 +149,7 @@ router.post('/', async function (req, res, next) {
 //   const validationSchema = yup.object({
 //     body: yup.object({
 //       name: yup.string().required(),
-     
+
 //       description: yup.string().required(),
 //     }),
 //   });
