@@ -1,63 +1,49 @@
-import React from 'react'
-import { Button, Space, Table, Tag } from 'antd';
-const { Column, ColumnGroup } = Table;
-const data = [
-    {
-        key: '1',
-        firstName: 'John',
-        lastName: 'Brown',
-        age: 32,
-        address: 'New York No. 1 Lake Park',
-        tags: ['nice', 'developer'],
-    },
-    {
-        key: '2',
-        firstName: 'Jim',
-        lastName: 'Green',
-        age: 42,
-        address: 'London No. 1 Lake Park',
-        tags: ['loser'],
-    },
-    {
-        key: '3',
-        firstName: 'Joe',
-        lastName: 'Black',
-        age: 32,
-        address: 'Sydney No. 1 Lake Park',
-        tags: ['cool', 'teacher'],
-    },
-];
+import React, { useEffect, useState } from 'react'
+import { Button, Space, Table, message } from 'antd';
+import { DeleteOutlined } from "@ant-design/icons";
+import axios from "../../libraries/axiosClient.js";
+const { Column } = Table;
+const apiName = "/customers";
+
 export default function ManageCustomers() {
+    const [data, setData] = useState([]);
+    const [refresh, setRefresh] = React.useState(0);
+    useEffect(() => {
+        axios
+            .get(apiName)
+            .then((response) => {
+                const { data } = response;
+                setData(data);
+            })
+            .catch((err) => {
+                console.error(err);
+            });
+    }, [refresh]);
     return (
         <div>
             <Table dataSource={data}>
-                <ColumnGroup title="Name">
-                    <Column title="First Name" dataIndex="firstName" key="firstName" />
-                    <Column title="Last Name" dataIndex="lastName" key="lastName" />
-                </ColumnGroup>
-                <Column title="Age" dataIndex="age" key="age" />
+                <Column title="First Name" dataIndex="firstName" key="firstName" />
+                <Column title="Last Name" dataIndex="lastName" key="lastName" />
+                <Column title="Email" dataIndex="email" key="email" />
+                <Column title="Birthday" dataIndex="birthday" key="birthday" />
+                <Column title="Phone Number" dataIndex="phoneNumber" key="phoneNumber" />
                 <Column title="Address" dataIndex="address" key="address" />
-                <Column
-                    title="Tags"
-                    dataIndex="tags"
-                    key="tags"
-                    render={(tags) => (
-                        <>
-                            {tags.map((tag) => (
-                                <Tag color="blue" key={tag}>
-                                    {tag}
-                                </Tag>
-                            ))}
-                        </>
-                    )}
-                />
                 <Column
                     title="Action"
                     key="action"
-                    render={(_, record) => (
+                    render={(record) => (
                         <Space size="middle">
-                            <Button>Invite {record.lastName}</Button>
-                            <Button>Delete</Button>
+                            <Button
+                                danger
+                                icon={<DeleteOutlined />}
+                                onClick={() => {
+                                    console.log(record.id);
+                                    axios.delete(apiName + "/" + record.id).then((response) => {
+                                        setRefresh((f) => f + 1);
+                                        message.success("Xóa danh mục thành công!", 1.5);
+                                    });
+                                }}
+                            >Xóa</Button>
                         </Space>
                     )}
                 />
