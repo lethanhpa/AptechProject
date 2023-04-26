@@ -12,8 +12,6 @@ const orderDetailSchema = new Schema({
   quantity: { type: Number, require: true, min: 0 },
   price: { type: Number, required: true, min: 0, default: 0 },
   discount: { type: Number, min: 0, max: 75, default: 0 },
-  stock: { type: Number, min: 0, default: 0 },
-  description: { type: String, required: true }
 });
 
 // Virtual with Populate
@@ -35,11 +33,11 @@ const orderSchema = new Schema({
   shippingAddress: { type: String, required: true },
   description: { type: String, required: true },
 
-  createdDate: {
-    type: Date,
-    required: true,
-    default: Date.now,
-  },
+  // createdDate: {
+  //   type: Date,
+  //   // required: true,
+  //   default: Date.now,
+  // },
 
   shippedDate: {
     type: Date,
@@ -90,7 +88,12 @@ const orderSchema = new Schema({
   employeeId: { type: Schema.Types.ObjectId, ref: 'Employee', required: false },
 
   orderDetails: [orderDetailSchema],
-});
+}
+  , {
+    versionKey: false,
+    timestamps: true
+  }
+);
 
 // Virtual with Populate
 orderSchema.virtual('customer', {
