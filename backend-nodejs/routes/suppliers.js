@@ -3,7 +3,7 @@ const express = require("express");
 const router = express.Router();
 const passport = require('passport');
 const { Supplier } = require("../models");
-
+const ObjectId = require("mongodb").ObjectId;
 const { CONNECTION_STRING } = require('../constants/dbSettings');
 const { default: mongoose } = require('mongoose');
 
@@ -140,17 +140,15 @@ router.delete('/:id', function (req, res, next) {
     });
 });
 
-router.patch("/:id", function (req, res, next) {
-  const id = req.params.id;
-  const patchData = req.body;
-  let found = data.find((x) => x.id == id);
-  if (found) {
-    for (let propertyName in patchData) {
-      found[propertyName] = patchData[propertyName];
-    }
+router.patch("/:id", async function (req, res) {
+  try {
+    const id = req.params.id;
+    const data = req.body;
+    await Supplier.findByIdAndUpdate(id, data);
+    res.send({ ok: true, message: "Updated" });
+  } catch (error) {
+    res.status(500).send({ ok: false, error });
   }
-  write(fileName, data);
-  res.send({ ok: true, massage: "Update" });
 });
 
 module.exports = router;

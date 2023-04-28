@@ -20,8 +20,8 @@ export default function ManageCustomers() {
             });
     }, [refresh]);
     return (
-        <div>
-            <Table dataSource={data}>
+        <>
+            <Table dataSource={data} rowKey="_id">
                 <Column title="First Name" dataIndex="firstName" key="firstName" />
                 <Column title="Last Name" dataIndex="lastName" key="lastName" />
                 <Column title="Email" dataIndex="email" key="email" />
@@ -38,7 +38,7 @@ export default function ManageCustomers() {
                                 icon={<DeleteOutlined />}
                                 onClick={() => {
                                     console.log(record.id);
-                                    axios.delete(apiName + "/" + record.id).then((response) => {
+                                    axios.delete(apiName + "/" + record.id).then((_response) => {
                                         setRefresh((f) => f + 1);
                                         message.success("Xóa danh mục thành công!", 1.5);
                                     });
@@ -48,6 +48,6 @@ export default function ManageCustomers() {
                     )}
                 />
             </Table>
-        </div>
+        </>
     )
 }

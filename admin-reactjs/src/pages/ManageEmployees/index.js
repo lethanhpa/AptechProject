@@ -21,7 +21,7 @@ export default function ManageEmployees() {
     }, [refresh]);
     return (
         <div>
-            <Table dataSource={data}>
+            <Table dataSource={data} rowKey="_id">
                 <Column title="First Name" dataIndex="firstName" key="firstName" />
                 <Column title="Last Name" dataIndex="lastName" key="lastName" />
                 <Column title="Email" dataIndex="email" key="email" />

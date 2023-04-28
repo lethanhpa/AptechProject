@@ -1,7 +1,7 @@
 const passport = require('passport');
 const express = require('express');
 const yup = require('yup');
-
+const ObjectId = require("mongodb").ObjectId;
 const { CONNECTION_STRING } = require('../constants/dbSettings');
 const { default: mongoose } = require('mongoose');
 const { Category } = require('../models');
@@ -83,45 +83,12 @@ router.get('/:id', async function (req, res, next) {
     });
 });
 
-// router.get("/:id", function (req, res, next) {
-//   const validationSchema = yup.object().shape({
-//     params: yup.object({
-//       id: yup.number(),
-//     }),
-//   });
-//   validationSchema
-//     .validate({ params: req.params }, { abortEarly: false })
-//     .then(() => {
-//       const id = req.params.id;
-//       let found = data.find((x) => x.id == id);
-//       if (found) {
-//         return res.send({ ok: true, result: found });
-//       }
-
-//       return res.send({ ok: false, message: "Object not found" });
-//     })
-//     .catch((err) => {
-//       return res
-//         .status(400)
-//         .json({
-//           type: err.name,
-//           errors: err.errors,
-//           message: err.message,
-//           provider: "yup",
-//         });
-//     });
-// });
-
-
-
-//create
-
+//POST
 router.post('/', async function (req, res, next) {
   // Validate
   const validationSchema = yup.object({
     body: yup.object({
       name: yup.string().required(),
-      email: yup.string().email(),
       description: yup.string(),
     }),
   });
@@ -144,52 +111,7 @@ router.post('/', async function (req, res, next) {
     });
 });
 
-// router.post("/", function (req, res, next) {
-//   // Validate
-//   const validationSchema = yup.object({
-//     body: yup.object({
-//       name: yup.string().required(),
-
-//       description: yup.string().required(),
-//     }),
-//   });
-
-//   validationSchema
-//     .validate({ body: req.body }, { abortEarly: false })
-//     .then(() => {
-//       const newItem = req.body;
-
-//       // Get max id
-//       let max = 0;
-//       data.forEach((item) => {
-//         if (max < item.id) {
-//           max = item.id;
-//         }
-//       });
-
-//       newItem.id = max + 1;
-
-//       data.push(newItem);
-
-//       // Write data to file
-//       write(fileName, data);
-
-//       res.send({ ok: true, message: "Created" });
-//     })
-//     .catch((err) => {
-//       return res
-//         .status(400)
-//         .json({ type: err.name, errors: err.errors, provider: "yup" });
-//     });
-// });
-
-// router.delete("/:id", function (req, res, next) {
-//   const id = req.params.id;
-//   data = data.filter((x) => x.id != id);
-//   write(fileName, data);
-//   res.send({ ok: true, massage: "Delete" });
-// });
-
+//DELETE
 router.delete('/:id', function (req, res, next) {
   const validationSchema = yup.object().shape({
     params: yup.object({
@@ -221,20 +143,15 @@ router.delete('/:id', function (req, res, next) {
     });
 });
 
-router.patch("/:id", function (req, res, next) {
-  const id = req.params.id;
-  const patchData = req.body;
-
-  let found = data.find((x) => x.id == id);
-
-  if (found) {
-    for (let propertyName in patchData) {
-      found[propertyName] = patchData[propertyName];
-    }
+router.patch("/:id", async function (req, res) {
+  try {
+    const id = req.params.id;
+    const data = req.body;
+    await Category.findByIdAndUpdate(id, data);
+    res.send({ ok: true, message: "Updated" });
+  } catch (error) {
+    res.status(500).send({ ok: false, error });
   }
-  write(fileName, data);
-
-  res.send({ ok: true, message: "Updated" });
 });
 
 module.exports = router;

@@ -7,18 +7,10 @@ import {
     FileTextOutlined,
     IdcardOutlined
 } from "@ant-design/icons";
-import { Breadcrumb, Layout, Menu, theme } from "antd";
+import { Layout, Menu, theme } from "antd";
 import { useNavigate } from 'react-router-dom';
 const { Header, Content, Footer, Sider } = Layout;
-// function getItem(label, key, icon, children) {
-//     return {
-//         key,
-//         icon,
-//         children,
-//         label,
-//     };
-// }
-const itemss = [
+const items = [
     {
         label: 'Home',
         key: '',
@@ -46,21 +38,17 @@ const itemss = [
     },
     {
         label: 'Manager Categories',
-        key: 'manageCategorys',
+        key: 'manageCategories',
         icon: <FileTextOutlined />,
     },
     {
-        label: 'Manager Supllier',
-        key: 'manageSuplliers',
+        label: 'Manager Supplier',
+        key: 'manageSuppliers',
         icon: <IdcardOutlined />,
     },
 
 ];
-// const items = [
-//     getItem("Home", "Home", <HomeOutlined />),
-//     getItem("Manager Customer", "manageCustomer", <UserOutlined />),
-//     getItem("Manager Employee", "manageEmployee", <UserOutlined />),
-// ];
+
 export default function DefaultLayout({ children }) {
     // eslint-disable-next-line react-hooks/rules-of-hooks
     const [collapsed, setCollapsed] = useState(false);
@@ -93,7 +81,7 @@ export default function DefaultLayout({ children }) {
                     theme="dark"
                     defaultSelectedKeys={["/"]}
                     mode="inline"
-                    items={itemss}
+                    items={items}
                     onClick={(e) => {
                         console.log(e);
                         setCurrent(e.key);
@@ -114,14 +102,7 @@ export default function DefaultLayout({ children }) {
                         margin: "0 16px",
                     }}
                 >
-                    <Breadcrumb
-                        style={{
-                            margin: "16px 0",
-                        }}
-                    >
-                        <Breadcrumb.Item>Admin</Breadcrumb.Item>
-                        <Breadcrumb.Item>{current}</Breadcrumb.Item>
-                    </Breadcrumb>
+
                     <div
                         style={{
                             padding: 24,

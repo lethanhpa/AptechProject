@@ -7,7 +7,7 @@ mongoose.plugin(slug);
 const categorySchema = new Schema(
   {
     name: { type: String, required: [true, 'Category bắt buộc phải nhập'] },
-    description: String,
+    description: { type: String, required: true },
     slug: {
       type: String,
       slug: 'name',

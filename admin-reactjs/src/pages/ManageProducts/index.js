@@ -21,17 +21,18 @@ export default function ManageProducts() {
             });
     }, [refresh]);
     return (
-        <div>
-            <Table dataSource={data}>
+        <>
+
+            <Table dataSource={data} rowKey="id">
                 <Column title="Name" dataIndex="name" key="name" />
                 <Column title="Price" dataIndex="price" key="price" />
                 <Column title="Discount" dataIndex="discount" key="discount" />
                 <Column title="Stock" dataIndex="stock" key="stock" />
                 <Column title="Description" dataIndex="description" key="description" />
-                <Column title="Category" dataIndex="category.name" key="category.name" render={(text, record, index) => {
+                <Column title="Categories" dataIndex="category.name" key="category.name" render={(_text, record) => {
                     return <span>{record.category.name}</span>;
                 }} />
-                <Column title="Supplier" dataIndex="supplier.name" key="supplier.name" render={(text, record, index) => {
+                <Column title="Suppliers" dataIndex="supplier.name" key="supplier.name" render={(_text, record) => {
                     return <span>{record.supplier.name}</span>;
                 }} />
                 <Column
@@ -44,7 +45,7 @@ export default function ManageProducts() {
                                 icon={<DeleteOutlined />}
                                 onClick={() => {
                                     console.log(record.id);
-                                    axios.delete(apiName + "/" + record.id).then((response) => {
+                                    axios.delete(apiName + "/" + record.id).then(() => {
                                         setRefresh((f) => f + 1);
                                         message.success("Xóa danh mục thành công!", 1.5);
                                     });
@@ -54,6 +55,6 @@ export default function ManageProducts() {
                     )}
                 />
             </Table>
-        </div>
+        </>
     )
 }
