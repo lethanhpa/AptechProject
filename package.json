@@ -1,9 +1,8 @@
 {
   "dependencies": {
-<<<<<<< HEAD
-    "mongoose-slug-generator": "^1.0.4"
-=======
+    "mongoose-slug-generator": "^1.0.4",
+
     "react-countup": "^6.4.2"
->>>>>>> frontend
+    
   }
 }

@@ -53,7 +53,7 @@ export default function ManageCategories() {
             });
     };
     return (
-        <div style={{ padding: "24px", border: "4px solid #196F3D ", borderRadius: "10px" }}>
+        <div style={{ padding: "24px" }}>
             {showTable === false ? (
                 <>
                     <div style={{ textAlign: "right" }}>

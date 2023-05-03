@@ -54,7 +54,7 @@ export default function ManageSuppliers() {
             });
     };
     return (
-        <div style={{ padding: "24px", border: "4px solid #1F618D ", borderRadius: "10px" }}>
+        <div style={{ padding: "24px" }}>
             {showTable === false ? (
                 <>
                     <div style={{ textAlign: "right" }}>
