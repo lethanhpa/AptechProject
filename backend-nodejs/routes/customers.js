@@ -1,6 +1,6 @@
 const yup = require('yup');
 const express = require("express");
-const passport = require('passport');
+
 const router = express.Router();
 const { Customer } = require("../models");
 const ObjectId = require('mongodb').ObjectId;
@@ -10,35 +10,7 @@ const { default: mongoose } = require('mongoose');
 mongoose.set('strictQuery', false);
 mongoose.connect(CONNECTION_STRING);
 
-router.get(
-  '/profile',
-  passport.authenticate('jwt', { session: false }),
-  async (req, res, next) => {
-    try {
-      const customer = await Customer.findById(req.user._id);
-
-      if (!customer) return res.status(404).send({ message: 'Not found' });
-
-      res.status(200).json(customer);
-    } catch (err) {
-      res.sendStatus(500);
-    }
-  },
-);
-
-router.route('/profile').get(passport.authenticate('jwt', { session: false }), async (req, res, next) => {
-  try {
-    const customer = await Customer.findById(req.user._id);
-
-    if (!customer) return res.status(404).send({ message: 'Not found' });
-
-    res.status(200).json(customer);
-  } catch (err) {
-    res.sendStatus(500);
-  }
-},);
-
-const fileName = './data/customers.json';
+//GET all
 router.get('/', function (req, res, next) {
   try {
     Customer.find()
@@ -52,6 +24,8 @@ router.get('/', function (req, res, next) {
     res.sendStatus(500);
   }
 });
+
+//GET id
 router.get('/:id', async function (req, res, next) {
   // Validate
   const validationSchema = yup.object().shape({
@@ -79,6 +53,8 @@ router.get('/:id', async function (req, res, next) {
       return res.status(400).json({ type: err.name, errors: err.errors, message: err.message, provider: 'yup' });
     });
 });
+
+//POST
 router.post('/', function (req, res, next) {
   // Validate
   const validationSchema = yup.object({
@@ -105,6 +81,7 @@ router.post('/', function (req, res, next) {
     });
 });
 
+//DELETE
 router.delete('/:id', function (req, res, next) {
   const validationSchema = yup.object().shape({
     params: yup.object({
@@ -136,6 +113,7 @@ router.delete('/:id', function (req, res, next) {
     });
 });
 
+//PATCH
 router.patch("/:id", function (req, res, next) {
   const id = req.params.id;
   const patchData = req.body;

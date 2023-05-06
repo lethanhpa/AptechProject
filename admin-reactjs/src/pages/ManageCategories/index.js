@@ -31,7 +31,7 @@ export default function ManageCategories() {
             .then((_response) => {
                 setRefresh((f) => f + 1);
                 createForm.resetFields();
-                message.success("New added success!", 1.5);
+                message.success("New added successfully!", 1.5);
                 setShowTable(true);
             })
             .catch((err) => {
@@ -45,7 +45,7 @@ export default function ManageCategories() {
             .then((_response) => {
                 setRefresh((f) => f + 1);
                 updateForm.resetFields();
-                message.success("Cập nhật thành công!", 1.5);
+                message.success("Update successfully!", 1.5);
                 setOpen(false);
             })
             .catch((err) => {
@@ -136,8 +136,8 @@ export default function ManageCategories() {
                                         danger
                                         icon={<DeleteOutlined />}
                                         onClick={() => {
-                                            console.log(record.id);
-                                            axios.delete(apiName + "/" + record.id).then((_response) => {
+                                            console.log(record._id);
+                                            axios.delete(apiName + "/" + record._id).then((_response) => {
                                                 setRefresh((f) => f + 1);
                                                 message.success("Delete successfully!", 1.5);
                                             });

@@ -1,7 +1,7 @@
 const yup = require("yup");
 const express = require("express");
 const router = express.Router();
-const passport = require('passport');
+
 const { Supplier } = require("../models");
 const ObjectId = require("mongodb").ObjectId;
 const { CONNECTION_STRING } = require('../constants/dbSettings');
@@ -10,46 +10,13 @@ const { default: mongoose } = require('mongoose');
 mongoose.set('strictQuery', false);
 mongoose.connect(CONNECTION_STRING);
 
-router.get(
-  '/profile',
-  passport.authenticate('jwt', { session: false }),
-  async (req, res, next) => {
-    try {
-      const supplier = await Supplier.findById(req.user._id);
-
-      if (!supplier) return res.status(404).send({ message: 'Not found' });
-
-      res.status(200).json(supplier);
-    } catch (err) {
-      res.sendStatus(500);
-    }
-  },
-);
-
-router.route('/profile').get(passport.authenticate('jwt', { session: false }), async (req, res, next) => {
+//GET ALL
+router.get("/", async (req, res, next) => {
   try {
-    const supplier = await Supplier.findById(req.user._id);
-
-    if (!supplier) return res.status(404).send({ message: 'Not found' });
-
-    res.status(200).json(supplier);
-  } catch (err) {
-    res.sendStatus(500);
-  }
-},);
-
-const fileName = "./data/suppliers.json";
-router.get('/', function (req, res, next) {
-  try {
-    Supplier.find()
-      .then((result) => {
-        res.send(result);
-      })
-      .catch((err) => {
-        res.status(400).send({ message: err.message });
-      });
-  } catch (err) {
-    res.sendStatus(500);
+    let results = await Supplier.find();
+    res.json(results);
+  } catch (error) {
+    res.status(500).json({ ok: false, error });
   }
 });
 
@@ -80,14 +47,14 @@ router.get('/:id', async function (req, res, next) {
       return res.status(400).json({ type: err.name, errors: err.errors, message: err.message, provider: 'yup' });
     });
 });
-router.post('/', async function (req, res, next) {
+router.post("/", async function (req, res, next) {
   // Validate
   const validationSchema = yup.object({
     body: yup.object({
-      name: yup.string().max(50).required(),
-      email: yup.string().email().max(50).required(),
-      phoneNumber: yup.string().max(50).required(),
-      address: yup.string().max(500).required(),
+      name: yup.string().required(),
+      email: yup.string().email(),
+      phoneNumber: yup.string(),
+      address: yup.string(),
     }),
   });
 
@@ -99,13 +66,15 @@ router.post('/', async function (req, res, next) {
         const newItem = new Supplier(data);
         let result = await newItem.save();
 
-        return res.send({ ok: true, message: 'Created', result });
+        return res.send({ ok: true, message: "Created", result });
       } catch (err) {
         return res.status(500).json({ error: err });
       }
     })
     .catch((err) => {
-      return res.status(400).json({ type: err.name, errors: err.errors, provider: 'yup' });
+      return res
+        .status(400)
+        .json({ type: err.name, errors: err.errors, provider: "yup" });
     });
 });
 

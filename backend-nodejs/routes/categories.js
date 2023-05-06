@@ -1,4 +1,3 @@
-const passport = require('passport');
 const express = require('express');
 const yup = require('yup');
 const ObjectId = require("mongodb").ObjectId;
@@ -12,7 +11,7 @@ mongoose.connect(CONNECTION_STRING);
 
 const router = express.Router();
 
-
+//GEt ALL
 router.get('/', function (req, res, next) {
   try {
     Category.find()
@@ -27,34 +26,7 @@ router.get('/', function (req, res, next) {
   }
 });
 
-router.get(
-  '/profile',
-  passport.authenticate('jwt', { session: false }),
-  async (req, res, next) => {
-    try {
-      const category = await Category.findById(req.user._id);
-
-      if (!category) return res.status(404).send({ message: 'Not found' });
-
-      res.status(200).json(category);
-    } catch (err) {
-      res.sendStatus(500);
-    }
-  },
-);
-
-router.route('/profile').get(passport.authenticate('jwt', { session: false }), async (req, res, next) => {
-  try {
-    const category = await Category.findById(req.user._id);
-
-    if (!category) return res.status(404).send({ message: 'Not found' });
-
-    res.status(200).json(category);
-  } catch (err) {
-    res.sendStatus(500);
-  }
-},);
-
+//GET id
 router.get('/:id', async function (req, res, next) {
   // Validate
   const validationSchema = yup.object().shape({

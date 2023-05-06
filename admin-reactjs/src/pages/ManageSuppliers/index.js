@@ -14,6 +14,7 @@ export default function ManageSuppliers() {
     const [updateForm] = Form.useForm();
     const [createForm] = Form.useForm();
 
+
     useEffect(() => {
         axios
             .get(apiName)
@@ -32,7 +33,7 @@ export default function ManageSuppliers() {
             .then((_response) => {
                 setRefresh((f) => f + 1);
                 createForm.resetFields();
-                message.success("New added success!", 1.5);
+                message.success("New added successfully!", 1.5);
                 setShowTable(true);
             })
             .catch((err) => {
@@ -46,7 +47,7 @@ export default function ManageSuppliers() {
             .then((_response) => {
                 setRefresh((f) => f + 1);
                 updateForm.resetFields();
-                message.success("Update successful!", 1.5);
+                message.success("Update successfully!", 1.5);
                 setOpen(false);
             })
             .catch((err) => {
@@ -70,7 +71,7 @@ export default function ManageSuppliers() {
                     <h1 style={{ fontSize: "32px", textAlign: "center" }}>ADD LIST</h1>
                     {/* CREATE FORM */}
                     <Form
-                        style={{ width: "80%" }}
+                        style={{ paddingTop: "24px", width: '80%' }}
                         form={createForm}
                         name="create-form"
                         onFinish={onFinish}
@@ -81,11 +82,18 @@ export default function ManageSuppliers() {
                             span: 16,
                         }}
                     >
-                        <Form.Item label="Name" name="name" hasFeedback>
-                            <Input />
-                        </Form.Item>
-
-                        <Form.Item label="Email" name="email" hasFeedback>
+                        <Form.Item
+                            label="Name"
+                            name="name"
+                            hasFeedback
+                            required={true}
+                            rules={[
+                                {
+                                    required: true,
+                                    message: "Input required",
+                                },
+                            ]}
+                        >
                             <Input />
                         </Form.Item>
 
@@ -97,13 +105,17 @@ export default function ManageSuppliers() {
                             <Input />
                         </Form.Item>
 
+                        <Form.Item label="Email" name="email" hasFeedback>
+                            <Input />
+                        </Form.Item>
+
                         <Form.Item
                             wrapperCol={{
                                 offset: 8,
                                 span: 16,
                             }}
                         >
-                            <Button type="primary" htmlType="submit" style={{ width: "160px", height: "40px", fontSize: "18px" }}>
+                            <Button type="primary" htmlType="submit">
                                 Submit
                             </Button>
                         </Form.Item>
@@ -146,8 +158,8 @@ export default function ManageSuppliers() {
                                         danger
                                         icon={<DeleteOutlined />}
                                         onClick={() => {
-                                            console.log(record.id);
-                                            axios.delete(apiName + "/" + record.id).then((_response) => {
+                                            console.log(record._id);
+                                            axios.delete(apiName + "/" + record._id).then((_response) => {
                                                 setRefresh((f) => f + 1);
                                                 message.success("Delete successfully!", 1.5);
                                             });

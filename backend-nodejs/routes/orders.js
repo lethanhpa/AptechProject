@@ -2,7 +2,7 @@ const yup = require("yup");
 const express = require("express");
 const router = express.Router();
 const { Order } = require("../models");
-const passport = require('passport');
+
 const ObjectId = require("mongodb").ObjectId;
 
 const { CONNECTION_STRING } = require('../constants/dbSettings');
@@ -10,34 +10,6 @@ const { default: mongoose } = require('mongoose');
 
 mongoose.set('strictQuery', false);
 mongoose.connect(CONNECTION_STRING);
-
-router.get(
-  '/profile',
-  passport.authenticate('jwt', { session: false }),
-  async (req, res, next) => {
-    try {
-      const order = await Order.findById(req.user._id);
-
-      if (!order) return res.status(404).send({ message: 'Not found' });
-
-      res.status(200).json(order);
-    } catch (err) {
-      res.sendStatus(500);
-    }
-  },
-);
-
-router.route('/profile').get(passport.authenticate('jwt', { session: false }), async (req, res, next) => {
-  try {
-    const order = await Order.findById(req.user._id);
-
-    if (!order) return res.status(404).send({ message: 'Not found' });
-
-    res.status(200).json(order);
-  } catch (err) {
-    res.sendStatus(500);
-  }
-},);
 
 // Methods: POST / PATCH / GET / DELETE / PUT
 // Get all
