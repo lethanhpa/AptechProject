@@ -5,11 +5,13 @@ import {
     FileDoneOutlined,
     DropboxOutlined,
     FileTextOutlined,
-    IdcardOutlined
+    IdcardOutlined,
 } from "@ant-design/icons";
 import { Layout, Menu, theme } from "antd";
 import { useNavigate } from 'react-router-dom';
-const { Header, Content, Footer, Sider } = Layout;
+
+const { Content, Footer, Sider } = Layout;
+
 const items = [
     {
         label: 'Home',
@@ -49,12 +51,12 @@ const items = [
 
 ];
 
-export default function DefaultLayout({ children }) {
+export default function DefaultLayout({ children, props }) {
     // eslint-disable-next-line react-hooks/rules-of-hooks
     const [collapsed, setCollapsed] = useState(false);
     const [current, setCurrent] = useState('/');
-    const navigate = useNavigate();
 
+    const navigate = useNavigate();
     const {
         token: { colorBgContainer },
     } = theme.useToken();
@@ -91,18 +93,11 @@ export default function DefaultLayout({ children }) {
                 />
             </Sider>
             <Layout className="site-layout">
-                <Header
-                    style={{
-                        padding: 0,
-                        background: colorBgContainer,
-                    }}
-                />
                 <Content
                     style={{
                         margin: "0 16px",
                     }}
                 >
-
                     <div
                         style={{
                             padding: 24,

@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react'
-import { Button, Space, Table, message, Form, Modal, Input, Select, InputNumber, Pagination, Drawer } from 'antd';
+import { Button, Space, Table, message, Form, Modal, Input, Select, InputNumber, Pagination, Drawer, Popconfirm } from 'antd';
 import { DeleteOutlined, EditOutlined, UnorderedListOutlined, FilterOutlined, ClearOutlined, SearchOutlined } from "@ant-design/icons";
 import axios from "../../libraries/axiosClient.js";
+import numeral from "numeral";
 const { Column } = Table;
 const apiName = "/products";
 
@@ -159,6 +160,9 @@ export default function ManageProducts() {
         setOpenFilter(false);
     };
 
+    const text = 'Are you sure you want to delete?';
+    const description = 'Delete the it';
+
     return (
         <div style={{ padding: "24px 24px 24px", textAlign: "left" }}>
             {showTable === false ? (
@@ -273,7 +277,7 @@ export default function ManageProducts() {
                                 span: 16,
                             }}
                         >
-                            <Button type="primary" htmlType="submit">
+                            <Button type="primary" htmlType="submit" style={{ width: "140px", height: "35px", fontSize: "18px" }}>
                                 Submit
                             </Button>
                         </Form.Item>
@@ -442,9 +446,12 @@ export default function ManageProducts() {
                             </Form.Item>
                         </Form>
                     </Drawer>
+                    <h1 style={{ fontSize: "32px", textAlign: "center" }}>LIST</h1>
                     <Table dataSource={data} rowKey="id" pagination={false}>
                         <Column title="Name" dataIndex="name" key="name" />
-                        <Column title="Price" dataIndex="price" key="price" />
+                        <Column title="Price" dataIndex="price" key="price" render={(text) => {
+                            return <span>{numeral(text).format("0,0")}</span>;
+                        }} />
                         <Column title="Discount" dataIndex="discount" key="discount" />
                         <Column title="Stock" dataIndex="stock" key="stock" />
                         <Column title="Description" dataIndex="description" key="description" />
@@ -469,17 +476,25 @@ export default function ManageProducts() {
                                             updateForm.setFieldsValue(record);
                                         }}
                                     >Edit</Button>
-                                    <Button
-                                        danger
-                                        icon={<DeleteOutlined />}
-                                        onClick={() => {
-                                            console.log(record.id);
+
+                                    <Popconfirm
+                                        placement="topRight"
+                                        title={text}
+                                        description={description}
+                                        onConfirm={() => {
                                             axios.delete(apiName + "/" + record.id).then(() => {
                                                 setRefresh((f) => f + 1);
                                                 message.success("Delete successfully!", 1.5);
                                             });
                                         }}
-                                    >Delete</Button>
+                                        okText="Yes"
+                                        cancelText="No"
+                                    >
+                                        <Button
+                                            danger
+                                            icon={<DeleteOutlined />}
+                                        >Delete</Button>
+                                    </Popconfirm>
                                 </Space>
                             )}
                         />
@@ -487,7 +502,7 @@ export default function ManageProducts() {
                     <Pagination
                         style={{ paddingTop: "15px" }}
                         total={total}
-                        onChange={handlePageChange} // Gọi hàm xử lý khi người dùng thay đổi trang
+                        onChange={handlePageChange}
                     />
 
                     {/* EDIT FORM */}

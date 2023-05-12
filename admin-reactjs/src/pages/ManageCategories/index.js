@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Button, Space, Table, message, Form, Modal, Input } from 'antd';
+import { Button, Space, Table, message, Form, Modal, Input, Popconfirm } from 'antd';
 import { DeleteOutlined, EditOutlined, UnorderedListOutlined } from "@ant-design/icons";
 import axios from "../../libraries/axiosClient.js";
 const { Column } = Table;
@@ -52,11 +52,15 @@ export default function ManageCategories() {
                 console.error(err);
             });
     };
+
+    const text = 'Are you sure you want to delete?';
+    const description = 'Delete the it';
+
     return (
         <div style={{ padding: "24px" }}>
             {showTable === false ? (
                 <>
-                    <div style={{ textAlign: "right" }}>
+                    <div style={{ textAlign: "left" }}>
                         <Button
                             type="primary"
                             ghost
@@ -94,7 +98,7 @@ export default function ManageCategories() {
                                 span: 16,
                             }}
                         >
-                            <Button type="primary" htmlType="submit" style={{ width: "160px", height: "40px", fontSize: "18px" }}>
+                            <Button type="primary" htmlType="submit" style={{ width: "140px", height: "35px", fontSize: "18px" }}>
                                 Submit
                             </Button>
                         </Form.Item>
@@ -102,7 +106,7 @@ export default function ManageCategories() {
                 </>
             ) : (
                 <>
-                    <div style={{ textAlign: "right" }}>
+                    <div style={{ textAlign: "left" }}>
                         <Button
                             type="primary"
                             ghost
@@ -132,17 +136,25 @@ export default function ManageCategories() {
                                             updateForm.setFieldsValue(record);
                                         }}
                                     >Edit</Button>
-                                    <Button
-                                        danger
-                                        icon={<DeleteOutlined />}
-                                        onClick={() => {
-                                            console.log(record._id);
-                                            axios.delete(apiName + "/" + record._id).then((_response) => {
+                                    <Popconfirm
+                                        placement="top"
+                                        title={text}
+                                        description={description}
+                                        onConfirm={() => {
+                                            console.log(record.id);
+                                            axios.delete(apiName + "/" + record.id).then(() => {
                                                 setRefresh((f) => f + 1);
                                                 message.success("Delete successfully!", 1.5);
                                             });
                                         }}
-                                    >Delete</Button>
+                                        okText="Yes"
+                                        cancelText="No"
+                                    >
+                                        <Button
+                                            danger
+                                            icon={<DeleteOutlined />}
+                                        >Delete</Button>
+                                    </Popconfirm>
                                 </Space>
                             )}
                         />
