@@ -61,8 +61,6 @@ router.get('/', validateSchema(getProductsSchema), async (req, res) => {
       conditionFind.discount = { $lte: Number(discountEnd) };
     }
 
-    console.log('««««« conditionFind »»»»»', conditionFind);
-
     let results = await Product
       .find(conditionFind)
       .populate('category')
@@ -105,8 +103,11 @@ router.get('/:id', async function (req, res) {
     .then(async () => {
       const id = req.params.id;
 
-      let found = await Product.findById(id);
-
+      let found = await Product
+        .findById(id)
+        .populate('category')
+        .populate('supplier');
+      console.log('««««« found »»»»»', found);
       if (found) {
         return res.send({ ok: true, result: found });
       }
@@ -125,6 +126,7 @@ router.post("/", function (req, res) {
       name: yup.string().required(),
       price: yup.number().positive().required(),
       discount: yup.number().positive().max(50).required(),
+      img: yup.string(),
       categoryId: yup
         .string()
         .required()

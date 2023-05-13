@@ -244,6 +244,10 @@ export default function ManageProducts() {
                             <Input />
                         </Form.Item>
 
+                        <Form.Item label="Image" name="img">
+                            <Input />
+                        </Form.Item>
+
                         <Form.Item
                             label="Price"
                             name="price"
@@ -452,6 +456,12 @@ export default function ManageProducts() {
                         <Column title="Price" dataIndex="price" key="price" render={(text) => {
                             return <span>{numeral(text).format("0,0")}</span>;
                         }} />
+                        <Column title="Image" dataIndex="img" key="img"
+                            render={(_text, record) => {
+                                return (
+                                    <img src={record.img} style={{ width: "50%" }} />
+                                );
+                            }} />
                         <Column title="Discount" dataIndex="discount" key="discount" />
                         <Column title="Stock" dataIndex="stock" key="stock" />
                         <Column title="Description" dataIndex="description" key="description" />
@@ -580,6 +590,10 @@ export default function ManageProducts() {
                                     },
                                 ]}
                             >
+                                <Input />
+                            </Form.Item>
+
+                            <Form.Item label="Image" name="img">
                                 <Input />
                             </Form.Item>
 

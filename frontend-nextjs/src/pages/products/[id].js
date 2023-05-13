@@ -33,7 +33,10 @@ function ProductDetail(props) {
           <p>
             <strong>Total:</strong> {product.total}
           </p>
-          {/* <p>
+          <div>
+            <img src={product.img} style={{ width: "20%" }} />
+          </div>
+          <p>
             <strong>Supplier name:</strong> {product.supplier.name}
           </p>
           <p>
@@ -41,7 +44,7 @@ function ProductDetail(props) {
           </p>
           <p>
             <strong>Supplier address:</strong> {product.supplier.address}
-          </p> */}
+          </p>
         </main>
       )}
     </>

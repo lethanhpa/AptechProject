@@ -2,36 +2,11 @@ import React from "react";
 import Head from "next/head";
 import Link from "next/link";
 import PropTypes from "prop-types";
-import { LaptopOutlined, NotificationOutlined, UserOutlined } from '@ant-design/icons';
-import { Breadcrumb, Layout, Menu, theme } from 'antd';
 import axiosClient from "../../libraries/axiosClient";
-
-const { Header, Content, Sider } = Layout;
-const items1 = ['1', '2', '3'].map((key) => ({
-  key,
-  label: `nav ${key}`,
-}));
-const items2 = [UserOutlined, LaptopOutlined, NotificationOutlined].map((icon, index) => {
-  const key = String(index + 1);
-  return {
-    key: `sub${key}`,
-    icon: React.createElement(icon),
-    label: `subnav ${key}`,
-    children: new Array(4).fill(null).map((_, j) => {
-      const subKey = index * 4 + j + 1;
-      return {
-        key: subKey,
-        label: `option${subKey}`,
-      };
-    }),
-  };
-});
 
 function Products(props) {
   const { products } = props;
-  const {
-    token: { colorBgContainer },
-  } = theme.useToken();
+
   return (
     <>
       <Head>
@@ -40,58 +15,17 @@ function Products(props) {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Layout>
-        <Header className="header">
-          <div className="logo" />
-          <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['2']} items={items1} />
-        </Header>
-        <Layout>
-          <Sider
-            width={200}
-            style={{
-              background: colorBgContainer,
-            }}
-          >
-            <Menu
-              mode="inline"
-              defaultSelectedKeys={['1']}
-              defaultOpenKeys={['sub1']}
-              style={{
-                height: '100%',
-                borderRight: 0,
-              }}
-              items={items2}
-            />
-          </Sider>
-          <Layout
-            style={{
-              padding: '0 24px 24px',
-            }}
-          >
-            <Content
-              style={{
-                padding: 24,
-                margin: 0,
-                minHeight: 280,
-                background: colorBgContainer,
-                color: "black"
-              }}
-            >
-              content
-              <ul>
-                {products?.length > 0 &&
-                  products.map((item, idx) => (
-                    <li key={item._id} className="mb-2">
-                      <Link href={`/products/${item._id}`}>
-                        <strong>{`${idx + 1}: ${item.name}`}</strong>
-                      </Link>
-                    </li>
-                  ))}
-              </ul>
-            </Content>
-          </Layout>
-        </Layout>
-      </Layout>
+      <ul>
+        {products.length > 0 ?
+          products.map((item, idx) => (
+            <li key={item._id} className="mb-2">
+              <Link href={`/products/${item._id}`}>
+                <strong>{`${idx + 1}: ${item.name}`}</strong>
+              </Link>
+            </li>
+          )) : <p>Không có dữ liệu</p>
+        }
+      </ul>
     </>
   );
 }
@@ -99,10 +33,12 @@ function Products(props) {
 
 Products.propTypes = {
   products: PropTypes.instanceOf(Array),
+  total: PropTypes.number,
 };
 
 Products.defaultProps = {
   products: [],
+  total: 0,
 };
 
 export default Products;
@@ -113,10 +49,10 @@ export async function getStaticProps() {
 
     return {
       props: {
-        products: response.data,
+        products: response.data.data,
+        total: response.data.total
       },
 
-      revalidate: 24 * 60 * 60,
     };
   } catch (error) {
     return {

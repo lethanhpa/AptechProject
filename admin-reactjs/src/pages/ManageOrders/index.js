@@ -24,7 +24,6 @@ export default function ManageOrder() {
         <>
             <Table dataSource={data} rowKey="_id">
                 <Column title="Shipping Address" dataIndex="shippingAddress" key="shippingAddress" />
-                <Column title="Description" dataIndex="description" key="description" />
                 <Column title="Shipped Date" dataIndex="shippedDate" key="shippedDate" />
                 <Column title="Payment Type" dataIndex="paymentType" key="paymentType" />
                 <Column title="Status" dataIndex="status" key="status" />
@@ -34,11 +33,15 @@ export default function ManageOrder() {
                 <Column title="Employees" dataIndex="employee.fullName" key="employee.fullName" render={(_text, record) => {
                     return <span>{record.employee.lastName} {record.employee.firstName}</span>;
                 }} />
-                {/* <Column title="Order Details" dataIndex="orderDetails" key="orderDetails" render={(_text, record) => {
-                    return ({
-
-                    });
-                }} /> */}
+                <Column title="Order Details" dataIndex="orderDetails" key="orderDetails" render={(_text, record) => {
+                    return (
+                        <span>
+                            Quantity: {record.orderDetails[0].quantity}
+                            <br />
+                            Product: {record.orderDetails[0].productId}
+                        </span>
+                    );
+                }} />
                 <Column
                     title="Action"
                     key="action"
