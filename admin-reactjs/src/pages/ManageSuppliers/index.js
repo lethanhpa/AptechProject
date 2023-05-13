@@ -10,7 +10,7 @@ export default function ManageSuppliers() {
     const [refresh, setRefresh] = useState(0);
     const [open, setOpen] = useState(false);
     const [updateId, setUpdateId] = useState(0);
-    const [showTable, setShowTable] = useState(false);
+    const [showTable, setShowTable] = useState(true);
     const [updateForm] = Form.useForm();
     const [createForm] = Form.useForm();
 

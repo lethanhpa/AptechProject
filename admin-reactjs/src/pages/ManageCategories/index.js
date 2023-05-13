@@ -8,7 +8,7 @@ const apiName = "/categories";
 export default function ManageCategories() {
     const [data, setData] = useState([]);
     const [refresh, setRefresh] = React.useState(0);
-    const [showTable, setShowTable] = useState(false);
+    const [showTable, setShowTable] = useState(true);
     const [createForm] = Form.useForm();
     const [updateForm] = Form.useForm();
     const [open, setOpen] = useState(false);
@@ -141,8 +141,7 @@ export default function ManageCategories() {
                                         title={text}
                                         description={description}
                                         onConfirm={() => {
-                                            console.log(record.id);
-                                            axios.delete(apiName + "/" + record.id).then(() => {
+                                            axios.delete(apiName + "/" + record._id).then(() => {
                                                 setRefresh((f) => f + 1);
                                                 message.success("Delete successfully!", 1.5);
                                             });

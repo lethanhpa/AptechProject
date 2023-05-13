@@ -9,7 +9,7 @@ const apiName = "/products";
 export default function ManageProducts() {
     const [data, setData] = useState([]);
     const [refresh, setRefresh] = useState(0);
-    const [showTable, setShowTable] = useState(false);
+    const [showTable, setShowTable] = useState(true);
     const [updateForm] = Form.useForm();
     const [createForm] = Form.useForm();
     const [categories, setCategories] = useState([]);
@@ -459,7 +459,7 @@ export default function ManageProducts() {
                         <Column title="Image" dataIndex="img" key="img"
                             render={(_text, record) => {
                                 return (
-                                    <img src={record.img} style={{ width: "50%" }} />
+                                    <img src={record.img} style={{ width: "130px" }} />
                                 );
                             }} />
                         <Column title="Discount" dataIndex="discount" key="discount" />
