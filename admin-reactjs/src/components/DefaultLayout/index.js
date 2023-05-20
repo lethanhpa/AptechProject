@@ -51,7 +51,7 @@ const items = [
 
 ];
 
-export default function DefaultLayout({ children, props }) {
+export default function DefaultLayout({ children }) {
     // eslint-disable-next-line react-hooks/rules-of-hooks
     const [collapsed, setCollapsed] = useState(false);
     const [current, setCurrent] = useState('/');

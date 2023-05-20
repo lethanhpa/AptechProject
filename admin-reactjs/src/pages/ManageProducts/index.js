@@ -459,7 +459,7 @@ export default function ManageProducts() {
                         <Column title="Image" dataIndex="img" key="img"
                             render={(_text, record) => {
                                 return (
-                                    <img src={record.img} style={{ width: "130px" }} />
+                                    <img src={record.img} style={{ width: "130px", height: "auto" }} />
                                 );
                             }} />
                         <Column title="Discount" dataIndex="discount" key="discount" />

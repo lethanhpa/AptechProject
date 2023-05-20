@@ -119,6 +119,39 @@ router.get('/:id', async function (req, res) {
     });
 });
 
+router.get('/t/:slug', async function (req, res) {
+  // Validate
+  const validationSchema = yup.object().shape({
+    params: yup.object({
+      slug: yup.string().required('Slug is required'),
+    }),
+  });
+
+  try {
+    await validationSchema.validate({ params: req.params }, { abortEarly: false });
+
+    const slug = req.params.slug;
+
+    let found = await Product.findOne({ slug })
+      .populate('category')
+      .populate('supplier');
+
+    if (found) {
+      return res.send({ ok: true, result: found });
+    }
+
+    return res.send({ ok: false, message: 'Object not found' });
+  } catch (err) {
+    return res.status(400).json({
+      type: err.name,
+      errors: err.errors,
+      message: err.message,
+      provider: 'yup',
+    });
+  }
+});
+
+
 router.post("/", function (req, res) {
   // Validate
   const validationSchema = yup.object({

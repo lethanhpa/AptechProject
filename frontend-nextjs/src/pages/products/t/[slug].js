@@ -2,7 +2,7 @@ import React from "react";
 import Head from "next/head";
 import PropTypes from "prop-types";
 
-import axiosClient from "../../libraries/axiosClient";
+import axiosClient from "../../../libraries/axiosClient";
 
 function ProductDetail(props) {
   const { product } = props;
@@ -61,24 +61,6 @@ ProductDetail.defaultProps = {
 
 export default ProductDetail;
 
-// SSG
-// export async function getStaticPaths() {
-//   try {
-//     const response = await axiosClient.get('/products');
-
-//     const paths = response.data.map((post) => ({
-//       params: { id: post.id },
-//     }))
-
-//     return {
-//       paths,
-//       fallback: true,
-//     }
-//   } catch (error) {
-//     console.log('««««« error »»»»»', error);
-//   }
-// }
-
 export async function getStaticPaths() {
   return {
     paths: [],
@@ -89,13 +71,12 @@ export async function getStaticPaths() {
 export async function getStaticProps(req) {
   try {
     const { params } = req;
-    const response = await axiosClient.get(`/products/${params.id}`);
+    const response = await axiosClient.get(`/products/t/${params.slug}`);
 
     return {
       props: {
         product: response.data.result,
       },
-      // revalidate: 10,
     };
   } catch (error) {
     return {
@@ -103,22 +84,3 @@ export async function getStaticProps(req) {
     };
   }
 }
-
-// SSR
-// export async function getServerSideProps(req) {
-//   try {
-//     const { params, query } = req;
-//     // console.log('««««« req »»»»»', req);
-//     const response = await axios.get('http://localhost:9000/products');
-
-//     return {
-//       props: {
-//         products: response.data,
-//       },
-//     };
-//   } catch (error) {
-//     return {
-//       notFound: true,
-//     };
-//   }
-// }
