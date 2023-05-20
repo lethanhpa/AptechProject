@@ -1,9 +1,7 @@
 import React from "react";
 import Head from "next/head";
-import Navigation from "../components/navigation"
-import Footer from "../components/footer";
 import { Layout } from "antd";
-
+import Styles from "../styles/home.module.css"
 const { Content } = Layout;
 
 export default function Home() {
@@ -16,47 +14,46 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Navigation />
       <div>
-        <section className=" top-txt ">
+        <section className={Styles.top_txt}>
           <div className="head container ">
             <div className="head-txt ">
               <p>Free shipping, 30-day return or refund guarantee.</p>
             </div>
-            <div className="sing_in_up ">
+            <div className={Styles.sing_in_up}>
               <a href="# ">SIGN IN</a>
               <a href="# ">SIGN UP</a>
             </div>
           </div>
         </section>
-        <nav className="navbar">
-          <div className="navbar-container">
+        <nav className={Styles.navbar}>
+          <div className={Styles.navbar_container}>
             <input type="checkbox" name id="checkbox" />
-            <div className="hamburger-lines">
+            <div className={Styles.hamburger_lines}>
               <span className="line line1" />
               <span className="line line2" />
               <span className="line line3" />
             </div>
-            <ul className="menu-items">
+            <ul className={Styles.menu_items}>
               <li><a href="#home">Home</a></li>
               <li><a href="#sellers">Shop</a></li>
               <li><a href="#news">Blog</a></li>
               <li><a href="#contact">Contact</a></li>
             </ul>
-            <div className="logo">
+            <div className={Styles.logo}>
               <img src="https://i.postimg.cc/TP6JjSTt/logo.webp" alt="" />
             </div>
           </div>
         </nav>
         <section id="home">
-          <div className="home_page ">
+          <div className={Styles.home_page}>
             <div className="home_img ">
               <img src="https://i.postimg.cc/t403yfn9/home2.jpg" alt="img " />
             </div>
-            <div className="home_txt ">
-              <p className="collectio ">SUMMER COLLECTION</p>
+            <div className={Styles.home_txt}>
+              <p className={Styles.collections}>SUMMER COLLECTION</p>
               <h2>FALL - WINTER<br />Collection 2023</h2>
-              <div className="home_label ">
+              <div className={Styles.home_label}>
                 <p>A specialist label creating luxury essentials. Ethically crafted<br />with an unwavering commitment to exceptional quality.</p>
               </div>
               <button><a href="#sellers">SHOP NOW</a><i className="bx bx-right-arrow-alt" /></button>
@@ -497,7 +494,7 @@ export default function Home() {
             </form>
           </div>
         </section>
-        <footer>
+        <footer className={Styles.footer}>
           <div className="footer-container container">
             <div className="content_1">
               <img src="https://i.postimg.cc/htGyQ4JB/footer-logo.png" alt="logo" />
@@ -1051,7 +1048,6 @@ export default function Home() {
           </div>
         </footer>
       </div>
-      <Footer />
     </>
   );
 }
