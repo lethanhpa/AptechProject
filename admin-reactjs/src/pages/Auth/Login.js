@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import styles from './Login.module.css';
+import axios from '../../libraries/axiosClient';
 
 const Login = (props) => {
   const { setIsLogin } = props;
@@ -14,15 +15,25 @@ const Login = (props) => {
     setPassword(event.target.value);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (email === "admin@gmail.com" && password === "123456") {
-      localStorage.setItem('isLogin', 'true');
-      alert("Login successful!!!");
+    const token = {
+      email,
+      password,
+    };
+
+    try {
+      const response = await axios.post("/employees/login", token);
+      console.log(response);
+
+      localStorage.setItem('isLogin', 'true', response.data.token);
+      alert("Login successfully!!!");
       setIsLogin(true);
-    } else {
-      alert("Incorrect username or password");
+      //   window.location.href = "/home";
+    } catch (error) {
+      console.error(error);
+      alert("Login failed");
     }
   };
 

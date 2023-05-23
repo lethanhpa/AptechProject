@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import {
     UserOutlined,
     HomeOutlined,
@@ -7,9 +7,11 @@ import {
     FileTextOutlined,
     IdcardOutlined,
 } from "@ant-design/icons";
-import { Layout, Menu, theme } from "antd";
+import { Layout, Menu, theme, Button } from "antd";
 import { useNavigate } from 'react-router-dom';
-
+import Login from "../../pages/Auth/Login"
+import { Header } from 'antd/es/layout/layout';
+import logo from "../../components/DefaultLayout/image/logo.png"
 const { Content, Footer, Sider } = Layout;
 
 const items = [
@@ -51,73 +53,88 @@ const items = [
 
 ];
 
-export default function DefaultLayout({ children }) {
+
+
+export default function DefaultLayout({ children }, props) {
     // eslint-disable-next-line react-hooks/rules-of-hooks
     const [collapsed, setCollapsed] = useState(false);
     const [current, setCurrent] = useState('/');
-
     const navigate = useNavigate();
+    const [isLogin, setIsLogin] = useState(false);
+
+    useEffect(() => {
+        const storedLoginState = localStorage.getItem('isLogin');
+
+        if (storedLoginState === 'true') {
+            setIsLogin(true);
+        }
+    }, []);
+    const handleLogout = () => {
+        localStorage.removeItem('isLogin');
+        setIsLogin(false);
+        navigate(`/`);
+    };
+
     const {
         token: { colorBgContainer },
     } = theme.useToken();
     return (
-        <Layout
-            style={{
-                minHeight: "100vh",
-            }}
-        >
-            <Sider
-                collapsible
-                collapsed={collapsed}
-                onCollapse={(value) => setCollapsed(value)}
-
-            >
-                <div
+        <>
+            {isLogin ? (
+                <Layout
+                    setIsLogin={setIsLogin}
                     style={{
-                        height: 32,
-                        margin: 16,
-                        background: "rgba(255, 255, 255, 0.2)",
-                    }}
-                />
-                <Menu
-                    theme="dark"
-                    defaultSelectedKeys={["/"]}
-                    mode="inline"
-                    items={items}
-                    onClick={(e) => {
-                        console.log(e);
-                        setCurrent(e.key);
-                        navigate(`/${e.key}`);
-                    }}
-                    selectedKeys={[current]}
-                />
-            </Sider>
-            <Layout className="site-layout">
-                <Content
-                    style={{
-                        margin: "0 16px",
+                        minHeight: "100vh",
                     }}
                 >
-                    <div
-                        style={{
-                            padding: 24,
-                            minHeight: 360,
-                            background: colorBgContainer,
-                        }}
-                    >
-                        {children}
-                    </div>
-                </Content>
-                <Footer
-                    style={{
-                        backgroundColor: '#000028',
-                        color: '#cecece',
-                        textAlign: "center",
-                    }}
-                >
-                    Admin
-                </Footer>
-            </Layout>
-        </Layout>
+                    <Sider>
+                        <div style={{ color: "#129ECB", margin: "24px", fontSize: "32px", fontWeight: "700" }}><img style={{ width: "80px" }} src={logo} alt='' />YAME</div>
+                        <Menu
+                            theme="dark"
+                            defaultSelectedKeys={["/"]}
+                            mode="inline"
+                            items={items}
+                            onClick={(e) => {
+                                setCurrent(e.key);
+                                navigate(`/${e.key}`);
+                            }}
+                            selectedKeys={[current]}
+                        />
+                    </Sider>
+                    <Layout className="site-layout">
+                        <Header style={{ textAlign: "end" }}>
+                            <Button style={{ width: "100px", backgroundColor: "red", border: "none", color: "white" }} onClick={handleLogout}>Logout</Button>
+                        </Header>
+                        <Content
+                            style={{
+                                margin: "0 16px",
+                            }}
+                        >
+                            <div
+                                style={{
+                                    padding: 24,
+                                    minHeight: 360,
+                                    background: colorBgContainer,
+                                }}
+                            >
+                                {children}
+                            </div>
+                        </Content>
+                        <Footer
+                            style={{
+                                backgroundColor: '#000028',
+                                color: '#cecece',
+                                textAlign: "center",
+                                height: "48px"
+                            }}
+                        >
+                            Admin
+                        </Footer>
+                    </Layout>
+                </Layout>
+            ) : (
+                <Login setIsLogin={setIsLogin} />
+            )}
+        </>
     )
 }

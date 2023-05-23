@@ -453,17 +453,17 @@ export default function ManageProducts() {
                     <h1 style={{ fontSize: "32px", textAlign: "center" }}>LIST</h1>
                     <Table dataSource={data} rowKey="id" pagination={false}>
                         <Column title="Name" dataIndex="name" key="name" />
-                        <Column title="Price" dataIndex="price" key="price" render={(text) => {
+                        <Column title="Price" sorter={(a, b) => a.price - b.price} dataIndex="price" key="price" render={(text) => {
                             return <span>{numeral(text).format("0,0")}</span>;
                         }} />
                         <Column title="Image" dataIndex="img" key="img"
                             render={(_text, record) => {
                                 return (
-                                    <img src={record.img} style={{ width: "130px", height: "auto" }} />
+                                    <img src={record.img} style={{ width: "130px", height: "auto" }} alt='' />
                                 );
                             }} />
-                        <Column title="Discount" dataIndex="discount" key="discount" />
-                        <Column title="Stock" dataIndex="stock" key="stock" />
+                        <Column title="Discount" sorter={(a, b) => a.discount - b.discount} dataIndex="discount" key="discount" />
+                        <Column title="Stock" sorter={(a, b) => a.stock - b.stock} dataIndex="stock" key="stock" />
                         <Column title="Description" dataIndex="description" key="description" />
                         <Column title="Categories" dataIndex="category.name" key="category.name" render={(_text, record) => {
                             return <span>{record.category.name}</span>;

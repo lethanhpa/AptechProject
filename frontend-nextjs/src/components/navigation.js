@@ -1,22 +1,50 @@
-import { Menu } from 'antd';
-import { HomeOutlined, UserOutlined, InboxOutlined } from '@ant-design/icons';
-import Nav from 'react-bootstrap/Nav';
+import Image from "next/image";
+import Link from "next/link";
+import { ShoppingCartOutlined, HomeOutlined, ShopOutlined, ContactsOutlined } from "@ant-design/icons";
+import Styles from "../styles/home.module.css";
+import logo from "../images/logo.png";
+
 const Navigation = () => {
     return (
         <>
-            <Menu mode="horizontal" theme="light" style={{ justifyContent: "center" }} >
-                <Menu.Item key="home" icon={<HomeOutlined />}>
-                    <Nav.Link href="/">Home</Nav.Link>
-                </Menu.Item>
-
-                <Menu.Item key="products" icon={<InboxOutlined />}>
-                    <Nav.Link href="/products">Products</Nav.Link>
-                </Menu.Item>
-
-                <Menu.Item key="profile" icon={<UserOutlined />}>
-                    Profile
-                </Menu.Item>
-            </Menu>
+            <nav className={Styles.navbar}>
+                <div className={Styles.navbar_container}>
+                    <input type="checkbox" name id="checkbox" />
+                    <div className={Styles.hamburger_lines}>
+                        <span className={`${Styles.line} ${Styles.line1}`} />
+                        <span className={`${Styles.line} ${Styles.line2}`} />
+                        <span className={`${Styles.line} ${Styles.line3}`} />
+                    </div>
+                    <ul className={Styles.menu_items}>
+                        <li>
+                            <Link href="/">
+                                Home <HomeOutlined />
+                            </Link>
+                        </li>
+                        <li>
+                            <Link href="/products">
+                                Shop <ShopOutlined />
+                            </Link>
+                        </li>
+                        <li>
+                            Contact <ContactsOutlined />
+                        </li>
+                        <li>
+                            <Link href="/cart">
+                                Cart <ShoppingCartOutlined />
+                            </Link>
+                        </li>
+                        <li>
+                            <Link href="/auth">
+                                SIGN IN / SIGN UP
+                            </Link>
+                        </li>
+                    </ul>
+                    <div className={Styles.logo}>
+                        <Image src={logo} alt="logo" width={58} height={58} />
+                    </div>
+                </div>
+            </nav>
         </>
     );
 };

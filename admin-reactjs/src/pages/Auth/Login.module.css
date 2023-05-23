@@ -1,10 +1,12 @@
 .loginForm {
-    max-width: 400px;
+    max-width: 500px;
+    height: 280px;
     margin: 0 auto;
     padding: 20px;
     border: 2px solid #ccc;
-    border-radius: 4px;
+    border-radius: 5px;
     margin-top: 64px;
+    text-align: left;
 }
 
 .loginForm h2 {
@@ -26,6 +28,7 @@
     font-size: 16px;
     border: 1px solid #ccc;
     border-radius: 4px;
+    padding-left: 13px;
 }
 
 .submitButton {
