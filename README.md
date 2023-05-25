@@ -1,2 +1,0 @@
-# AptechProject alooooo
-

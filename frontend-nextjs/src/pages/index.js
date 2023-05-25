@@ -10,11 +10,11 @@ export default function Home() {
         <section id="home">
           <div className={Styles.home_page}>
             <div className={Styles.home_img}>
-              <img src="https://i.postimg.cc/t403yfn9/home2.jpg" alt="img " />
+              <img src="https://static.nike.com/a/images/w_1423,c_limit/b05de187-a4ca-4f37-867b-b7f011d98cb6/nike-just-do-it.jpg" alt="img " />
             </div>
             <div className={Styles.home_txt}>
               <p className={Styles.collections}>SUMMER COLLECTION</p>
-              <h2>FALL - WINTER<br />Collection 2023</h2>
+              <h2>SUMMER - AUTUMN<br />Collection 2023</h2>
               <div className={Styles.home_label}>
                 <p>A specialist label creating luxury essentials. Ethically crafted<br />with an unwavering commitment to exceptional quality.</p>
               </div>
@@ -118,7 +118,7 @@ export default function Home() {
                   <div className={Styles.name_of_p}>
                     <p>PS England Shirt</p>
                   </div>
-                  <div className="rating">
+                  <div className={Styles.rating}>
                     <i className="bx bxs-star" />
                     <i className="bx bxs-star" />
                     <i className="bx bxs-star" />
@@ -432,9 +432,9 @@ export default function Home() {
         <section id="contact">
           <div className={`${Styles.contact}  ${Styles.container}`}>
             <div className="map">
-              <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3782.121169986175!2d73.90618951442687!3d18.568575172551647!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bc2c131ed5b54a7%3A0xad718b8b2c93d36d!2sSky%20Vista!5e0!3m2!1sen!2sin!4v1654257749399!5m2!1sen!2sin" width={600} height={450} style={{ border: 0 }} allowFullScreen loading="lazy" referrerPolicy="no-referrer-when-downgrade" />
+              <iframe src="https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d837.4903189925518!2d108.24469424552568!3d16.039739029733948!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zMTbCsDAyJzIzLjAiTiAxMDjCsDE0JzQwLjIiRQ!5e1!3m2!1svi!2s!4v1684853146304!5m2!1svi!2s" width={600} height={450} style={{ border: 0 }} allowFullScreen loading="lazy" referrerPolicy="no-referrer-when-downgrade" />
             </div>
-            <form action="https://formspree.io/f/xzbowpjq" method="POST">
+            <form>
               <div className={Styles.form}>
                 <div className={Styles.form_txt}>
                   <h4>INFORMATION</h4>
@@ -443,8 +443,8 @@ export default function Home() {
                     attention.</span>
                   <h3>USA</h3>
                   <p>195 E Parker Square Dr, Parker, CO 801<br />+43 982-314-0958</p>
-                  <h3>India</h3>
-                  <p>HW95+C9C, Lorem ipsum dolor sit.<br />411014</p>
+                  <h3>Viet Nam</h3>
+                  <p>254 Nguyen Van Linh, Thach Gian, Thanh Khe, Da Nang<br />+84 337-219-023</p>
                 </div>
                 <div className={Styles.form_details}>
                   <input type="text" name="name" id="name" placeholder="Name" required />
@@ -456,44 +456,6 @@ export default function Home() {
             </form>
           </div>
         </section>
-        <footer className={Styles.footer}>
-          <div className={`${Styles.container}  ${Styles.footer_container}`}>
-            <div className={Styles.content_1}>
-              <img src="https://i.postimg.cc/htGyQ4JB/footer-logo.png" alt="logo" />
-              <p>The customer is at the heart of our<br />unique business model, which includes<br />design.</p>
-              <img src="https://i.postimg.cc/Nj9dgJ98/cards.png" alt="cards" />
-            </div>
-            <div className={Styles.content_2}>
-              <h4>SHOPPING</h4>
-              <a href="#sellers">Clothing Store</a>
-              <a href="#sellers">Trending Shoes</a>
-              <a href="#sellers">Accessories</a>
-              <a href="#sellers">Sale</a>
-            </div>
-            <div className={Styles.content_3}>
-              <h4>SHOPPING</h4>
-              <a href="./contact.html">Contact Us</a>
-              <a href="https://payment-method-sb.netlify.app/" target="_blank">Payment Method</a>
-              <a href="https://delivery-status-sb.netlify.app/" target="_blank">Delivery</a>
-              <a href="https://codepen.io/sandeshbodake/full/Jexxrv" target="_blank">Return and Exchange</a>
-            </div>
-            <div className={Styles.content_4}>
-              <h4>NEWLETTER</h4>
-              <p>Be the first to know about new<br />arrivals, look books, sales &amp; promos!</p>
-              <div className={Styles.f_mail}>
-                <input type="email" placeholder="Your Email" />
-                <i className={`${Styles.bx}  ${Styles.bx_envelope}`} />
-              </div>
-              <hr />
-            </div>
-          </div>
-          <div className={Styles.f_design}>
-            <div className={`${Styles.container}  ${Styles.f_designtxt}`}>
-              <p>Design and Code by code.sanket</p>
-            </div>
-          </div>
-        </footer>
-
       </div>
     </>
   );

@@ -8,7 +8,6 @@ function Cart(props) {
     const { products } = props;
     return (
         <>
-
             <div className={Styles.cart}>
                 <div className={Styles.cart_title}><h1>Bag</h1></div>
                 <div className={Styles.cart_left_wrap}>

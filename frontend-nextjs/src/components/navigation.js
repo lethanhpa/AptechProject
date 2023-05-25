@@ -27,7 +27,9 @@ const Navigation = () => {
                             </Link>
                         </li>
                         <li>
-                            Contact <ContactsOutlined />
+                            <Link href="/#contact">
+                                Contact <ContactsOutlined />
+                            </Link>
                         </li>
                         <li>
                             <Link href="/cart">
