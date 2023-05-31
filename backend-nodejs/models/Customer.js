@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const mongooseLeanVirtuals = require('mongoose-lean-virtuals');
 const { Schema, model } = mongoose;
 const bcrypt = require('bcryptjs');
 // Mongoose Datatypes:
@@ -37,7 +38,11 @@ const customerSchema = new Schema({
   },
   address: { type: String, required: true },
   birthday: { type: Date },
-});
+},
+  {
+    versionKey: false,
+    timestamps: true
+  });
 
 // Virtuals
 customerSchema.virtual('fullName').get(function () {
@@ -67,6 +72,6 @@ customerSchema.methods.isValidPass = async function (pass) {
 customerSchema.set('toObject', { virtuals: true });
 // Virtuals in JSON
 customerSchema.set('toJSON', { virtuals: true });
-
+customerSchema.plugin(mongooseLeanVirtuals);
 const Customer = model('Customer', customerSchema);
 module.exports = Customer;

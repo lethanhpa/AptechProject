@@ -9,7 +9,7 @@ function Home(props) {
   return (
     <>
       <div className={Styles.home}>
-        <section id="home">
+        <div id="home">
           <div className={Styles.home_page}>
             <div className={Styles.home_img}>
               <img src="https://static.nike.com/a/images/w_1423,c_limit/b05de187-a4ca-4f37-867b-b7f011d98cb6/nike-just-do-it.jpg" alt="img " />
@@ -29,8 +29,8 @@ function Home(props) {
               </div>
             </div>
           </div>
-        </section>
-        <section id="collection" className={Styles.collection}>
+        </div>
+        <div id="collection" className={Styles.collection}>
           {suppliers.map((item) => (
             <Row>
               <div className={`${Styles.container}  ${Styles.collections}`}>
@@ -45,8 +45,8 @@ function Home(props) {
             </Row>
           ))
           }
-        </section>
-        <section id="sellers">
+        </div>
+        <div id="sellers">
           <div className={`${Styles.seller}  ${Styles.container}`}>
             <h2>Top Sales</h2>
             <div className={Styles.best_seller}>
@@ -374,8 +374,8 @@ function Home(props) {
               </div>
             </div>
           </div>
-        </section>
-        <section id="news">
+        </div>
+        <div id="news">
           <div className={Styles.news_heading}>
             <p>LATEST NEWS</p>
             <h2>Fashion New Trends</h2>
@@ -418,8 +418,8 @@ function Home(props) {
               </div>
             </div>
           </div>
-        </section>
-        <section id="contact">
+        </div>
+        <div id="contact">
           <div className={`${Styles.contact}  ${Styles.container}`}>
             <div className="map">
               <iframe src="https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d837.4903189925518!2d108.24469424552568!3d16.039739029733948!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zMTbCsDAyJzIzLjAiTiAxMDjCsDE0JzQwLjIiRQ!5e1!3m2!1svi!2s!4v1684853146304!5m2!1svi!2s" width={600} height={450} style={{ border: 0 }} allowFullScreen loading="lazy" referrerPolicy="no-referrer-when-downgrade" />
@@ -445,7 +445,7 @@ function Home(props) {
               </div>
             </form>
           </div>
-        </section>
+        </div>
       </div>
     </>
   );

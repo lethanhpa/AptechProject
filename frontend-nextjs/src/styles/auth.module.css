@@ -17,7 +17,8 @@
 }
 
 .mt_3 {
-    margin-top: 1rem !important
+    margin-top: 1rem !important;
+    margin-left: 10px;
 }
 
 .col_12 {
@@ -86,6 +87,8 @@
 .login_form {
     background-color: #ffffff;
     padding: 30px;
+    width: 60%;
+    margin: 0;
     -webkit-box-shadow: 0px 5px 4px 0px rgba(0, 0, 0, 0.1);
     box-shadow: 0px 5px 4px 0px rgba(0, 0, 0, 0.1);
 }
@@ -175,4 +178,19 @@
 
 .login_form .check-box input[type='checkbox']:checked+label::after {
     opacity: 1;
+}
+
+.btn_signup {
+    width: 100px;
+    height: 35px;
+    border-radius: 8px;
+    border: 1px solid;
+    background-color: #000;
+    color: white;
+    cursor: pointer;
+}
+
+.btn_signup:hover {
+    transition: 0.5s linear;
+    background-color: #7a7a7a;
 }

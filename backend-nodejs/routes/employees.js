@@ -6,8 +6,7 @@ const { default: mongoose } = require('mongoose');
 const { Employee } = require('../models');
 const {
   validateSchema,
-  loginSchema,
-  categorySchema,
+  loginSchema
 } = require('../validation/employee');
 const encodeToken = require('../helpers/jwtHelper');
 

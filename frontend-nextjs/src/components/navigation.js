@@ -37,8 +37,13 @@ const Navigation = () => {
                             </Link>
                         </li>
                         <li>
-                            <Link href="/auth">
-                                SIGN IN / SIGN UP
+                            <Link href="/signup">
+                                SIGN UP
+                            </Link>
+                        </li>
+                        <li>
+                            <Link href="/signin">
+                                SIGN IN
                             </Link>
                         </li>
                     </ul>

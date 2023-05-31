@@ -1,11 +1,14 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Styles from "../../styles/cart.module.css"
 import { DeleteOutlined } from "@ant-design/icons"
 import axiosClient from "@/libraries/axiosClient";
+import Login from "../signin/index"
+
 function Cart(props) {
+    const [isLogin, setIsLogin] = useState(false);
     const { products } = props;
     return (
-        <>
+        <>{isLogin ? (
             <div className={Styles.cart}>
                 <div className={Styles.cart_title}><h1>Bag</h1></div>
                 <div className={Styles.cart_left_wrap}>
@@ -79,7 +82,9 @@ function Cart(props) {
                     </div>
                 </div>
             </div >
-
+        ) : (
+            <Login setIsLogin={setIsLogin} />
+        )}
         </>
     );
 };
