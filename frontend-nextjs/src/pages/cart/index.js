@@ -2,8 +2,6 @@ import React from 'react';
 import Styles from "../../styles/cart.module.css"
 import { DeleteOutlined } from "@ant-design/icons"
 import axiosClient from "@/libraries/axiosClient";
-import { Button } from 'antd'
-
 function Cart(props) {
     const { products } = props;
     return (
@@ -43,12 +41,12 @@ function Cart(props) {
                                                 </div>
                                             </div>
                                             <div className={Styles.card_icon}>
-                                                <Button className={Styles.icon}><DeleteOutlined /></Button>
+                                                <button className={Styles.icon}><DeleteOutlined /></button>
                                             </div>
                                         </div>
                                     </div>
                                     <div className={Styles.cart_product_price}>
-                                        <span>Price: {`${item.price}`}$</span>
+                                        <span>Price: {`${item.total}`}$</span>
                                     </div>
                                 </div>
                             </div>
@@ -75,7 +73,7 @@ function Cart(props) {
                                 </div>
                             </div>
                             <div className={Styles.card_right_button}>
-                                <Button>Buy Now</Button>
+                                <button>Buy Now</button>
                             </div>
                         </div>
                     </div>

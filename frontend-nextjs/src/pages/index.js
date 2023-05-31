@@ -1,12 +1,14 @@
 import React from "react";
-
 import Styles from "../styles/home.module.css"
+import { Row, Col } from 'antd';
+import axiosClient from "../libraries/axiosClient";
 
-export default function Home() {
+function Home(props) {
+  const { suppliers } = props;
 
   return (
     <>
-      <div>
+      <div className={Styles.home}>
         <section id="home">
           <div className={Styles.home_page}>
             <div className={Styles.home_img}>
@@ -28,30 +30,21 @@ export default function Home() {
             </div>
           </div>
         </section>
-        <section id="collection">
-          <div className={`${Styles.container}  ${Styles.collections}`}>
-            <div className={Styles.content}>
-              <img src="https://i.postimg.cc/Xqmwr12c/clothing.webp" alt="img" />
-              <div className={Styles.img_content}>
-                <p>Clothing Collections</p>
-                <button><a href="#sellers">SHOP NOW</a></button>
+        <section id="collection" className={Styles.collection}>
+          {suppliers.map((item) => (
+            <Row>
+              <div className={`${Styles.container}  ${Styles.collections}`}>
+                <div className={Styles.content}>
+                  <img src={item.img} alt="img" />
+                  <div className={Styles.img_content}>
+                    <p>{item.name}</p>
+                    <button><a href="#sellers">SHOP NOW</a></button>
+                  </div>
+                </div>
               </div>
-            </div>
-            <div className={Styles.content2}>
-              <img src="https://i.postimg.cc/8CmBZH5N/shoes.webp" alt="img" />
-              <div className={Styles.img_content2}>
-                <p>Shoes Spring</p>
-                <button><a href="#sellers">SHOP NOW</a></button>
-              </div>
-            </div>
-            <div className={Styles.content3}>
-              <img src="https://i.postimg.cc/MHv7KJYp/access.webp" alt="img" />
-              <div className={Styles.img_content3}>
-                <p>Accessories</p>
-                <button><a href="#sellers">SHOP NOW</a></button>
-              </div>
-            </div>
-          </div>
+            </Row>
+          ))
+          }
         </section>
         <section id="sellers">
           <div className={`${Styles.seller}  ${Styles.container}`}>
@@ -81,9 +74,6 @@ export default function Home() {
                   <div className={Styles.buy_now}>
                     <button><a href="https://codepen.io/sanketbodke/full/mdprZOq">Buy  Now</a></button>
                   </div>
-                  {/* <div class="add-cart">
-                            <button>Add To Cart</button>
-                        </div> */}
                 </div>
               </div>
               <div className={Styles.best_p1}>
@@ -459,4 +449,23 @@ export default function Home() {
       </div>
     </>
   );
+}
+
+export default Home;
+
+export async function getStaticProps() {
+  try {
+    const response = await axiosClient.get("/suppliers");
+
+    return {
+      props: {
+        suppliers: response.data
+      },
+
+    };
+  } catch (error) {
+    return {
+      notFound: true,
+    };
+  }
 }

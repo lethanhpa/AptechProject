@@ -28,9 +28,9 @@ cartDetailSchema.set("toJSON", { virtuals: true });
 
 const cartSchema = new Schema(
     {
-        customerId: {
+        productId: {
             type: Schema.Types.ObjectId,
-            ref: "Customer",
+            ref: "Product",
             required: true,
         },
         cartDetails: [cartDetailSchema],

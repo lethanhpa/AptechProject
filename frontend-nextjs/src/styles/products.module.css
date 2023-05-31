@@ -1,0 +1,267 @@
+.product_list {
+    margin-top: 20px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    column-gap: 30px;
+    row-gap: 50px;
+}
+
+.product_img img {
+    width: 350px;
+}
+
+.product_title {
+    margin-top: 12px;
+    color: #000000;
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.product_description {
+    color: #878787;
+    font-size: 18px;
+}
+
+.product_price {
+    font-size: 18px
+}
+
+.product_button button {
+    max-width: max-content;
+    padding: 10px 15px;
+    margin-top: 15px;
+    font-size: 14px;
+    cursor: pointer;
+    text-transform: uppercase;
+    background-color: #f05e8a;
+    color: #fff;
+    border: none;
+    border-radius: 15px;
+    font-weight: 500;
+    border: 1px solid #f05e8a;
+    transition: 0.5s;
+    color: white !important;
+}
+
+.product_button button:hover {
+    background-color: #fff;
+    font-weight: 600;
+    color: #f05e8a !important;
+}
+
+.product_item {
+    margin-bottom: 64px;
+    line-height: 1.75;
+}
+
+.product_item :hover {
+    color: #f05e8a;
+}
+
+@media (max-width: 500px) {
+    .product_list {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .product_button button {
+        padding: 6px 10px;
+    }
+}
+
+@media (min-width: 501px) and (max-width: 768px) {
+    .product_list {
+        grid-template-columns: repeat(3, 1fr);
+        column-gap: 50px;
+    }
+
+    .product_button button {
+        padding: 5px 10px;
+    }
+
+    .product_price span {
+        font-size: 13px;
+    }
+}
+
+.shop-wrapper {
+    padding-left: 48px;
+    padding-right: 48px;
+    margin: 50px auto 0;
+}
+
+.header-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 64px;
+}
+
+.header-title {
+    color: #111111;
+    font-size: 24px;
+    font-weight: 500;
+    line-height: 31.2px;
+}
+
+.header-nav-button {
+    display: flex;
+    border: none;
+    justify-content: center;
+    align-items: center;
+    font-size: 22px;
+}
+
+.header-nav-button span {
+    display: block;
+    padding-right: 8px;
+}
+
+.body-content {
+    display: flex;
+    margin-top: 30px;
+}
+
+.body-scroll {
+    padding: 0;
+    margin: 0;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 20%;
+    height: 600px;
+}
+
+.scrollbox {
+    height: 100%;
+    overflow: auto;
+    padding-right: 10px;
+}
+
+.shop-slider {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    background-color: rgb(255, 101, 91);
+    overflow: hidden;
+    margin-bottom: 20px;
+}
+
+.shop-slider img {
+    display: block;
+    padding: 5px 4px;
+    border-radius: 12px;
+}
+
+.scrollbox-inner {
+    padding: 0 0 40px;
+    border-bottom: 1px solid #ebebeb;
+}
+
+.nav-type a {
+    display: block;
+    font-weight: 500;
+    line-height: 21.6px;
+    padding: 0px 17.6px 10px 0px;
+    text-align: left;
+    text-decoration: none;
+    color: #000;
+}
+
+.nav-type:hover {
+    opacity: 0.6;
+}
+
+.filter-wrap {
+    display: block;
+    padding: 12px 0;
+}
+
+/* .filter-wrap:hover {
+  opacity: 0.8;
+} */
+
+.menu li,
+.menu-color-item:hover {
+    opacity: 0.8;
+    cursor: pointer;
+}
+
+.button {
+    display: flex;
+    justify-content: space-between;
+    cursor: pointer;
+}
+
+.menu {
+    margin-top: 5px;
+    display: none;
+}
+
+.menu li {
+    margin: 4px 2px;
+}
+
+.btn-color {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.btn-item {
+    width: 40px;
+    height: 40px;
+    background-color: purple;
+    border-radius: 50%;
+    margin-bottom: 5px;
+}
+
+.menu-color {
+    margin-top: 20px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    place-items: center;
+    gap: 10px 0;
+}
+
+#color,
+.menu-color {
+    display: none;
+}
+
+.body-products {
+    width: calc(100% - 20%);
+    padding-left: 50px;
+}
+
+
+.product-link {
+    text-decoration: none;
+}
+
+.product-item-info {
+    margin-top: 18px;
+    color: #000;
+}
+
+.product-name {
+    margin-bottom: 10px;
+}
+
+.product-type,
+.product-color {
+    margin-bottom: 10px;
+    color: #888888;
+}
+
+.product-price {
+    margin-top: 20px;
+}
+
+
+.body-scroll.hide {
+    display: none;
+}
+
+.body-products.full {
+    width: 100%;
+}

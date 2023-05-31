@@ -1,8 +1,10 @@
 import React from "react";
 import Link from "next/link";
 import PropTypes from "prop-types";
+import numeral from "numeral";
 import { Menu, Layout, Row } from 'antd';
 const { Content, Sider } = Layout;
+import Styles from "../../styles/products.module.css"
 import axiosClient from "../../libraries/axiosClient";
 
 function Products(props) {
@@ -22,18 +24,22 @@ function Products(props) {
           <Row justify="space-around">
             {products.length > 0 ?
               products.map((item) => (
-                <div key={item.slug} style={{ width: "30%" }}>
-                  <Link href={`/products/t/${item.slug}`} style={{ textDecoration: "none" }}>
-                    <div style={{ padding: "12px", marginBottom: "64px", fontSize: "18px" }}>
-                      <img src={item.img} style={{ width: "350px" }} />
-                      <br />
-                      <strong>{`${item.name}`}</strong>
-                      <br />
-                      <span>{`${item.description}`}</span>
-                      <br />
-                      <span>Price: {`${item.price}`}$</span>
-                      <br />
-                      <span>Sale off: {`${item.discount}`}%</span>
+                <div key={item.slug} className={Styles.product_item}>
+                  <Link href={`/products/t/${item.slug}`}>
+                    <div className={Styles.product_img}>
+                      <img src={item.img} alt='' />
+                    </div>
+                    <div className={Styles.product_title}>
+                      <span>{item.name}</span>
+                    </div>
+                    <div className={Styles.product_description}>
+                      <span>{item.description}</span>
+                    </div>
+                    <div className={Styles.product_price}>
+                      <span>{numeral(item.price).format("0,0")}$</span>
+                    </div>
+                    <div className={Styles.product_button}>
+                      <button>BUY NOW</button>
                     </div>
                   </Link>
                 </div>

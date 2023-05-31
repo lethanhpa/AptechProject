@@ -55,6 +55,7 @@ router.post("/", async function (req, res, next) {
       email: yup.string().email(),
       phoneNumber: yup.string(),
       address: yup.string(),
+      img: yup.string(),
     }),
   });
 

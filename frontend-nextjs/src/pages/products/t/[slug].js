@@ -1,6 +1,7 @@
 import React from "react";
+import numeral from "numeral";
 import PropTypes from "prop-types";
-
+import Styles from "../../../styles/productDetail.module.css"
 import axiosClient from "../../../libraries/axiosClient";
 
 function ProductDetail(props) {
@@ -9,35 +10,23 @@ function ProductDetail(props) {
   return (
     <>
       {product && (
-        <main>
-          <p>
-            <strong>Name:</strong> {product.name}
-          </p>
-          <p>
-            <strong>Price:</strong> {product.price}
-          </p>
-          <p>
-            <strong>Stock:</strong> {product.stock}
-          </p>
-          <p>
-            <strong>Discount:</strong> {product.discount}%
-          </p>
-          <p>
-            <strong>Total:</strong> {product.total}
-          </p>
-          <div>
-            <img src={product.img} style={{ width: "20%" }} />
+        <div key={product.slug} className={Styles.productDetail}>
+          <div className={Styles.productDetail_img}>
+            <img src={product.img} alt="" />
+          </div >
+          <div className={Styles.productDetail_information}>
+            <div className={Styles.productDetail_name}>{product.name}</div>
+            <div className={Styles.productDetail_description}>{product.description}</div>
+            <div className={Styles.productDetail_discount}>Sale off: {product.discount}%</div>
+            <div style={{ display: 'flex' }}>
+              <div className={Styles.productDetail_price}>{numeral(product.price).format("0,0")}$</div>
+              <div className={Styles.productDetail_total}>{numeral(product.total).format("0,0")}$</div>
+            </div>
+            <div className={Styles.productDetail_add_cart}>
+              <button>Add To Cart</button>
+            </div>
           </div>
-          <p>
-            <strong>Supplier name:</strong> {product.supplier.name}
-          </p>
-          <p>
-            <strong>Supplier email:</strong> {product.supplier.email}
-          </p>
-          <p>
-            <strong>Supplier address:</strong> {product.supplier.address}
-          </p>
-        </main>
+        </div >
       )}
     </>
   );

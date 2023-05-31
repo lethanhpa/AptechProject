@@ -12,12 +12,10 @@
 
 .cart_left_wrap {
     width: 100%;
-    padding: 0 10px;
 }
 
 .cart_right_wrap {
-    width: 50%;
-    padding: 0 10px;
+    width: 96%;
 }
 
 .cart_title {
@@ -90,6 +88,11 @@
     border: none;
     padding-top: 6px;
     background: none;
+    cursor: pointer;
+}
+
+.icon:hover {
+    color: #757575;
 }
 
 .card_right_text {
@@ -127,7 +130,7 @@
 }
 
 .card_right_button button {
-    width: 50%;
+    width: 30%;
     height: auto;
     padding: 18px 24px;
     border-radius: 30px;
@@ -137,6 +140,7 @@
     color: rgb(255, 255, 255);
     margin-bottom: 12px;
     line-height: 1.5;
+    cursor: pointer;
 }
 
 .card_right_button button:hover,

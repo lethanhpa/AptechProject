@@ -5,6 +5,10 @@
 }
 
 
+.home {
+    font-family: "Nike Futura", "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
 /* //........top text ........// */
 
 
@@ -38,13 +42,12 @@
 
 .navbar {
     box-shadow: 0 5px 4px rgb(146 161 176 / 15%);
-    position: fixed;
     top: 0;
     width: 100%;
     background: #fff;
     color: #000;
     z-index: 100;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: Helvetica, Arial, sans-serif;
 }
 
 .navbar_container {
@@ -253,7 +256,6 @@
     letter-spacing: 3px;
     font-weight: 600;
     color: #ffffff;
-    font-family: "Nike Futura", "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
 .home_txt .home_label p {
@@ -303,10 +305,18 @@
     margin-top: 65px;
 }
 
+.collection {
+    margin: 32px;
+    justify-content: center;
+    display: flex;
+    flex-wrap: wrap;
+}
+
 .content {
     width: 330px;
     margin: 20px;
     position: relative;
+    display: flex;
 }
 
 .content::after {
@@ -327,7 +337,8 @@
 
 .content img {
     width: 100%;
-    height: 300px;
+    padding: 32px;
+    height: auto;
     box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
 }
 

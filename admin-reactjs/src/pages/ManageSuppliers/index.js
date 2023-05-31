@@ -101,6 +101,10 @@ export default function ManageSuppliers() {
                             <Input />
                         </Form.Item>
 
+                        <Form.Item label="Image" name="img">
+                            <Input />
+                        </Form.Item>
+
                         <Form.Item label="Phone Number" name="phoneNumber" hasFeedback>
                             <Input />
                         </Form.Item>
@@ -139,7 +143,12 @@ export default function ManageSuppliers() {
                     </div>
                     <h1 style={{ fontSize: "32px", textAlign: "center" }}>LIST</h1>
                     <Table dataSource={data} rowKey="_id">
-                        <Column title="Name" dataIndex="name" key="name" />
+                        <Column title="Name" dataIndex="name" key="name" /> <Column title="Image" dataIndex="img" key="img"
+                            render={(_text, record) => {
+                                return (
+                                    <img src={record.img} style={{ width: "130px", height: "auto" }} alt='' />
+                                );
+                            }} />
                         <Column title="Email" dataIndex="email" key="email" />
                         <Column title="Phone Number" dataIndex="phoneNumber" key="phoneNumber" />
                         <Column title="Address" dataIndex="address" key="address" />
@@ -205,6 +214,10 @@ export default function ManageSuppliers() {
                         >
                             <Form.Item label="Name" name="name" hasFeedback>
                                 <Input style={{ width: 300 }} />
+                            </Form.Item>
+
+                            <Form.Item label="Image" name="img">
+                                <Input />
                             </Form.Item>
 
                             <Form.Item label="Email" name="email" hasFeedback>

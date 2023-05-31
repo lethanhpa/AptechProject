@@ -34,6 +34,7 @@ const supplierSchema = new Schema({
       // message: (props) => `{props.value} is not a valid email!`,
     },
   },
+  img: { type: String },
   address: { type: String, required: true },
   slug: {
     type: String,
