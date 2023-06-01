@@ -1,119 +1,88 @@
 const express = require('express');
-const router = express.Router();
+const yup = require('yup');
 const { Cart } = require('../models/index');
+const { default: mongoose } = require("mongoose");
+const ObjectId = require("mongodb").ObjectId;
+const { CONNECTION_STRING } = require("../constants/dbSettings");
+mongoose.connect(CONNECTION_STRING);
+mongoose.set("strictQuery", false);
 
-router.get('/', async (_req, res, next) => {
+const router = express.Router();
+
+// Thêm sản phẩm vào giỏ hàng
+router.post('/', async (req, res) => {
     try {
-        let results = await Cart.find().populate('customer').populate('employee').lean({ virtuals: true });
+        const { productId, quantity } = req.body;
 
-        res.json(results);
-    } catch (error) {
-        res.status(500).json({ ok: false, error });
-    }
-});
-
-router.get("/:id", async function (req, res, next) {
-    // Validate
-    const validationSchema = yup.object().shape({
-        params: yup.object({
-            id: yup
-                .string()
-                .test("Validate ObjectID", "${path} is not valid ObjectID", (value) => {
-                    return ObjectId.isValid(value);
-                }),
-        }),
-    });
-
-    validationSchema
-        .validate({ params: req.params }, { abortEarly: false })
-        .then(async () => {
-            const id = req.params.id;
-
-            let found = await Cart.findById(id);
-
-            if (found) {
-                return res.send({ ok: true, result: found });
-            }
-
-            return res.send({ ok: false, message: "Object not found" });
-        })
-        .catch((err) => {
-            return res.status(400).json({
-                type: err.name,
-                errors: err.errors,
-                message: err.message,
-                provider: "yup",
-            });
-        });
-});
-router.post("/", function (req, res, next) {
-    // Validate
-    const validationSchema = yup.object({
-        body: yup.object({
+        // Kiểm tra đầu vào hợp lệ sử dụng Yup
+        const schema = yup.object().shape({
             productId: yup
                 .string()
                 .required()
                 .test("Validate ObjectID", "${path} is not valid ObjectID", (value) => {
                     return ObjectId.isValid(value);
                 }),
-            cartDetails: yup.array().required(),
-        }),
-    });
-
-    validationSchema
-        .validate({ body: req.body }, { abortEarly: false })
-        .then(async () => {
-            const data = req.body;
-            let newItem = new Cart(data);
-            await newItem.save();
-            res.send({ ok: true, message: "Created", result: newItem });
-        })
-        .catch((err) => {
-            return res.status(400).json({
-                type: err.name,
-                errors: err.errors,
-                message: err.message,
-                provider: "yup",
-            });
+            quantity: yup.number().integer().positive().required(),
         });
+
+        await schema.validate({ productId, quantity });
+
+        // Tạo đối tượng Cart
+        const cart = new Cart({
+            product: productId,
+            quantity,
+        });
+
+        // Lưu vào cơ sở dữ liệu
+        const savedCart = await cart.save();
+
+        res.json(savedCart);
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+        console.log(error.message)
+    }
 });
 
-router.delete("/:id", function (req, res, next) {
-    const validationSchema = yup.object().shape({
-        params: yup.object({
-            id: yup
-                .string()
-                .test("Validate ObjectID", "${path} is not valid ObjectID", (value) => {
-                    return ObjectId.isValid(value);
-                }),
-        }),
-    });
+// Lấy danh sách sản phẩm trong giỏ hàng
+router.get('/', async (req, res) => {
+    try {
+        const carts = await Cart.find().populate('product');
+        res.json(carts);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
 
-    validationSchema
-        .validate({ params: req.params }, { abortEarly: false })
-        .then(async () => {
-            try {
-                const id = req.params.id;
+// Xóa sản phẩm khỏi giỏ hàng
+router.delete('/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        await Cart.findByIdAndDelete(id);
+        res.json({ message: 'Xóa sản phẩm khỏi giỏ hàng thành công.' });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
 
-                let found = await Cart.findByIdAndDelete(id);
+// Cập nhật số lượng sản phẩm trong giỏ hàng
+router.patch('/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { quantity } = req.body;
 
-                if (found) {
-                    return res.send({ ok: true, result: found });
-                }
-
-                return res.status(410).send({ ok: false, message: "Object not found" });
-            } catch (err) {
-                return res.status(500).json({ error: err });
-            }
-        })
-        .catch((err) => {
-            return res.status(400).json({
-                type: err.name,
-                errors: err.errors,
-                message: err.message,
-                provider: "yup",
-            });
+        // Kiểm tra đầu vào hợp lệ sử dụng Yup
+        const schema = yup.object().shape({
+            quantity: yup.number().integer().positive().required(),
         });
+
+        await schema.validate({ quantity });
+
+        await Cart.findByIdAndUpdate(id, { quantity });
+
+        res.json({ message: 'Cập nhật số lượng sản phẩm thành công.' });
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    }
 });
 
 module.exports = router;

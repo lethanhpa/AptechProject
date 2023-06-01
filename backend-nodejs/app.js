@@ -21,6 +21,7 @@ const customersRouter = require('./routes/customers');
 const employeesRouter = require('./routes/employees');
 const suppliersRouter = require('./routes/suppliers');
 const ordersRouter = require('./routes/orders');
+const cartRouter = require('./routes/cart');
 const questionsRouter = require('./routes/questions');
 
 const uploadRouter = require('./routes/upload');
@@ -71,6 +72,8 @@ app.use('/customers', customersRouter);
 app.use('/employees', employeesRouter);
 app.use('/suppliers', suppliersRouter);
 app.use('/orders', ordersRouter);
+app.use('/cart', cartRouter);
+
 app.use('/questions', questionsRouter);
 
 app.use('/upload', uploadRouter);

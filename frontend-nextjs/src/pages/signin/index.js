@@ -1,15 +1,16 @@
 import React, { useState } from 'react';
-import Styles from "../../styles/auth.module.css"
-const Index = (props) => {
-    const { setIsLogin } = props;
+import Styles from "../../styles/auth.module.css";
+import axios from '../../libraries/axiosClient';
+
+const Index = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const handleEmailChange = (event) => {
-        setEmail(event.target.value);
+    const handleEmailChange = (e) => {
+        setEmail(e.target.value);
     };
 
-    const handlePasswordChange = (event) => {
-        setPassword(event.target.value);
+    const handlePasswordChange = (e) => {
+        setPassword(e.target.value);
     };
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -21,10 +22,10 @@ const Index = (props) => {
 
         try {
             const response = await axios.post("/customers/login", token);
-            console.log(response);
-            localStorage.setItem('isLogin', 'true', response.data.token);
+            console.log('response', response);
+            localStorage.setItem('token', response.data.token);
             alert("Login successfully!!!");
-            setIsLogin(true);
+            window.location.href = '/';
         } catch (error) {
             console.error(error);
             alert("Login failed");

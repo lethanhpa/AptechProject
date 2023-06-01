@@ -1,13 +1,14 @@
 .productDetail {
     color: #000;
+    background-color: #f4f4f4;
     display: flex;
-    margin-top: 48px;
     max-width: 100%;
     justify-content: center;
     font-family: Arial, Helvetica, sans-serif;
 }
 
 .productDetail_information {
+    margin-top: 64px;
     line-height: 2;
 }
 

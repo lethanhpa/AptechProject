@@ -57,7 +57,6 @@ const items = [
 
 export default function DefaultLayout({ children }, props) {
     // eslint-disable-next-line react-hooks/rules-of-hooks
-    const [collapsed, setCollapsed] = useState(false);
     const [current, setCurrent] = useState('/');
     const navigate = useNavigate();
     const [isLogin, setIsLogin] = useState(false);

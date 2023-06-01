@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { ShoppingCartOutlined, HomeOutlined, ShopOutlined, ContactsOutlined } from "@ant-design/icons";
+import { ShoppingCartOutlined, HomeOutlined, ShopOutlined, UserAddOutlined, UserOutlined } from "@ant-design/icons";
 import Styles from "../styles/home.module.css";
 import logo from "../images/logo.png";
 
@@ -27,23 +27,18 @@ const Navigation = () => {
                             </Link>
                         </li>
                         <li>
-                            <Link href="/#contact">
-                                Contact <ContactsOutlined />
-                            </Link>
-                        </li>
-                        <li>
                             <Link href="/cart">
                                 Cart <ShoppingCartOutlined />
                             </Link>
                         </li>
                         <li>
                             <Link href="/signup">
-                                SIGN UP
+                                SIGN UP <UserAddOutlined />
                             </Link>
                         </li>
                         <li>
                             <Link href="/signin">
-                                SIGN IN
+                                SIGN IN <UserOutlined />
                             </Link>
                         </li>
                     </ul>
