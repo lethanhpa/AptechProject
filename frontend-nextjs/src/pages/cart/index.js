@@ -4,41 +4,26 @@ import { DeleteOutlined } from "@ant-design/icons"
 import axiosClient from "@/libraries/axiosClient";
 
 function Cart(props) {
-    const { products } = props;
+    const { cart } = props;
     return (
         <>
             <div className={Styles.cart}>
                 <div className={Styles.cart_title}><h1>Bag</h1></div>
                 <div className={Styles.cart_left_wrap}>
-                    {products.map((item) => (
-                        <div className={Styles.cart_left_list}>
+                    {cart.map((item) => (
+                        <div key={item} className={Styles.cart_left_list}>
                             <div className={Styles.cart_left_item}>
                                 <div className={Styles.cart_item_wrap}>
                                     <div className={Styles.card_wrap_info}>
                                         <div className={Styles.cart_product_img}>
-                                            <img src={item.img} />
+                                            <img src={item.product?.img} />
                                         </div>
                                         <div className={Styles.cart_product_info}>
-                                            <div className={Styles.cart_product_name}>{`${item.name}`}</div>
-                                            <div className={Styles.card_product_type}>{`${item.description}`}</div>
+                                            <div className={Styles.cart_product_name}>{`${item.product.name}`}</div>
+                                            <div className={Styles.card_product_type}>{`${item.product.description}`}</div>
                                             <div style={{ display: 'flex', alignItems: 'center', gap: '0 15px' }}>
                                                 <div className={Styles.sizeQty}>
-                                                    <span>Size</span>
-                                                    <select className={Styles.select} id="size">
-                                                        <option value="42">42</option>
-                                                        <option value="41">41</option>
-                                                        <option value="40">40</option>
-                                                        <option value="39">39</option>
-                                                    </select>
-                                                </div>
-                                                <div className={Styles.sizeQty}>
-                                                    <span>Quantity</span>
-                                                    <select className={Styles.select} id="Quantity">
-                                                        <option value="1">1</option>
-                                                        <option value="2">2</option>
-                                                        <option value="3">3</option>
-                                                        <option value="4">4</option>
-                                                    </select>
+                                                    <span>Quantity: {`${item.quantity}`}</span>
                                                 </div>
                                             </div>
                                             <div className={Styles.card_icon}>
@@ -47,7 +32,7 @@ function Cart(props) {
                                         </div>
                                     </div>
                                     <div className={Styles.cart_product_price}>
-                                        <span>Price: {`${item.total}`}$</span>
+                                        <span>Price: {`${item.product.total}`}$</span>
                                     </div>
                                 </div>
                             </div>
@@ -89,12 +74,12 @@ export default Cart;
 
 export async function getStaticProps() {
     try {
-        const response = await axiosClient.get("/products");
+        const response = await axiosClient.get("/cart");
 
         return {
             props: {
-                products: response.data.data,
-                total: response.data.total
+                cart: response.data,
+                total: response.data
             },
 
         };

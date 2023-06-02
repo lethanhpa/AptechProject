@@ -16,37 +16,41 @@ const Navigation = () => {
                         <span className={`${Styles.line} ${Styles.line3}`} />
                     </div>
                     <ul className={Styles.menu_items}>
-                        <li>
+                        <div>
                             <Link href="/">
                                 Home <HomeOutlined />
                             </Link>
-                        </li>
-                        <li>
+                        </div>
+
+                        <div>
                             <Link href="/products">
                                 Shop <ShopOutlined />
                             </Link>
-                        </li>
-                        <li>
+                        </div>
+
+                        <div>
                             <Link href="/cart">
                                 Cart <ShoppingCartOutlined />
                             </Link>
-                        </li>
-                        <li>
+                        </div>
+
+                        <div>
                             <Link href="/signup">
-                                SIGN UP <UserAddOutlined />
+                                Sign Up <UserAddOutlined />
                             </Link>
-                        </li>
-                        <li>
+                        </div>
+
+                        <div>
                             <Link href="/signin">
-                                SIGN IN <UserOutlined />
+                                Sign In <UserOutlined />
                             </Link>
-                        </li>
+                        </div>
                     </ul>
                     <div className={Styles.logo}>
                         <Image src={logo} alt="logo" width={58} height={58} />
                     </div>
                 </div>
-            </nav>
+            </nav >
         </>
     );
 };

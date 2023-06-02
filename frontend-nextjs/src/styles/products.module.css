@@ -11,13 +11,11 @@
 }
 
 .product_title {
-    color: #000000;
-    font-size: 20px;
+    font-size: 22px;
     font-weight: 600;
 }
 
 .product_description {
-    color: #878787;
     font-size: 18px;
 }
 
@@ -54,6 +52,7 @@
 }
 
 .product_item :hover {
+    opacity: 0.8;
     color: #f05e8a;
 }
 

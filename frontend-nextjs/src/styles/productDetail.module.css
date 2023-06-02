@@ -35,7 +35,8 @@
     text-decoration: line-through 1.25px solid #000000;
 }
 
-.productDetail_discount {
+.productDetail_discount,
+.productDetail_stock {
     font-size: 22px;
 }
 
@@ -45,7 +46,8 @@
 }
 
 .productDetail_add_cart button {
-    width: 100%;
+    width: 300px;
+    height: auto;
     padding: 18px 24px;
     border-radius: 30px;
     font-weight: 600;

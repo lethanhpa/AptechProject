@@ -22,7 +22,7 @@ router.post('/', async (req, res) => {
                 .test("Validate ObjectID", "${path} is not valid ObjectID", (value) => {
                     return ObjectId.isValid(value);
                 }),
-            quantity: yup.number().integer().positive().required(),
+            quantity: yup.number().min(0).integer().positive().required(),
         });
 
         await schema.validate({ productId, quantity });
@@ -46,7 +46,7 @@ router.post('/', async (req, res) => {
 // Lấy danh sách sản phẩm trong giỏ hàng
 router.get('/', async (req, res) => {
     try {
-        const carts = await Cart.find().populate('product');
+        const carts = await Cart.find().populate('product').populate('customer');
         res.json(carts);
     } catch (error) {
         res.status(500).json({ error: error.message });
