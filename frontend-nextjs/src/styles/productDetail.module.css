@@ -15,6 +15,7 @@
 .productDetail_img img {
     width: 400px;
     margin-right: 64px;
+    object-fit: cover;
 }
 
 .productDetail_name {
@@ -33,6 +34,10 @@
     color: #818181;
     font-weight: 300;
     text-decoration: line-through 1.25px solid #000000;
+}
+
+.productDetail_not_discount {
+    font-size: 22px;
 }
 
 .productDetail_discount,

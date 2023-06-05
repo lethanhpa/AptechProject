@@ -1,8 +1,9 @@
 const express = require('express');
-const yup = require('yup');
+// const yup = require('yup');
 const { Cart } = require('../models/index');
 const { default: mongoose } = require("mongoose");
-const ObjectId = require("mongodb").ObjectId;
+const { Product, Customer } = require('../models')
+// const ObjectId = require("mongodb").ObjectId;
 const { CONNECTION_STRING } = require("../constants/dbSettings");
 mongoose.connect(CONNECTION_STRING);
 mongoose.set("strictQuery", false);
@@ -12,76 +13,133 @@ const router = express.Router();
 // Thêm sản phẩm vào giỏ hàng
 router.post('/', async (req, res) => {
     try {
-        const { productId, quantity } = req.body;
+        const { customerId, productId, quantity } = req.body;
 
-        // Kiểm tra đầu vào hợp lệ sử dụng Yup
-        const schema = yup.object().shape({
-            productId: yup
-                .string()
-                .required()
-                .test("Validate ObjectID", "${path} is not valid ObjectID", (value) => {
-                    return ObjectId.isValid(value);
-                }),
-            quantity: yup.number().min(0).integer().positive().required(),
+        const getCustomer = Customer.findById(customerId);
+        const getProduct = Product.findById(productId);
+
+        const [customer, foundProduct] = await Promise.all([
+            getCustomer,
+            getProduct,
+        ]);
+
+        const errors = [];
+        if (!customer || customer.$isDeleted)
+            errors.push('Khách hàng không tồn tại');
+        if (!foundProduct || foundProduct.isDelete)
+            errors.push('Sản phảm không tồn tại');
+
+        if (foundProduct && quantity > foundProduct.stock)
+            errors.push('Sản phảm vượt quá số lượng cho phép');
+
+        if (errors.length > 0) {
+            return res.status(404).json({
+                code: 404,
+                message: 'Lỗi',
+                errors,
+            });
+        }
+
+        const cart = await Cart.findOne({ customerId })
+
+        const result = {};
+
+        if (cart) { // GIỏ hàng đã tồn tại
+            newProductCart = cart.products.map((item) => {
+                if (productId === item.productId) {
+                    const nextQuantity = quantity + item.quantity;
+
+                    if (nextQuantity > foundProduct.stock) {
+                        return res.send({
+                            code: 404,
+                            message: `Số lượng sản phẩm ${productId._id} không khả dụng`,
+                        });
+                    } else {
+                        item.quantity = nextQuantity;
+                    }
+                }
+
+                return item;
+            })
+
+            result = await Cart.findOneAndUpdate(cart._id, {
+                customerId,
+                products: newProductCart,
+            });
+        } else { // Chưa có giỏ hàng
+            const newItem = new Cart({
+                customerId,
+                products: [
+                    {
+                        productId,
+                        quantity,
+                    }
+                ]
+            });
+
+            result = await newItem.save();
+        }
+
+        return res.send({
+            code: 200,
+            message: 'Thêm sản phẩm thành công',
+            payload: result,
         });
-
-        await schema.validate({ productId, quantity });
-
-        // Tạo đối tượng Cart
-        const cart = new Cart({
-            product: productId,
-            quantity,
-        });
-
-        // Lưu vào cơ sở dữ liệu
-        const savedCart = await cart.save();
-
-        res.json(savedCart);
-    } catch (error) {
-        res.status(400).json({ error: error.message });
-        console.log(error.message)
+    } catch (err) {
+        console.log('««««« err »»»»»', err);
+        return res.status(500).json({ code: 500, error: err });
     }
 });
 
 // Lấy danh sách sản phẩm trong giỏ hàng
 router.get('/', async (req, res) => {
     try {
-        const carts = await Cart.find().populate('product').populate('customer');
-        res.json(carts);
-    } catch (error) {
-        res.status(500).json({ error: error.message });
+        const { id } = req.params;
+
+        let found = await Cart.findOne({ customerId: id });
+
+        if (found) {
+            return res.send({ code: 200, payload: found });
+        }
+
+        return res.status(410).send({ code: 404, message: 'Không tìm thấy' });
+    } catch (err) {
+        res.status(404).json({
+            message: 'Get detail fail!!',
+            payload: err,
+        });
     }
 });
 
 // Xóa sản phẩm khỏi giỏ hàng
 router.delete('/:id', async (req, res) => {
     try {
-        const { id } = req.params;
-        await Cart.findByIdAndDelete(id);
-        res.json({ message: 'Xóa sản phẩm khỏi giỏ hàng thành công.' });
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
-});
+        const { customerId, productId } = req.body;
 
-// Cập nhật số lượng sản phẩm trong giỏ hàng
-router.patch('/:id', async (req, res) => {
-    try {
-        const { id } = req.params;
-        const { quantity } = req.body;
+        let cart = await Cart.findOne({ customerId });
 
-        // Kiểm tra đầu vào hợp lệ sử dụng Yup
-        const schema = yup.object().shape({
-            quantity: yup.number().integer().positive().required(),
+        if (!cart) {
+            return res.status(404).json({
+                code: 404,
+                message: 'Giỏ hàng không tồn tại',
+            });
+        }
+
+        if (cart.products.length === 1 && cart.products[0].productId === productId) {
+            await Cart.deleteOne({ _id: cart._id });
+        } else {
+            await Cart.findOneAndUpdate(cart._id, {
+                customerId,
+                products: cart.products.filter((item) => item.productId !== productId),
+            });
+        }
+
+        return res.send({
+            code: 200,
+            message: 'Xóa thành công',
         });
-
-        await schema.validate({ quantity });
-
-        await Cart.findByIdAndUpdate(id, { quantity });
-
-        res.json({ message: 'Cập nhật số lượng sản phẩm thành công.' });
-    } catch (error) {
-        res.status(400).json({ error: error.message });
+    } catch (err) {
+        return res.status(500).json({ code: 500, error: err });
     }
 });
 

@@ -6,12 +6,12 @@ import axiosClient from "@/libraries/axiosClient";
 function Cart(props) {
     const { cart } = props;
     return (
-        <>
-            <div className={Styles.cart}>
-                <div className={Styles.cart_title}><h1>Bag</h1></div>
-                <div className={Styles.cart_left_wrap}>
-                    {cart.map((item) => (
-                        <div key={item} className={Styles.cart_left_list}>
+        <>{cart.length > 0 ?
+            cart.map((item) => (
+                <div key={item} className={Styles.cart}>
+                    <div className={Styles.cart_title}><h1>Bag</h1></div>
+                    <div className={Styles.cart_left_wrap}>
+                        <div className={Styles.cart_left_list}>
                             <div className={Styles.cart_left_item}>
                                 <div className={Styles.cart_item_wrap}>
                                     <div className={Styles.card_wrap_info}>
@@ -37,34 +37,34 @@ function Cart(props) {
                                 </div>
                             </div>
                         </div>
-                    ))
-                    }
-                    <div className={Styles.cart_right_wrap}>
-                        <div className={Styles.cart_title}>Summary</div>
-                        <div className={Styles.card_right_content}>
-                            <div className={Styles.card_right_top}>
-                                <div className={Styles.card_right_text}>
-                                    <span>Subtotal</span>
-                                    Price:
+                        <div className={Styles.cart_right_wrap}>
+                            <div className={Styles.cart_title}>Summary</div>
+                            <div className={Styles.card_right_content}>
+                                <div className={Styles.card_right_top}>
+                                    <div className={Styles.card_right_text}>
+                                        <span>Subtotal</span>
+                                        Price:
+                                    </div>
+                                    <div className={Styles.card_right_text}>
+                                        <span>Estimated Delivery & Handling</span>
+                                        <p>Free</p>
+                                    </div>
                                 </div>
-                                <div className={Styles.card_right_text}>
-                                    <span>Estimated Delivery & Handling</span>
-                                    <p>Free</p>
+                                <div className={Styles.card_right_bottom}>
+                                    <div className={Styles.card_right_text}>
+                                        <span>Total</span>
+                                        <p>12,327,000₫</p>
+                                    </div>
                                 </div>
-                            </div>
-                            <div className={Styles.card_right_bottom}>
-                                <div className={Styles.card_right_text}>
-                                    <span>Total</span>
-                                    <p>12,327,000₫</p>
+                                <div className={Styles.card_right_button}>
+                                    <button>Buy Now</button>
                                 </div>
-                            </div>
-                            <div className={Styles.card_right_button}>
-                                <button>Buy Now</button>
                             </div>
                         </div>
                     </div>
-                </div>
-            </div >
+                </div >
+            )) : <p>Không có dữ liệu</p>
+        }
         </>
     );
 };
@@ -78,8 +78,7 @@ export async function getStaticProps() {
 
         return {
             props: {
-                cart: response.data,
-                total: response.data
+                cart: response.data
             },
 
         };

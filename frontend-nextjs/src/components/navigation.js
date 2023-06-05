@@ -9,7 +9,7 @@ const Navigation = () => {
         <>
             <nav className={Styles.navbar}>
                 <div className={Styles.navbar_container}>
-                    <input type="checkbox" name id="checkbox" />
+                    <input type="checkbox" id="checkbox" />
                     <div className={Styles.hamburger_lines}>
                         <span className={`${Styles.line} ${Styles.line1}`} />
                         <span className={`${Styles.line} ${Styles.line2}`} />

@@ -20,6 +20,7 @@ function ProductDetail(props) {
         console.error(err);
       }, [refresh]);
   };
+
   return (
     <>
       {product && (
@@ -32,13 +33,17 @@ function ProductDetail(props) {
               <div className={Styles.productDetail_name}>{product.name}</div>
               <div className={Styles.productDetail_description}>{product.description}</div>
               <div className={Styles.productDetail_stock}>Stock: {product.stock}</div>
-              <div className={Styles.productDetail_discount}>Sale off: {product.discount}%</div>
-              <div style={{ display: 'flex' }}>
-                <div className={Styles.productDetail_price}>{numeral(product.price).format("0,0")}$</div>
-                <div className={Styles.productDetail_total}>{numeral(product.total).format("0,0")}$</div>
-              </div>
+              {product.discount > 0 ? (
+                <div>
+                  <div className={Styles.productDetail_discount}>Sale off: {product.discount}%</div>
+                  <div style={{ display: 'flex' }}>
+                    <div className={Styles.productDetail_price}>{numeral(product.price).format("0,0")}$</div>
+                    <div className={Styles.productDetail_total}>{numeral(product.total).format("0,0")}$</div>
+                  </div>
+                </div>
+              ) : (<div className={Styles.productDetail_not_discount}>{numeral(product.price).format("0,0")}$</div>)}
               <div className={Styles.productDetail_add_cart}>
-                <Button htmlType="submit">Add To Cart</Button>
+                <Button type="submit" htmlType="submit">Add To Cart</Button>
               </div>
             </div>
           </div >

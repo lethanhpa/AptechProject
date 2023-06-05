@@ -158,7 +158,7 @@ router.post("/", function (req, res) {
     body: yup.object({
       name: yup.string().required(),
       price: yup.number().positive().required(),
-      discount: yup.number().positive().max(50).required(),
+      discount: yup.number().max(50).required(),
       img: yup.string(),
       categoryId: yup
         .string()

@@ -61,7 +61,6 @@ export default function ManageProducts() {
             ...(nameSearch !== "" && { productName: nameSearch }),
             ...(categorySearch !== "" && { category: categorySearch }),
             ...(supplierSearch !== "" && { supplier: supplierSearch }),
-            ...(supplierSearch !== "" && { supplier: supplierSearch }),
             ...(stockStartSearch !== "" && { stockStart: stockStartSearch }),
             ...(stockEndSearch !== "" && { stockEnd: stockEndSearch }),
             ...(priceStartSearch !== "" && { priceStart: priceStartSearch }),
@@ -264,7 +263,7 @@ export default function ManageProducts() {
                         </Form.Item>
 
                         <Form.Item label="Discount" name="discount" hasFeedback>
-                            <InputNumber min={0} max={99} style={{ width: 350 }} />
+                            <InputNumber min={0} max={75} style={{ width: 350 }} />
                         </Form.Item>
 
                         <Form.Item label="Stock" name="stock" hasFeedback>

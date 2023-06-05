@@ -1,10 +1,12 @@
 import React from "react";
 import Styles from "../styles/home.module.css"
-import { Row, Col } from 'antd';
+import { Row } from 'antd';
+import { TagOutlined } from '@ant-design/icons'
 import axiosClient from "../libraries/axiosClient";
 
 function Home(props) {
   const { suppliers } = props;
+  const { products } = props;
 
   return (
     <>
@@ -31,19 +33,23 @@ function Home(props) {
           </div>
         </div>
         <div id="collection" className={Styles.collection}>
-          {suppliers.map((item) => (
-            <Row>
-              <div className={`${Styles.container}  ${Styles.collections}`}>
-                <div className={Styles.content}>
-                  <img src={item.img} alt="img" />
-                  <div className={Styles.img_content}>
-                    <p>{item.name}</p>
-                    <button><a href="#sellers">SHOP NOW</a></button>
+          {suppliers.map((item) => {
+            return (
+              <Row>
+                <div key={item.id} className={`${Styles.container}  ${Styles.collections}`}>
+                  <div className={Styles.content}>
+                    <div className={Styles.image}>
+                      <img src={item.img} alt="img" />
+                    </div>
+                    <div className={Styles.img_content}>
+                      <p>{item.name}</p>
+                      <button><a href={`/products/suppliers?supplierId=${item._id}`}>SHOP NOW</a></button>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </Row>
-          ))
+              </Row>
+            )
+          })
           }
         </div>
         <div id="sellers">
@@ -157,266 +163,105 @@ function Home(props) {
             </div>
           </div>
           <div className={`${Styles.container}  ${Styles.seller}`}>
-            <h2>New Arrivals</h2>
+            <h2>New Fashion Of The Month</h2>
             <div className={Styles.best_seller}>
-              <div className={Styles.best_p1}>
-                <img src="https://i.postimg.cc/fbnB2yfj/na1.png" alt="img" />
-                <div className={Styles.best_p1_txt}>
-                  <div className={Styles.name_of_p}>
-                    <p>PS England T-Shirt</p>
-                  </div>
-                  <div className="rating">
-                    <i className="bx bxs-star" />
-                    <i className="bx bxs-star" />
-                    <i className="bx bxs-star" />
-                    <i className="bx bxs-star" />
-                    <i className="bx bxs-star" />
-                  </div>
-                  <div className={Styles.price}>
-                    $10.23
-                    <div className="colors">
-                      <i className="bx bxs-circle blank" />
-                      <i className="bx bxs-circle blue" />
-                      <i className="bx bxs-circle brown" />
+              {products
+                .filter((item) => {
+                  const productDate = new Date(item.createdAt);
+                  const currentDate = new Date();
+                  const currentMonth = currentDate.getMonth();
+                  const productMonth = productDate.getMonth();
+
+                  return productMonth === currentMonth && item.discount <= 0 && item.price <= 1000;
+                })
+                .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+                .slice(0, 4)
+                .map((item) => (
+                  <div className={Styles.best_p1} key={item.slug}>
+                    <img src={item.img} alt="img" />
+                    <div className={Styles.best_p1_txt}>
+                      <div className={Styles.name}>
+                        <p>{item.name}</p>
+                      </div>
+                      <div className="rating">
+                        <i className="bx bxs-star" />
+                        <i className="bx bxs-star" />
+                        <i className="bx bxs-star" />
+                        <i className="bx bxs-star" />
+                        <i className="bx bxs-star" />
+                      </div>
+                      <div className={Styles.description}>
+                        {item.description}
+                        <div className="colors">
+                          <i className="bx bxs-circle blank" />
+                          <i className="bx bxs-circle blue" />
+                          <i className="bx bxs-circle brown" />
+                        </div>
+                      </div>
+                      <div className={Styles.buy_now}>
+                        <button><a href={`/products/t/${item.slug}`}>Buy Now</a></button>
+                      </div>
                     </div>
                   </div>
-                  <div className={Styles.buy_now}>
-                    <button><a href="https://codepen.io/sanketbodke/full/mdprZOq">Buy  Now</a></button>
-                  </div>
-                </div>
-              </div>
-              <div className={Styles.best_p1}>
-                <img src="https://i.postimg.cc/zD02zJq8/na2.png" alt="img" />
-                <div className={Styles.best_p1_txt}>
-                  <div className={Styles.name_of_p}>
-                    <p>PS England Bag</p>
-                  </div>
-                  <div className="rating">
-                    <i className="bx bxs-star" />
-                    <i className="bx bx-star" />
-                    <i className="bx bx-star" />
-                    <i className="bx bx-star" />
-                    <i className="bx bx-star" />
-                  </div>
-                  <div className={Styles.price}>
-                    $09.28
-                    <div className="colors">
-                      <i className="bx bxs-circle brown" />
-                      <i className="bx bxs-circle red" />
-                      <i className="bx bxs-circle green" />
-                    </div>
-                  </div>
-                  <div className={Styles.buy_now}>
-                    <button><a href="https://codepen.io/sanketbodke/full/mdprZOq">Buy  Now</a></button>
-                  </div>
-                </div>
-              </div>
-              <div className={Styles.best_p1}>
-                <img src="https://i.postimg.cc/Dfj5VBcz/sunglasses1.jpg" alt="img" />
-                <div className={Styles.best_p1_txt}>
-                  <div className={Styles.name_of_p}>
-                    <p>PS England Sunglass</p>
-                  </div>
-                  <div className="rating">
-                    <i className="bx bxs-star" />
-                    <i className="bx bxs-star" />
-                    <i className="bx bxs-star" />
-                    <i className="bx bxs-star" />
-                    <i className="bx bxs-star" />
-                  </div>
-                  <div className={Styles.price}>
-                    $06.24
-                    <div className="colors">
-                      <i className="bx bxs-circle grey" />
-                      <i className="bx bxs-circle blank" />
-                      <i className="bx bxs-circle blank" />
-                    </div>
-                  </div>
-                  <div className={Styles.buy_now}>
-                    <button><a href="https://codepen.io/sanketbodke/full/mdprZOq">Buy  Now</a></button>
-                  </div>
-                </div>
-              </div>
-              <div className={Styles.best_p1}>
-                <img src="https://i.postimg.cc/FszW12Kc/na4.png" alt="img" />
-                <div className={Styles.best_p1_txt}>
-                  <div className={Styles.name_of_p}>
-                    <p>PS England Shoes</p>
-                  </div>
-                  <div className="rating">
-                    <i className="bx bxs-star" />
-                    <i className="bx bxs-star" />
-                    <i className="bx bxs-star" />
-                    <i className="bx bxs-star" />
-                    <i className="bx bxs-star" />
-                  </div>
-                  <div className={Styles.price}>
-                    $43.67
-                    <div className="colors">
-                      <i className="bx bxs-circle grey" />
-                      <i className="bx bxs-circle red" />
-                      <i className="bx bxs-circle blue" />
-                    </div>
-                  </div>
-                  <div className={Styles.buy_now}>
-                    <button><a href="https://codepen.io/sanketbodke/full/mdprZOq">Buy  Now</a></button>
-                  </div>
-                </div>
-              </div>
+                ))}
             </div>
+
           </div>
           <div className={`${Styles.seller}  ${Styles.container}`}>
             <h2>Hot Sales</h2>
             <div className={Styles.best_seller}>
-              <div className={Styles.best_p1}>
-                <img src="https://i.postimg.cc/jS7pSQLf/na4.png" alt="img" />
-                <div className={Styles.best_p1_txt}>
-                  <div className={Styles.name_of_p}>
-                    <p>PS England Shoes</p>
-                  </div>
-                  <div className={Styles.rating}>
-                    <i className={`${Styles.bx}  ${Styles.bxs_star}`} />
-                    <i className={`${Styles.bx}  ${Styles.bxs_star}`} />
-                    <i className={`${Styles.bx}  ${Styles.bxs_star}`} />
-                    <i className={`${Styles.bx}  ${Styles.bxs_star}`} />
-                    <i className={`${Styles.bx}  ${Styles.bxs_star}`} />
-                  </div>
-                  <div className={Styles.price}>
-                    $37.24
-                    <div className="colors">
-                      <i className="bx bxs-circle grey" />
-                      <i className="bx bxs-circle black" />
-                      <i className="bx bxs-circle blue" />
+              {products.map((item) => (
+                item.discount > 0 && (
+                  <div key={item.id} className={Styles.best_p1}>
+                    <img src={item.img} alt="img" />
+                    <div className={Styles.best_p1_txt}>
+                      <div className={Styles.name}>
+                        <p>{item.name}</p>
+                      </div>
+                      <div className={Styles.description}>
+                        <p>{item.description}</p>
+                      </div>
+                      <div className={Styles.discount}>
+                        <p><TagOutlined /> {item.discount}%</p>
+                      </div>
+                      <div className={Styles.rating}>
+                        <i className={`${Styles.bx}  ${Styles.bxs_star}`} />
+                        <i className={`${Styles.bx}  ${Styles.bxs_star}`} />
+                        <i className={`${Styles.bx}  ${Styles.bxs_star}`} />
+                        <i className={`${Styles.bx}  ${Styles.bxs_star}`} />
+                        <i className={`${Styles.bx}  ${Styles.bxs_star}`} />
+                      </div>
+                      <div className={Styles.buy_now}>
+                        <button><a href={`/products/t/${item.slug}`}>Buy  Now</a></button>
+                      </div>
                     </div>
                   </div>
-                  <div className={Styles.buy_now}>
-                    <button><a href="https://codepen.io/sanketbodke/full/mdprZOq">Buy  Now</a></button>
-                  </div>
-                </div>
-              </div>
-              <div className={Styles.best_p1}>
-                <img src="https://i.postimg.cc/fbnB2yfj/na1.png" alt="img" />
-                <div className={Styles.best_p1_txt}>
-                  <div className={Styles.name_of_p}>
-                    <p>PS England T-Shirt</p>
-                  </div>
-                  <div className="rating">
-                    <i className="bx bxs-star" />
-                    <i className="bx bxs-star" />
-                    <i className="bx bxs-star" />
-                    <i className="bx bxs-star" />
-                    <i className="bx bxs-star" />
-                  </div>
-                  <div className={Styles.price}>
-                    $10.23
-                    <div className="colors">
-                      <i className="bx bxs-circle blank" />
-                      <i className="bx bxs-circle blue" />
-                      <i className="bx bxs-circle brown" />
-                    </div>
-                  </div>
-                  <div className={Styles.buy_now}>
-                    <button><a href="https://codepen.io/sanketbodke/full/mdprZOq">Buy  Now</a></button>
-                  </div>
-                </div>
-              </div>
-              <div className={Styles.best_p1}>
-                <img src="https://i.postimg.cc/RhVP7YQk/hs1.png" alt="img" />
-                <div className={Styles.best_p1_txt}>
-                  <div className={Styles.name_of_p}>
-                    <p>PS England T-Shirt</p>
-                  </div>
-                  <div className="rating">
-                    <i className="bx bxs-star" />
-                    <i className="bx bxs-star" />
-                    <i className="bx bxs-star" />
-                    <i className="bx bxs-star" />
-                    <i className="bx bxs-star" />
-                  </div>
-                  <div className={Styles.price}>
-                    $15.24
-                    <div className="colors">
-                      <i className="bx bxs-circle blank" />
-                      <i className="bx bxs-circle red" />
-                      <i className="bx bxs-circle blue" />
-                    </div>
-                  </div>
-                  <div className={Styles.buy_now}>
-                    <button><a href="https://codepen.io/sanketbodke/full/mdprZOq">Buy  Now</a></button>
-                  </div>
-                </div>
-              </div>
-              <div className={Styles.best_p1}>
-                <img src="https://i.postimg.cc/zD02zJq8/na2.png" alt="img" />
-                <div className={Styles.best_p1_txt}>
-                  <div className={Styles.name_of_p}>
-                    <p>PS England Bag</p>
-                  </div>
-                  <div className="rating">
-                    <i className="bx bxs-star" />
-                    <i className="bx bx-star" />
-                    <i className="bx bx-star" />
-                    <i className="bx bx-star" />
-                    <i className="bx bx-star" />
-                  </div>
-                  <div className={Styles.price}>
-                    $09.28
-                    <div className="colors">
-                      <i className="bx bxs-circle blank" />
-                      <i className="bx bxs-circle grey" />
-                      <i className="bx bxs-circle brown" />
-                    </div>
-                  </div>
-                  <div className={Styles.buy_now}>
-                    <button><a href="https://codepen.io/sanketbodke/full/mdprZOq">Buy  Now</a></button>
-                  </div>
-                </div>
-              </div>
+                )))}
             </div>
           </div>
         </div>
         <div id="news">
           <div className={Styles.news_heading}>
             <p>LATEST NEWS</p>
-            <h2>Fashion New Trends</h2>
+            <h2>Limited Edition</h2>
           </div>
           <div className={`${Styles.l_news}  ${Styles.container}`}>
-            <div className={Styles.l_news1}>
-              <div className={Styles.news1_img}>
-                <img src="https://i.postimg.cc/2y6wbZCm/news1.jpg" alt="img" />
-              </div>
-              <div className={Styles.news1_conte}>
-                <div className={Styles.date_news1}>
-                  <p><i className={`${Styles.bx}  ${Styles.bxs_calendar}`} /> 12 February 2022</p>
-                  <h4>What Curling Irons Are The Best Ones</h4>
-                  <a href="https://www.vogue.com/article/best-curling-irons" target="_blank">read more</a>
+            {products.map((item) => (
+              item.price >= 10000 && (
+                <div className={Styles.l_news1}>
+                  <div className={Styles.news1_img}>
+                    <img src={item.img} alt="img" />
+                  </div>
+                  <div className={Styles.news1_conte}>
+                    <div className={Styles.date_news1}>
+                      <p><i className={`${Styles.bx}  ${Styles.bxs_calendar}`} />{item.description}</p>
+                      <h4>{item.name}</h4>
+                      <a href={`/products/t/${item.slug}`} >More</a>
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </div>
-            <div className={Styles.l_news2}>
-              <div className={Styles.news2_img}>
-                <img src="https://i.postimg.cc/9MXPK7RT/news2.jpg" alt="img" />
-              </div>
-              <div className={Styles.news2_conte}>
-                <div className={Styles.date_news2}>
-                  <p><i className="bx bxs-calendar" /> 17 February 2022</p>
-                  <h4>The Health Benefits Of Sunglasses</h4>
-                  <a href="https://www.rivieraopticare.com/blog/314864-the-health-benefits-of-wearing-sunglasses_2/" target="_blank">read more</a>
-                </div>
-              </div>
-            </div>
-            <div className={Styles.l_news3}>
-              <div className={Styles.news3_img}>
-                <img src="https://i.postimg.cc/x1KKdRLM/news3.jpg" alt="img" />
-              </div>
-              <div className={Styles.news3_conte}>
-                <div className={Styles.date_news3}>
-                  <p><i className="bx bxs-calendar" /> 26 February 202</p>
-                  <h4>Eternity Bands Do Last Forever</h4>
-                  <a href="https://www.briangavindiamonds.com/news/eternity-bands-symbolize-love-that-lasts-forever/" target="_blank">read more</a>
-                </div>
-              </div>
-            </div>
+              )))}
+
           </div>
         </div>
         <div id="contact">
@@ -446,7 +291,7 @@ function Home(props) {
             </form>
           </div>
         </div>
-      </div>
+      </div >
     </>
   );
 }
@@ -455,17 +300,23 @@ export default Home;
 
 export async function getStaticProps() {
   try {
-    const response = await axiosClient.get("/suppliers");
+    const suppliersResponse = await axiosClient.get("/suppliers");
+    const productsResponse = await axiosClient.get("/products");
+
+    const suppliers = suppliersResponse.data;
+    const products = productsResponse.data.data;
+    const total = productsResponse.data.total;
 
     return {
       props: {
-        suppliers: response.data
-      },
-
+        suppliers,
+        products,
+        total
+      }
     };
   } catch (error) {
     return {
-      notFound: true,
+      notFound: true
     };
   }
 }
