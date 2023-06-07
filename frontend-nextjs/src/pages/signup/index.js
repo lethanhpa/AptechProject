@@ -1,7 +1,11 @@
+import Image from "next/image";
 import React from 'react';
-import Styles from "../../styles/signup.module.css"
-import { Button, message, Form, Input } from 'antd';
+import Styles from "../../styles/auth.module.css"
+import { Button, Form, Input } from 'antd';
 import axios from "../../libraries/axiosClient";
+import logo from "../../images/logo.png"
+import 'react-toastify/dist/ReactToastify.css';
+import { toast, ToastContainer } from "react-toastify";
 const apiName = "/customers";
 
 const Index = () => {
@@ -9,22 +13,29 @@ const Index = () => {
     const [refresh, setRefresh] = React.useState(0);
 
     const onFinish = (values) => {
-        axios
-            .post(apiName, values)
+        axios.post(apiName, values)
             .then((_response) => {
                 setRefresh((f) => f + 1);
                 createForm.resetFields();
-                message.success("Sign Up successfully!", 1.5);
+                window.location.href = '/signin';
+                toast.success('Sign Up successfully!');
             })
+            .catch((err) => {
+                console.error(err);
+            })
+
             .catch((err) => {
                 console.error(err);
             }, [refresh]);
     };
-    return (
 
+    return (
         <>
             <div className={Styles.form}>
-                <h4 className={Styles.form_title}>Sign Up</h4>
+                <div className={Styles.logo}>
+                    <Image className={Styles.logo} src={logo} alt="logo" />
+                </div>
+                <h4 className={Styles.form_title}>BECOME A YAME MEMBER</h4>
                 <Form
                     className={Styles.form_item}
                     form={createForm}
@@ -37,15 +48,22 @@ const Index = () => {
                         span: 16,
                     }}
                 >
-                    <Form.Item label="First Name" name="firstName" hasFeedback>
+                    <p>
+                        Create your YAME Member profile and get first access to the very best of YAME products, inspiration and community.
+                    </p>
+
+                    <span>First Name:</span>
+                    <Form.Item name="firstName" hasFeedback>
                         <Input />
                     </Form.Item>
 
-                    <Form.Item label="Last Name" name="lastName" hasFeedback>
+                    <span>Last Name:</span>
+                    <Form.Item name="lastName" hasFeedback>
                         <Input />
                     </Form.Item>
 
-                    <Form.Item label="Email" name="email" rules={[
+                    <span>Email:</span>
+                    <Form.Item name="email" rules={[
                         {
                             required: true,
                             message: 'Please input your email!',
@@ -54,7 +72,8 @@ const Index = () => {
                         <Input />
                     </Form.Item>
 
-                    <Form.Item label="Password"
+                    <span>Password:</span>
+                    <Form.Item
                         name="password"
                         rules={[
                             {
@@ -62,10 +81,11 @@ const Index = () => {
                                 message: 'Please input your password!',
                             },
                         ]} hasFeedback>
-                        <Input.Password />
+                        <Input.Password placeholder='Passwords must be at least 6 characters' />
                     </Form.Item>
 
-                    <Form.Item label="Phone Number" name="phoneNumber" rules={[
+                    <span>Phone Number:</span>
+                    <Form.Item name="phoneNumber" rules={[
                         {
                             required: true,
                             message: 'Please input your phone number!',
@@ -74,23 +94,24 @@ const Index = () => {
                         <Input />
                     </Form.Item>
 
-                    <Form.Item label="Address" name="address" hasFeedback>
-                        <Input placeholder='Address' />
+                    <span>Address:</span>
+                    <Form.Item name="address" hasFeedback>
+                        <Input />
                     </Form.Item>
 
-                    <Form.Item label="Birthday" name="birthday" hasFeedback>
-                        <Input />
+                    <span>Birthday:</span>
+                    <Form.Item name="birthday" hasFeedback>
+                        <Input placeholder='yyyy/MM/dd' />
                     </Form.Item>
 
                     <Form.Item
                         wrapperCol={{
-                            offset: 8,
-                            span: 16,
+                            offset: 5,
                         }}
                     >
-                        <Button htmlType='submit' className={Styles.btn}>
+                        <Button type="submit" htmlType='submit' className={Styles.btn}>
                             Sign Up
-                        </Button>
+                        </Button><ToastContainer />
                     </Form.Item>
                 </Form>
             </div>

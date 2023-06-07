@@ -67,7 +67,7 @@
 }
 
 .menu_items div {
-    margin: 0 12px 0 12px;
+    margin: 6px 12px 0 12px;
 }
 
 .navbar_container ul a {
@@ -90,6 +90,20 @@
 
 .navbar_container ul a:hover:after {
     width: 100%;
+}
+
+.btn_logout {
+    background-color: #ff0000;
+    color: #fff;
+    width: 100px;
+    border: none;
+}
+
+.btn_logout:hover {
+    background-color: #fff;
+    border: 0.5px solid #000;
+    color: #000;
+    transition: 2s;
 }
 
 @media (max-width: 768px) {

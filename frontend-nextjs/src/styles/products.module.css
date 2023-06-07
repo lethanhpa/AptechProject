@@ -8,7 +8,7 @@
 
 .product_img img {
     object-fit: cover;
-    width: auto;
+    width: 420px;
     height: 420px;
 }
 
@@ -49,8 +49,8 @@
 }
 
 .product_item {
-    margin-bottom: 64px;
-    line-height: 1.75;
+    line-height: 1.5;
+    padding-bottom: 24px;
 }
 
 .product_item :hover {

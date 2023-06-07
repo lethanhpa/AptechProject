@@ -12,16 +12,7 @@ function Products(props) {
   return (
     <>
       <Layout>
-        <Sider width={200}>
-          <Menu
-            item='true'
-            mode="inline"
-            style={{ height: '100.01%' }}
-          >
-            <div>This is Menu</div>
-          </Menu>
-        </Sider>
-        <Content style={{ display: "flex", width: "100%" }}>
+        <Content style={{ display: "flex", width: "100%", backgroundColor: "#fff" }}>
           <Row justify="space-around">
             {products.length > 0 ?
               products.map((item) => {

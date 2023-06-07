@@ -1,5 +1,6 @@
 const passport = require('passport');
 const express = require("express");
+const yup = require('yup');
 
 const router = express.Router();
 const { Customer } = require("../models");
@@ -8,7 +9,8 @@ const { default: mongoose } = require('mongoose');
 
 const {
   validateSchema,
-  loginSchema
+  loginSchema,
+  getCustomersSchema
 } = require('../validation/customer');
 const encodeToken = require('../helpers/jwtHelper');
 
@@ -47,7 +49,7 @@ router.post(
 router.get(
   '/profile',
   passport.authenticate('jwt', { session: false }),
-  async (req, res, next) => {
+  async (req, res) => {
     try {
       const customer = await Customer.findById(req.user._id);
 
@@ -59,18 +61,6 @@ router.get(
     }
   },
 );
-
-router.route('/profile').get(passport.authenticate('jwt', { session: false }), async (req, res, next) => {
-  try {
-    const customer = await Customer.findById(req.user._id);
-
-    if (!customer) return res.status(404).send({ message: 'Not found' });
-
-    res.status(200).json(customer);
-  } catch (err) {
-    res.sendStatus(500);
-  }
-},);
 
 //GET all
 router.get('/', function (req, res, next) {
@@ -87,58 +77,59 @@ router.get('/', function (req, res, next) {
   }
 });
 
+// router.get('/', validateSchema(getCustomersSchema), async (req, res, next) => {
+//   try {
+//     const { email } = req.query;
+//     const existingCustomer = await Customer.findOne({ email });
+//     if (existingCustomer) {
+//       return res.send({ message: 'Email đã tồn tại' });
+//     }
+//     return res.send({ message: 'Email chưa tồn tại' });
+//   } catch (error) {
+//     console.error(error);
+//     res.sendStatus(500);
+//   }
+// });
+
+
 //GET id
-router.get('/:id', async function (req, res, next) {
-  // Validate
-  const validationSchema = yup.object().shape({
-    params: yup.object({
-      id: yup.string().test('Validate ObjectID', '${path} is not valid ObjectID', (value) => {
-        return ObjectId.isValid(value);
-      }),
-    }),
-  });
-
-  validationSchema
-    .validate({ params: req.params }, { abortEarly: false })
-    .then(async () => {
-      const id = req.params.id;
-
-      let found = await Customer.findById(id);
-
-      if (found) {
-        return res.send({ ok: true, result: found });
-      }
-
-      return res.send({ ok: false, message: 'Object not found' });
-    })
-    .catch((err) => {
-      return res.status(400).json({ type: err.name, errors: err.errors, message: err.message, provider: 'yup' });
-    });
-});
-
-//POST
-router.post('/', async (req, res, next) => {
+router.get('/:id', function (req, res) {
   try {
-    const data = req.body;
-    const email = data.email;
-    const emailUnique = await Customer.findOne({ email });
-    if (emailUnique) {
-      return res.status(404).send({ message: 'Email already exists' });
-    }
-    const newItem = new Customer(data);
-    newItem
-      .save()
+    const { id } = req.params;
+    Customer.findById(id)
       .then((result) => {
         res.send(result);
       })
       .catch((err) => {
-        console.log(err);
         res.status(400).send({ message: err.message });
       });
   } catch (err) {
     res.sendStatus(500);
   }
 });
+
+//POST
+router.post('/', async (req, res) => {
+  try {
+    const data = req.body;
+    const email = data.email;
+
+    const existingCustomer = await Customer.findOne({ email });
+    const emailExists = await Customer.exists({ email });
+    if (emailExists) {
+      return res.status(400).send({ message: 'Email đã tồn tại trong cơ sở dữ liệu.' });
+    }
+
+    const newCustomer = new Customer(data);
+    await newCustomer.save();
+
+    res.status(200).send({ message: 'Đăng ký thành công' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send({ message: 'Đã xảy ra lỗi.' });
+  }
+});
+
 
 //DELETE
 router.delete('/:id', function (req, res, next) {
