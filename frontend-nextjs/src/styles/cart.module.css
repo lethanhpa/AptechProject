@@ -1,5 +1,5 @@
 .cart {
-    max-width: 80%;
+    max-width: 50%;
     margin: 0 auto;
     margin-top: 36px;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -97,6 +97,7 @@
 
 .card_right_text {
     display: flex;
+    font-size: 20px;
     justify-content: space-between;
 }
 
@@ -108,7 +109,7 @@
 
 .card_right_text span,
 .card_right_text p {
-    font-size: 18px;
+    font-size: 20px;
     font-weight: 350;
     line-height: 28px;
     color: #111;

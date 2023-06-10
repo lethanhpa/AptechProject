@@ -66,8 +66,9 @@
     margin-right: 3rem;
 }
 
-.menu_items div {
+.menu_items li {
     margin: 6px 12px 0 12px;
+    list-style: none;
 }
 
 .navbar_container ul a {
@@ -171,7 +172,7 @@
 
     .navbar .menu_items {
         padding-top: 100px;
-        background: #fff;
+        background: #9898987f;
         height: 100vh;
         max-width: 100%;
         transform: translate(-150%);

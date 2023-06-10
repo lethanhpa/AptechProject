@@ -53,115 +53,6 @@ function Home(props) {
           }
         </div>
         <div id="sellers">
-          <div className={`${Styles.seller}  ${Styles.container}`}>
-            <h2>Top Sales</h2>
-            <div className={Styles.best_seller}>
-              <div className={Styles.best_p1}>
-                <img src="https://i.postimg.cc/8CmBZH5N/shoes.webp" alt="img" />
-                <div className={Styles.best_p1_txt}>
-                  <div className={Styles.name_of_p}>
-                    <p>PS England Shoes</p>
-                  </div>
-                  <div className={Styles.rating}>
-                    <i className={`${Styles.bx}  ${Styles.bxs_star}`} />
-                    <i className={`${Styles.bx}  ${Styles.bxs_star}`} />
-                    <i className={`${Styles.bx}  ${Styles.bxs_star}`} />
-                    <i className={`${Styles.bx}  ${Styles.bx_star}`} />
-                    <i className={`${Styles.bx}  ${Styles.bx_star}`} />
-                  </div>
-                  <div className={Styles.price}>
-                    $37.24
-                    <div className="colors">
-                      <i className="bx bxs-circle red" />
-                      <i className="bx bxs-circle blue" />
-                      <i className="bx bxs-circle white" />
-                    </div>
-                  </div>
-                  <div className={Styles.buy_now}>
-                    <button><a href="https://codepen.io/sanketbodke/full/mdprZOq">Buy  Now</a></button>
-                  </div>
-                </div>
-              </div>
-              <div className={Styles.best_p1}>
-                <img src="https://i.postimg.cc/76X9ZV8m/Screenshot_from_2022-06-03_18-45-12.png" alt="img" />
-                <div className={Styles.best_p1_txt}>
-                  <div className={Styles.name_of_p}>
-                    <p>PS England Jacket</p>
-                  </div>
-                  <div className={Styles.rating}>
-                    <i className="bx bxs-star" />
-                    <i className="bx bxs-star" />
-                    <i className="bx bx-star" />
-                    <i className="bx bx-star" />
-                    <i className="bx bx-star" />
-                  </div>
-                  <div className={Styles.price}>
-                    $17.24
-                    <div className="colors">
-                      <i className="bx bxs-circle green" />
-                      <i className="bx bxs-circle grey" />
-                      <i className="bx bxs-circle brown" />
-                    </div>
-                  </div>
-                  <div className={Styles.buy_now}>
-                    <button><a href="https://codepen.io/sanketbodke/full/mdprZOq">Buy  Now</a></button>
-                  </div>
-                </div>
-              </div>
-              <div className={Styles.best_p1}>
-                <img src="https://i.postimg.cc/j2FhzSjf/bs2.png" alt="img" />
-                <div className={Styles.best_p1_txt}>
-                  <div className={Styles.name_of_p}>
-                    <p>PS England Shirt</p>
-                  </div>
-                  <div className={Styles.rating}>
-                    <i className="bx bxs-star" />
-                    <i className="bx bxs-star" />
-                    <i className="bx bxs-star" />
-                    <i className="bx bxs-star" />
-                    <i className="bx bx-star" />
-                  </div>
-                  <div className={Styles.price}>
-                    $27.24
-                    <div className="colors">
-                      <i className="bx bxs-circle brown" />
-                      <i className="bx bxs-circle green" />
-                      <i className="bx bxs-circle blue" />
-                    </div>
-                  </div>
-                  <div className={Styles.buy_now}>
-                    <button><a href="https://codepen.io/sanketbodke/full/mdprZOq">Buy  Now</a></button>
-                  </div>
-                </div>
-              </div>
-              <div className={Styles.best_p1}>
-                <img src="https://i.postimg.cc/QtjSDzPF/bs3.png" alt="img" />
-                <div className={Styles.best_p1_txt}>
-                  <div className={Styles.name_of_p}>
-                    <p>PS England Shoes</p>
-                  </div>
-                  <div className="rating">
-                    <i className="bx bxs-star" />
-                    <i className="bx bxs-star" />
-                    <i className="bx bxs-star" />
-                    <i className="bx bxs-star" />
-                    <i className="bx bxs-star" />
-                  </div>
-                  <div className={Styles.price}>
-                    $43.67
-                    <div className="colors">
-                      <i className="bx bxs-circle red" />
-                      <i className="bx bxs-circle grey" />
-                      <i className="bx bxs-circle blue" />
-                    </div>
-                  </div>
-                  <div className={Styles.buy_now}>
-                    <button><a href="https://codepen.io/sanketbodke/full/mdprZOq">Buy  Now</a></button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
           <div className={`${Styles.container}  ${Styles.seller}`}>
             <h2>New Fashion Of The Month</h2>
             <div className={Styles.best_seller}>
@@ -172,10 +63,9 @@ function Home(props) {
                   const currentMonth = currentDate.getMonth();
                   const productMonth = productDate.getMonth();
 
-                  return productMonth === currentMonth && item.discount <= 0 && item.price <= 1000;
+                  return productMonth === currentMonth && item.discount <= 0 && item.stock > 10;
                 })
                 .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
-                .slice(0, 4)
                 .map((item) => (
                   <div className={Styles.best_p1} key={item.slug}>
                     <img src={item.img} alt="img" />
@@ -247,7 +137,7 @@ function Home(props) {
           </div>
           <div className={`${Styles.l_news}  ${Styles.container}`}>
             {products.map((item) => (
-              item.price >= 10000 && (
+              item.stock <= 10 && (
                 <div className={Styles.l_news1}>
                   <div className={Styles.news1_img}>
                     <img src={item.img} alt="img" />

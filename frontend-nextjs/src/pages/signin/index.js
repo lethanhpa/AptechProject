@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Styles from "../../styles/auth.module.css";
 import axios from '../../libraries/axiosClient';
 import Image from "next/image";
@@ -8,10 +8,19 @@ import 'react-toastify/dist/ReactToastify.css';
 import { toast, ToastContainer } from "react-toastify";
 import { Button, Input, Form } from 'antd';
 
-const Index = (props) => {
+const Index = () => {
     const [email, setEmail] = useState('');
-    const setIsLogin = props;
+    const [isLogin, setIsLogin] = useState(false);
     const [password, setPassword] = useState('');
+    const [token, setToken] = useState('');
+
+    useEffect(() => {
+        const storedToken = localStorage.getItem('token');
+        if (storedToken) {
+            setToken(storedToken);
+        }
+    }, []);
+
     const handleEmailChange = (e) => {
         setEmail(e.target.value);
     };
@@ -22,15 +31,16 @@ const Index = (props) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        const token = {
+        const account = {
             email,
             password,
         };
 
         try {
-            const response = await axios.post("/customers/login", token);
-            console.log('response', response);
-            localStorage.setItem('token', response.data.token);
+            const response = await axios.post("/customers/login", account);
+            const { token } = response.data;
+            localStorage.setItem('token', token);
+            setToken(token);
             toast.success("Login successfully!!!");
             window.location.href = '/';
             setIsLogin(true);
@@ -94,20 +104,21 @@ const Index = (props) => {
                             placeholder='Passwords must be at least 6 characters'
                         />
                     </Form.Item>
-
-                    <Form.Item
-                        wrapperCol={{
-                            offset: 5,
-                        }}
-                    >
-                        <Button onClick={handleSubmit} type="submit" htmlType='submit' className={Styles.btn}>
-                            Sign In
-                        </Button><ToastContainer />
-                        <br />
-                        <i>
-                            Not a Member? <Link href="/signup">Join Us.</Link>
-                        </i>
-                    </Form.Item>
+                    {token && (
+                        <Form.Item
+                            wrapperCol={{
+                                offset: 5,
+                            }}
+                        >
+                            <Button onClick={handleSubmit} type="submit" htmlType='submit' className={Styles.btn}>
+                                Sign In
+                            </Button><ToastContainer />
+                            <br />
+                            <i>
+                                Not a Member? <Link href="/signup">Join Us.</Link>
+                            </i>
+                        </Form.Item>
+                    )}
                 </Form>
             </div >
         </>

@@ -51,7 +51,7 @@ module.exports = {
 
             const cart = await Cart.findOne({ customerId })
 
-            const result = {};
+            let result = {};
 
             if (cart) { // GIỏ hàng đã tồn tại
                 newProductCart = cart.products.map((item) => {
@@ -61,7 +61,7 @@ module.exports = {
                         if (nextQuantity > foundProduct.stock) {
                             return res.send({
                                 code: 404,
-                                message: `Số lượng sản phẩm ${product.id} không khả dụng`,
+                                message: `Số lượng sản phẩm ${product._id} không khả dụng`,
                             });
                         } else {
                             item.quantity = nextQuantity;

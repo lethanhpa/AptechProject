@@ -4,11 +4,12 @@ import Link from "next/link";
 import { ShoppingCartOutlined, HomeOutlined, ShopOutlined, UserAddOutlined, UserOutlined } from "@ant-design/icons";
 import { Button } from "antd"
 import Styles from "../styles/home.module.css";
-// import { useNavigate } from 'react-router-dom';
 import logo from "../images/logo.png";
+import { useRouter } from 'next/router';
 
 const Navigation = () => {
     const [isLogin, setIsLogin] = useState(false);
+    const router = useRouter();
     useEffect(() => {
         const storedLoginState = localStorage.getItem('isLogin');
 
@@ -16,12 +17,11 @@ const Navigation = () => {
             setIsLogin(true);
         }
     }, []);
-    // const navigate = useNavigate();
 
     const handleLogout = () => {
         localStorage.removeItem('isLogin');
         setIsLogin(false);
-        // navigate(`/`);
+        router.push('/');
     };
     return (
         <>
@@ -34,42 +34,43 @@ const Navigation = () => {
                         <span className={`${Styles.line} ${Styles.line3}`} />
                     </div>
                     <ul className={Styles.menu_items}>
-                        <div>
+                        <li>
                             <Link href="/">
                                 Home <HomeOutlined />
                             </Link>
-                        </div>
+                        </li>
 
-                        <div>
+                        <li>
                             <Link href="/products">
                                 Shop <ShopOutlined />
                             </Link>
-                        </div>
-
-                        <div>
+                        </li>
+                        <li>
                             <Link href="/cart">
                                 Cart <ShoppingCartOutlined />
                             </Link>
-                        </div>
+                        </li>
                         {isLogin ? (
-                            <div setIsLogin={setIsLogin}>
-                                <Link href="/profile">
-                                    Profile <UserOutlined />
-                                </Link>
-                            </div>
+                            <>
+                                <li setIsLogin={setIsLogin}>
+                                    <Link href="/profile">
+                                        Profile <UserOutlined />
+                                    </Link>
+                                </li>
+                            </>
                         ) : (
                             <>
-                                <div>
+                                <li>
                                     <Link href="/signup">
                                         Sign Up <UserAddOutlined />
                                     </Link>
-                                </div>
+                                </li>
 
-                                <div>
+                                <li >
                                     <Link href="/signin">
                                         Sign In <UserOutlined />
                                     </Link>
-                                </div>
+                                </li>
                             </>
                         )}
                         {isLogin && (
