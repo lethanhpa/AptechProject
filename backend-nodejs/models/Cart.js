@@ -7,15 +7,10 @@ const { Schema, model } = mongoose;
 // Validator
 // https://mongoosejs.com/docs/validation.html#built-in-validators
 
-const cartDetailSchema = new Schema(
-    {
-        productId: { type: Schema.Types.ObjectId, ref: 'Product', required: true },
-        quantity: { type: Number, require: true, min: 0 },
-    },
-    {
-        versionKey: false,
-    },
-);
+const cartDetailSchema = new Schema({
+    productId: { type: Schema.Types.ObjectId, ref: 'Product', required: true },
+    quantity: { type: Number, require: true, min: 0 },
+});
 
 // Virtual with Populate
 cartDetailSchema.virtual('product', {
@@ -24,6 +19,7 @@ cartDetailSchema.virtual('product', {
     foreignField: '_id',
     justOne: true,
 });
+
 
 // Virtuals in console.log()
 cartDetailSchema.set('toObject', { virtuals: true });

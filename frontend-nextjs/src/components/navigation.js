@@ -9,18 +9,22 @@ import { useRouter } from 'next/router';
 
 const Navigation = () => {
     const [isLogin, setIsLogin] = useState(false);
+
     const router = useRouter();
     useEffect(() => {
-        const storedLoginState = localStorage.getItem('isLogin');
+        const token = localStorage.getItem('token');
 
-        if (storedLoginState === 'true') {
+        if (token) {
             setIsLogin(true);
         }
-    }, []);
+
+    }, [router]);
 
     const handleLogout = () => {
-        localStorage.removeItem('isLogin');
+        localStorage.removeItem('token');
+
         setIsLogin(false);
+
         router.push('/');
     };
     return (

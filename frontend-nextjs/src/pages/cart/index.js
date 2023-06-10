@@ -9,13 +9,7 @@ import Link from "next/link";
 function Cart(props) {
     const [isLogin, setIsLogin] = useState(true);
     const { cart } = props;
-    const calculateTotalPrice = () => {
-        let totalPrice = 0;
-        for (const item of cart) {
-            totalPrice += item.product?.total;
-        }
-        return totalPrice;
-    };
+    const { products } = props
     return (
         <>
             <div className={Styles.cart}>
@@ -28,11 +22,11 @@ function Cart(props) {
                                     <div key={item} className={Styles.cart_item_wrap}>
                                         <div className={Styles.card_wrap_info}>
                                             <div className={Styles.cart_product_img}>
-                                                <img src={item.product?.img} />
+                                                <img src={item.img} />
                                             </div>
                                             <div className={Styles.cart_product_info}>
-                                                <div className={Styles.cart_product_name}>{`${item.product?.name}`}</div>
-                                                <div className={Styles.card_product_type}>{`${item.product?.description}`}</div>
+                                                <div className={Styles.cart_product_name}>{`${item.name}`}</div>
+                                                <div className={Styles.card_product_type}>{`${item.description}`}</div>
                                                 <div style={{ display: 'flex', alignItems: 'center', gap: '0 15px' }}>
                                                     <div className={Styles.sizeQty}>
                                                         <span>Quantity: {`${item.quantity}`}</span>
@@ -44,7 +38,7 @@ function Cart(props) {
                                             </div>
                                         </div>
                                         <div className={Styles.cart_product_price}>
-                                            <span>Price: {`${item.product?.total}`}$</span>
+                                            <span>Price: {`${item.total}`}$</span>
                                         </div>
                                     </div>
                                 )) : (<Result
@@ -64,7 +58,7 @@ function Cart(props) {
                             <div className={Styles.card_right_top}>
                                 <div className={Styles.card_right_text}>
                                     <span>Subtotal</span>
-                                    Price: {calculateTotalPrice()}$
+                                    Price:$
                                 </div>
                                 <div className={Styles.card_right_text}>
                                     <span>Estimated Delivery & Handling</span>
@@ -74,7 +68,7 @@ function Cart(props) {
                             <div className={Styles.card_right_bottom}>
                                 <div className={Styles.card_right_text}>
                                     <span>Total</span>
-                                    <p>{calculateTotalPrice()}$</p>
+                                    <p>$</p>
                                 </div>
                             </div>
                             <div className={Styles.card_right_button}>
@@ -91,19 +85,24 @@ function Cart(props) {
 
 export default Cart;
 
-
 export async function getStaticProps() {
     try {
-        const response = await axiosClient.get("/cart");
+        const cartResponse = await axiosClient.get(`/cart/6477532e25ef3dc55731f28b`);
+
+        const productsResponse = await axiosClient.get("/products");
+
+        const cart = cartResponse.data;
+        const products = productsResponse.data.data;
 
         return {
             props: {
-                cart: response.data
-            },
+                cart,
+                products,
+            }
         };
     } catch (error) {
         return {
-            notFound: true,
+            notFound: true
         };
     }
 }

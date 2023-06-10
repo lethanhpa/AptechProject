@@ -6,6 +6,9 @@ import Footer from "@/components/footer";
 import Head from "@/components/head";
 
 function App({ Component, pageProps }) {
+
+  // axiosClient.defaults.headers.Authorization = `Bearer ${token}`;
+
   return (
     <>
       <Head />

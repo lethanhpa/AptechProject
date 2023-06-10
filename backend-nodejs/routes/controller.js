@@ -5,10 +5,15 @@ module.exports = {
         try {
             const { id } = req.params;
 
-            let found = await Cart.findOne({ customerId: id });
+            let found = await Cart.findOne({ customerId: id })
+
+            let results = await Cart.find({ customerId: id })
+                .populate("products.product")
+                .populate("customer")
+                .lean({ virtual: true });
 
             if (found) {
-                return res.send({ code: 200, payload: found });
+                return res.send({ code: 200, payload: { found, results } });
             }
 
             return res.status(410).send({ code: 404, message: 'Không tìm thấy' });
@@ -58,7 +63,6 @@ module.exports = {
                 const checkProductExits = newProductCart.find(product => product.productId.toString() === productId.toString());
 
                 if (!checkProductExits) {
-                    console.log('««««« không tônf tại»»»»»');
                     newProductCart.push({
                         productId,
                         quantity,
