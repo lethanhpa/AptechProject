@@ -17,9 +17,6 @@ router.route('/')
     .post(validateSchema(createSchema), create)
     .delete(validateSchema(removeSchema), remove)
 
-router.route('/:id')
-    .delete(validateSchema(removeSchema), remove)
-
 router.route('/')
     .get(validateSchema(getDetailSchema), getDetail)
 

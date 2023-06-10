@@ -36,7 +36,7 @@ module.exports = {
             if (!customer || customer.isDelete)
                 errors.push('Khách hàng không tồn tại');
             if (!foundProduct || foundProduct.isDelete)
-                errors.push('Sản phảm không tồn tại');
+                errors.push('Sản phẩm không tồn tại');
 
             if (foundProduct && quantity > foundProduct.stock)
                 errors.push('Sản phảm vượt quá số lượng cho phép');
@@ -49,32 +49,46 @@ module.exports = {
                 });
             }
 
-            const cart = await Cart.findOne({ customerId })
+            const cart = await Cart.findOne({ customerId }).lean()
 
             let result = {};
 
             if (cart) { // GIỏ hàng đã tồn tại
-                newProductCart = cart.products.map((item) => {
-                    if (productId === item.productId) {
-                        const nextQuantity = quantity + item.quantity;
+                let newProductCart = cart.products;
+                const checkProductExits = newProductCart.find(product => product.productId.toString() === productId.toString());
 
-                        if (nextQuantity > foundProduct.stock) {
-                            return res.send({
-                                code: 404,
-                                message: `Số lượng sản phẩm ${product._id} không khả dụng`,
-                            });
-                        } else {
-                            item.quantity = nextQuantity;
-                        }
+                if (!checkProductExits) {
+                    console.log('««««« không tônf tại»»»»»');
+                    newProductCart.push({
+                        productId,
+                        quantity,
+                    })
+                } else {
+                    const nextQuantity = quantity + checkProductExits.quantity;
+
+                    if (nextQuantity > foundProduct.stock) {
+                        return res.send({
+                            code: 404,
+                            message: `Số lượng sản phẩm ${product._id} không khả dụng`,
+                        });
                     }
 
-                    return item;
-                })
+                    newProductCart = newProductCart.map((item) => {
+                        const product = { ...item };
+                        if (productId.toString() === product.productId.toString()) {
+                            product.quantity = nextQuantity;
+                        }
 
-                result = await Cart.findOneAndUpdate(cart._id, {
+                        return product;
+                    })
+
+                }
+
+                result = await Cart.findByIdAndUpdate(cart._id, {
                     customerId,
                     products: newProductCart,
-                });
+                }, { new: true });
+
             } else { // Chưa có giỏ hàng
                 const newItem = new Cart({
                     customerId,
