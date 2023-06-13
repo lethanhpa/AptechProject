@@ -22,10 +22,7 @@ const Index = () => {
             })
             .catch((err) => {
                 console.error(err);
-            })
-
-            .catch((err) => {
-                console.error(err);
+                toast.error('Sign Up failed!');
             }, [refresh]);
     };
 

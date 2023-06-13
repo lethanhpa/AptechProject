@@ -23,4 +23,7 @@ router.route('/')
 router.route('/:id')
     .get(validateSchema(getDetailSchema), getDetail)
 
+router.route('/:customerId/:productId')
+    .delete(validateSchema(removeSchema), remove)
+
 module.exports = router;

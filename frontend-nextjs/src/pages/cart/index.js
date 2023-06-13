@@ -2,10 +2,12 @@ import React, { useState, useEffect, memo } from "react";
 import Styles from "../../styles/cart.module.css";
 import { DeleteOutlined } from "@ant-design/icons";
 import axiosClient from "@/libraries/axiosClient";
-import { Button, Result } from "antd";
+import { Button, Result, Popconfirm } from "antd";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import jwt_decode from "jwt-decode";
+import 'react-toastify/dist/ReactToastify.css';
+import { toast, ToastContainer } from "react-toastify";
 
 
 function Cart() {
@@ -41,7 +43,9 @@ function Cart() {
         const response = await axiosClient.get(`/cart/${customerId}`);
         console.log('««««« response »»»»»', response);
 
-        // setCart(data.payload.results);
+        const data = response.data;
+
+        setCart(data.payload.results);
 
       } catch (error) {
         console.log(error);
@@ -50,6 +54,31 @@ function Cart() {
     fetchCart();
   }, []);
 
+  const handleRemoveCart = async (productId) => {
+    try {
+      const newCarts = [...cart];
+      const cartIndex = newCarts.findIndex((cart) =>
+        cart.products.some((product) => product.productId === productId)
+      );
+      const productIndex = newCarts[cartIndex].products.findIndex((product) =>
+        product.productId === productId
+      );
+
+      newCarts[cartIndex].products.splice(productIndex, 1);
+
+      setCart(newCarts);
+      const token = localStorage.getItem("token");
+      const decoded = jwt_decode(token);
+      const customerId = decoded._id;
+
+      await axiosClient.delete(`/cart/${customerId}/${productId}`);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const text = 'Are you sure you want to delete?';
+  const description = 'Delete the it';
 
   return (
     <>
@@ -60,61 +89,77 @@ function Cart() {
         <div className={Styles.cart_left_wrap}>
           <div className={Styles.cart_left_list}>
             <div className={Styles.cart_left_item}>
-              {cart.length > 0 ? (
+              {cart.length > 0 && (
                 cart.map((item) => (
-                  item.products.map((product) => (
-                    <div key={product._id} className={Styles.cart_item_wrap}>
-                      <div className={Styles.card_wrap_info}>
-                        <div className={Styles.cart_product_img}>
-                          <img src={product.product?.img} />
-                        </div>
-                        <div className={Styles.cart_product_info}>
-                          <div
-                            className={Styles.cart_product_name}
-                          >{product.product?.name}</div>
-                          <div
-                            className={Styles.card_product_type}
-                          >{product.product?.description}</div>
-                          <div
-                            style={{
-                              display: "flex",
-                              alignItems: "center",
-                              gap: "0 15px",
-                            }}
-                          >
-                            <div className={Styles.sizeQty}>
-                              <span>
-                                Quantity: {product.quantity}
-                              </span>
+                  item.products.length > 0 ? (
+                    item.products.map((product) => (
+                      <div key={product._id} className={Styles.cart_item_wrap}>
+                        <div className={Styles.card_wrap_info}>
+                          <div className={Styles.cart_product_img}>
+                            <Link href={`/products/t/${product.product?.slug}`}>
+                              <img src={product.product?.img} />
+                            </Link>
+                          </div>
+                          <div className={Styles.cart_product_info}>
+                            <Link href={`/products/t/${product.product?.slug}`}>
+                              <div
+                                className={Styles.cart_product_name}
+                              >{product.product?.name}</div>
+                              <div
+                                className={Styles.card_product_type}
+                              >{product.product?.description}</div>
+                              <div
+                                style={{
+                                  display: "flex",
+                                  alignItems: "center",
+                                  gap: "0 15px",
+                                }}
+                              >
+                                <div className={Styles.sizeQty}>
+                                  <span>
+                                    Quantity: {product.quantity}
+                                  </span>
+                                </div>
+                              </div>
+                            </Link>
+                            <div className={Styles.card_icon}>
+                              <Popconfirm
+                                placement="top"
+                                title={text}
+                                description={description}
+                                onConfirm={() => {
+                                  handleRemoveCart(product.product._id)
+                                  toast.success("Delete successfully!");
+                                }}
+                                okText="Yes"
+                                cancelText="No"
+                              >
+                                <button className={Styles.icon}>
+                                  <DeleteOutlined />
+                                </button><ToastContainer />
+                              </Popconfirm>
                             </div>
                           </div>
-                          <div className={Styles.card_icon}>
-                            <button className={Styles.icon}>
-                              <DeleteOutlined />
-                            </button>
-                          </div>
+                        </div>
+                        <div className={Styles.cart_product_price}>
+                          <span>Price: {((product.product.price * (100 - product.product.discount)) / 100) * product.quantity}$</span>
                         </div>
                       </div>
-                      <div className={Styles.cart_product_price}>
-                        <span>Price: {((product.product.price * (100 - product.product.discount)) / 100) * product.quantity}$</span>
-                      </div>
-                    </div>
-                  ))
+                    ))) : (
+                    <Result
+                      title="There are no products in your cart yet"
+                      extra={
+                        <Button
+                          type="submit"
+                          style={{ backgroundColor: "#1C86EE", color: "#fff" }}
+                          key="console"
+                        >
+                          <Link href="/products">Keep Shopping</Link>
+                        </Button>
+                      }
+                    />
+                  )
                 ))
-              ) : (
-                <Result
-                  status="warning"
-                  title="There are no products in your cart yet"
-                  extra={
-                    <Button
-                      type="submit"
-                      style={{ backgroundColor: "#FF9900", color: "#fff" }}
-                      key="console"
-                    >
-                      <Link href="/products">Go Shop</Link>
-                    </Button>
-                  }
-                />
               )}
             </div>
           </div>

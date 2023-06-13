@@ -120,29 +120,23 @@ module.exports = {
 
     remove: async function (req, res, next) {
         try {
-            const { customerId, productId } = req.body;
+            const { customerId, productId } = req.params;
 
-            let cart = await Cart.findOne({ customerId });
+            let cart = await Cart.findOneAndUpdate(
+                { customerId },
+                { $pull: { products: { productId } } }
+            );
 
             if (!cart) {
                 return res.status(404).json({
                     code: 404,
-                    message: 'Giỏ hàng không tồn tại',
-                });
-            }
-
-            if (cart.products.length === 1 && cart.products[0].productId === productId) {
-                await Cart.deleteOne({ _id: cart._id });
-            } else {
-                await Cart.findOneAndUpdate(cart._id, {
-                    customerId,
-                    products: cart.product.filter((item) => item.productId !== productId),
+                    message: "Giỏ hàng không tồn tại",
                 });
             }
 
             return res.send({
                 code: 200,
-                message: 'Xóa thành công',
+                message: "Xóa thành công",
             });
         } catch (err) {
             return res.status(500).json({ code: 500, error: err });
