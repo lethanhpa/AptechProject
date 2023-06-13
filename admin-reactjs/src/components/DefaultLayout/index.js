@@ -62,14 +62,14 @@ export default function DefaultLayout({ children }, props) {
     const [isLogin, setIsLogin] = useState(false);
 
     useEffect(() => {
-        const storedLoginState = localStorage.getItem('isLogin');
+        const token = localStorage.getItem('token');
 
-        if (storedLoginState === 'true') {
+        if (token) {
             setIsLogin(true);
         }
     }, []);
     const handleLogout = () => {
-        localStorage.removeItem('isLogin');
+        localStorage.removeItem('token');
         setIsLogin(false);
         navigate(`/`);
     };

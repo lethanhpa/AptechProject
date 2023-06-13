@@ -1,43 +1,47 @@
-import React from 'react';
-import axiosClient from '../../libraries/axiosClient';
 import Moment from "moment";
+import React, { useState, useEffect, memo } from "react";
+import axiosClient from "@/libraries/axiosClient";
+import jwt_decode from "jwt-decode";
 
-const ProfilePage = (props) => {
-    const { customers } = props;
+const ProfilePage = () => {
+    const [customers, setCustomers] = useState([]);
+    useEffect(() => {
+        const fetchCustomers = async () => {
+            try {
+                const token = localStorage.getItem("token");
+                const decoded = jwt_decode(token);
+                const customerId = decoded._id;
+                console.log('customerId', customerId);
+
+                const response = await axiosClient.get(`/customers/${customerId}`);
+                console.log('««««« response »»»»»', response);
+                const data = response.data;
+
+                setCustomers(data);
+            } catch (error) {
+                console.log(error);
+            }
+        };
+        fetchCustomers();
+    }, []);
     return (
         <>
-            {customers.map((item) => (
-                item._id === "647f88f4373ea20d1d07ceee" && (
-                    <div>
-                        <h1>Profile User</h1>
-                        <p>Name: {item.lastName} {item.firstName}</p>
-                        <p>Email: {item.email}</p>
-                        <p>Phone Number: {item.phoneNumber}</p>
-                        <p>Address: {item.address}</p>
-                        <p>Birthday: {Moment(item.birthday).format("DD/MM/YYYY")}</p>
-                    </div>
-                )
-            ))
-            }
+            {customers ? (
+                <div key={customers._id}>
+                    <h1>Profile User</h1>
+                    <p>Name: {customers.lastName} {customers.firstName}</p>
+                    <p>Email: {customers.email}</p>
+                    <p>Phone Number: {customers.phoneNumber}</p>
+                    <p>Address: {customers.address}</p>
+                    <p>Birthday: {Moment(customers.birthday).format("DD/MM/YYYY")}</p>
+                </div>
+            ) : (
+                <div>
+                    <h1>Thông tin người dùng không khả dụng</h1>
+                </div>
+            )}
         </>
     );
 };
 
-export default ProfilePage;
-
-export async function getStaticProps() {
-    try {
-        const response = await axiosClient.get("/customers");
-
-        return {
-            props: {
-                customers: response.data
-            },
-
-        };
-    } catch (error) {
-        return {
-            notFound: true,
-        };
-    }
-}
+export default memo(ProfilePage);

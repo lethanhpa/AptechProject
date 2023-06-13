@@ -98,3 +98,30 @@
         line-height: 1.5;
     }
 }
+
+.quantity {
+    display: flex;
+    align-items: center;
+    font-size: 20px;
+    background: none;
+}
+
+.quantity_btn {
+    display: flex;
+    align-items: center;
+    margin-left: 10px;
+}
+
+.quantity_btn .btn {
+    font-size: 20px;
+    display: flex;
+    cursor: pointer;
+}
+
+.quantity_input {
+    width: 70px;
+    text-align: center;
+    font-size: 20px;
+    border: none;
+    background: none;
+}

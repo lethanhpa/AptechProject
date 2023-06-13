@@ -1,30 +1,45 @@
 import React, { useState } from "react";
 import numeral from "numeral";
 import PropTypes from "prop-types";
-import { Button, message, Form } from 'antd'
+import { Button, Form, Input, InputNumber } from 'antd'
 import Styles from "../../../styles/productDetail.module.css"
 import axiosClient from "../../../libraries/axiosClient";
-const apiName = "/cart";
+import 'react-toastify/dist/ReactToastify.css';
+import { toast, ToastContainer } from "react-toastify";
+import jwt_decode from "jwt-decode";
+import { useRouter } from "next/router";
+
 
 function ProductDetail(props) {
-  const [refresh, setRefresh] = useState(0);
   const { product } = props;
-  const onFinish = (values) => {
-    axiosClient
-      .post(apiName, values)
-      .then((_response) => {
-        setRefresh((f) => f + 1);
-        message.success("Add to cart successfully!", 1.5);
-      })
-      .catch((err) => {
-        console.error(err);
-      }, [refresh]);
+  const router = useRouter();
+
+  const [quantity, setQuantity] = useState(1);
+
+  const handleAddToCart = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const decoded = jwt_decode(token);
+      const customerId = decoded._id;
+
+      await axiosClient.post(`/cart`, {
+        customerId: customerId,
+        productId: product._id,
+        quantity: quantity,
+      });
+
+      toast.success("Add to cart successfully!!!");
+      router.push('/cart');
+
+    } catch (error) {
+      console.log("error", error);
+    }
   };
 
   return (
     <>
       {product && (
-        <Form onFinish={onFinish}>
+        <Form>
           <div key={product.slug} className={Styles.productDetail}>
             <div className={Styles.productDetail_img}>
               <img src={product.img} alt="" />
@@ -42,9 +57,24 @@ function ProductDetail(props) {
                   </div>
                 </div>
               ) : (<div className={Styles.productDetail_not_discount}>{numeral(product.price).format("0,0")}$</div>)}
-              <div className={Styles.productDetail_add_cart}>
-                <Button type="submit" htmlType="submit">Add To Cart</Button>
+              <div className={Styles.quantity}>
+                <span>Quantity:</span>
+                <div className={Styles.quantity_btn}>
+                  <Input
+                    className={Styles.quantity_input}
+                    type="number"
+                    min="1"
+                    max={product.stock}
+                    value={quantity}
+                    onChange={(e) => setQuantity(parseInt(e.target.value))}
+                  />
+
+                </div>
               </div>
+              <div className={Styles.productDetail_add_cart}>
+                <Button onClick={handleAddToCart} type="submit" htmlType="submit">Add To Cart</Button>
+              </div>
+              <ToastContainer />
             </div>
           </div >
         </Form>

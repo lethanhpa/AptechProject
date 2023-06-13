@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import styles from './Login.module.css';
+import Styles from './Login.module.css';
 import axios from '../../libraries/axiosClient';
+import { message } from 'antd';
 
 const Login = (props) => {
   const { setIsLogin } = props;
@@ -18,48 +19,57 @@ const Login = (props) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const token = {
+    const account = {
       email,
       password,
     };
 
     try {
-      const response = await axios.post("/employees/login", token);
-      console.log(response);
+      const response = await axios.post("/employees/login", account);
+      const { token } = response.data;
 
-      localStorage.setItem('isLogin', 'true', response.data.token);
-      alert("Login successfully!!!");
+      localStorage.setItem('token', token);
+
+      axios.defaults.headers.Authorization = `Bearer ${token}`;
+
       setIsLogin(true);
-      //   window.location.href = "/home";
+
+      message.success("Login successfully!!!");
     } catch (error) {
       console.error(error);
-      alert("Login failed");
+      message.error("Login failed");
     }
   };
 
   return (
-    <form className={styles.loginForm} onSubmit={handleSubmit}>
+    <div className={Styles.login_box}>
       <h2>Login</h2>
-      <div className={styles.formGroup}>
-        <label htmlFor="email">Email</label>
-        <input
-          type="email"
-          id="email"
-          value={email}
-          onChange={handleEmailChange}
-        />
-      </div>
-      <div className={styles.formGroup}>
-        <label htmlFor="password">Password</label>
-        <input
-          type="password"
-          id="password"
-          value={password}
-          onChange={handlePasswordChange}
-        />
-      </div>
-      <button type="submit" className={styles.submitButton}>Login</button>
-    </form>
+      <form onSubmit={handleSubmit}>
+        <div className={Styles.user_box}>
+          <input
+            type="email"
+            value={email}
+            onChange={handleEmailChange}
+          />
+          <label>Email</label>
+        </div>
+        <div className={Styles.user_box}>
+          <input
+            type="password"
+            value={password}
+            onChange={handlePasswordChange}
+          />
+          <label>Password</label>
+        </div>
+        <div className={Styles.btn_login}>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          <button type="submit" >L O G I N</button>
+        </div>
+      </form>
+    </div>
   );
 };
 

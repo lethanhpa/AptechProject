@@ -56,7 +56,7 @@ const Navigation = () => {
                         </li>
                         {isLogin ? (
                             <>
-                                <li setIsLogin={setIsLogin}>
+                                <li>
                                     <Link href="/profile">
                                         Profile <UserOutlined />
                                     </Link>

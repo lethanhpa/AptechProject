@@ -35,8 +35,8 @@ function Home(props) {
         <div id="collection" className={Styles.collection}>
           {suppliers.map((item) => {
             return (
-              <Row>
-                <div key={item.id} className={`${Styles.container}  ${Styles.collections}`}>
+              <Row key={item._id}>
+                <div className={`${Styles.container}  ${Styles.collections}`}>
                   <div className={Styles.content}>
                     <div className={Styles.image}>
                       <img src={item.img} alt="img" />
@@ -67,7 +67,7 @@ function Home(props) {
                 })
                 .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
                 .map((item) => (
-                  <div className={Styles.best_p1} key={item.slug}>
+                  <div className={Styles.best_p1} key={item._id}>
                     <img src={item.img} alt="img" />
                     <div className={Styles.best_p1_txt}>
                       <div className={Styles.name}>
@@ -102,7 +102,7 @@ function Home(props) {
             <div className={Styles.best_seller}>
               {products.map((item) => (
                 item.discount > 0 && (
-                  <div key={item.id} className={Styles.best_p1}>
+                  <div key={item._id} className={Styles.best_p1}>
                     <img src={item.img} alt="img" />
                     <div className={Styles.best_p1_txt}>
                       <div className={Styles.name}>
@@ -138,7 +138,7 @@ function Home(props) {
           <div className={`${Styles.l_news}  ${Styles.container}`}>
             {products.map((item) => (
               item.stock <= 10 && (
-                <div className={Styles.l_news1}>
+                <div key={item._id} className={Styles.l_news1}>
                   <div className={Styles.news1_img}>
                     <img src={item.img} alt="img" />
                   </div>

@@ -4,8 +4,10 @@ import "@/styles/globals.css";
 import Navigation from "@/components/navigation";
 import Footer from "@/components/footer";
 import Head from "@/components/head";
+import axiosClient from "../libraries/axiosClient";
 
 function App({ Component, pageProps }) {
+  // const token = localStorage.getItem("token");
 
   // axiosClient.defaults.headers.Authorization = `Bearer ${token}`;
 
@@ -19,8 +21,8 @@ function App({ Component, pageProps }) {
   );
 }
 
-App.propTypes = {
-  Component: PropTypes.func.isRequired,
-  pageProps: PropTypes.instanceOf(Object).isRequired,
-};
+// App.propTypes = {
+//   Component: PropTypes.func.isRequired,
+//   pageProps: PropTypes.instanceOf().isRequired,
+// };
 export default App;
