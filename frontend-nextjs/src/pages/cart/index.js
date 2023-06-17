@@ -10,7 +10,6 @@ import jwt_decode from "jwt-decode";
 import 'react-toastify/dist/ReactToastify.css';
 import { toast, ToastContainer } from "react-toastify";
 
-
 function Cart() {
   const [cart, setCart] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
@@ -81,50 +80,7 @@ function Cart() {
   const description = 'Delete the it';
 
   const handleAddOrder = async () => {
-    const token = localStorage.getItem("token");
-    const decoded = jwt_decode(token);
-    const customerId = decoded._id;
-    console.log("customerId", customerId);
-
-    const orderDetails = cart[0].products.map((p) => {
-      return {
-        productId: p.product._id,
-        quantity: p.quantity,
-        price: p.product.price - (p.product.price * p.product.discount / 100),
-        discount: p.product.discount,
-      };
-    });
-
-    const shippedDate = new Date("2023-07-07T00:00:00.000Z");
-
-    const order = {
-      createdDate: new Date(),
-      shippedDate: shippedDate,
-      paymentType: "CASH",
-      shippingAddress: "38 Yên Bái - Đà Nẵng",
-      status: "WAITING",
-      description: "Hàng dễ vỡ xin nhẹ tay ",
-      customerId: customerId,
-      employeeId: "645e2007f8943dba6e56cd15",
-      orderDetails: orderDetails,
-    };
-
-    console.log("order", order);
-    try {
-      const response = await axiosClient.post("/orders", order);
-      console.log("response", response);
-
-      if (response) {
-        await axiosClient.delete(`/cart/${customerId}`);
-        message.success("Đặt hàng thành công!");
-
-        router.push("/orders")
-      } else {
-        message.success("Đặt hàng thất bại!", 1.5);
-      }
-    } catch (error) {
-      console.error(error);
-    }
+    router.push("/checkout")
   };
 
   return (
@@ -230,7 +186,7 @@ function Cart() {
                 </div>
               </div>
               <div className={Styles.card_right_button}>
-                <button onClick={handleAddOrder}>Check Out</button>
+                <button onClick={handleAddOrder}>Member Checkout</button>
               </div>
             </div>
           </div>
