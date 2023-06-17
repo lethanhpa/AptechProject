@@ -40,7 +40,7 @@ const Index = () => {
 
             toast.success("Login successfully!!!");
 
-            router.push('/cart');
+            router.push('/products');
 
         } catch (error) {
             console.error(error);

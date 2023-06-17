@@ -2,9 +2,10 @@ import React, { useState, useEffect, memo } from "react";
 import Styles from "../../styles/cart.module.css";
 import { DeleteOutlined } from "@ant-design/icons";
 import axiosClient from "@/libraries/axiosClient";
-import { Button, Result, Popconfirm } from "antd";
+import { Button, Result, Popconfirm, message } from "antd";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import numeral from "numeral";
 import jwt_decode from "jwt-decode";
 import 'react-toastify/dist/ReactToastify.css';
 import { toast, ToastContainer } from "react-toastify";
@@ -16,7 +17,6 @@ function Cart() {
   const router = useRouter();
 
   useEffect(() => {
-    // Tính tổng giá tiền khi cart thay đổi
     const calculateTotalPrice = () => {
       let total = 0;
       cart.forEach((item) => {
@@ -80,6 +80,53 @@ function Cart() {
   const text = 'Are you sure you want to delete?';
   const description = 'Delete the it';
 
+  const handleAddOrder = async () => {
+    const token = localStorage.getItem("token");
+    const decoded = jwt_decode(token);
+    const customerId = decoded._id;
+    console.log("customerId", customerId);
+
+    const orderDetails = cart[0].products.map((p) => {
+      return {
+        productId: p.product._id,
+        quantity: p.quantity,
+        price: p.product.price - (p.product.price * p.product.discount / 100),
+        discount: p.product.discount,
+      };
+    });
+
+    const shippedDate = new Date("2023-07-07T00:00:00.000Z");
+
+    const order = {
+      createdDate: new Date(),
+      shippedDate: shippedDate,
+      paymentType: "CASH",
+      shippingAddress: "38 Yên Bái - Đà Nẵng",
+      status: "WAITING",
+      description: "Hàng dễ vỡ xin nhẹ tay ",
+      customerId: customerId,
+      employeeId: "645e2007f8943dba6e56cd15",
+      orderDetails: orderDetails,
+    };
+
+    console.log("order", order);
+    try {
+      const response = await axiosClient.post("/orders", order);
+      console.log("response", response);
+
+      if (response) {
+        await axiosClient.delete(`/cart/${customerId}`);
+        message.success("Đặt hàng thành công!");
+
+        router.push("/orders")
+      } else {
+        message.success("Đặt hàng thất bại!", 1.5);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <>
       <div className={Styles.cart}>
@@ -107,7 +154,7 @@ function Cart() {
                               >{product.product?.name}</div>
                               <div
                                 className={Styles.card_product_type}
-                              >{product.product?.description}</div>
+                              >In stock: {product.product?.stock}</div>
                               <div
                                 style={{
                                   display: "flex",
@@ -142,7 +189,7 @@ function Cart() {
                           </div>
                         </div>
                         <div className={Styles.cart_product_price}>
-                          <span>Price: {((product.product.price * (100 - product.product.discount)) / 100) * product.quantity}$</span>
+                          <span>Price: ${numeral(((product.product.price * (100 - product.product.discount)) / 100) * product.quantity).format("0,0")}</span>
                         </div>
                       </div>
                     ))) : (
@@ -169,7 +216,7 @@ function Cart() {
               <div className={Styles.card_right_top}>
                 <div className={Styles.card_right_text}>
                   <span>Subtotal</span>
-                  Price: {totalPrice}$
+                  Price: ${numeral(totalPrice).format("0,0")}
                 </div>
                 <div className={Styles.card_right_text}>
                   <span>Estimated Delivery & Handling</span>
@@ -179,11 +226,11 @@ function Cart() {
               <div className={Styles.card_right_bottom}>
                 <div className={Styles.card_right_text}>
                   <span>Total:</span>
-                  <p>{totalPrice}$</p>
+                  <p>${numeral(totalPrice).format("0,0")}</p>
                 </div>
               </div>
               <div className={Styles.card_right_button}>
-                <button>Buy Now</button>
+                <button onClick={handleAddOrder}>Check Out</button>
               </div>
             </div>
           </div>

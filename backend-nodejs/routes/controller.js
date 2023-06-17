@@ -142,4 +142,30 @@ module.exports = {
             return res.status(500).json({ code: 500, error: err });
         }
     },
+
+    removeAllProducts: async function (req, res, next) {
+        try {
+            const { customerId } = req.params;
+
+            let cart = await Cart.findOneAndUpdate(
+                { customerId },
+                { $set: { products: [] } }
+            );
+
+            if (!cart) {
+                return res.status(404).json({
+                    code: 404,
+                    message: "Giỏ hàng không tồn tại",
+                });
+            }
+
+            return res.send({
+                code: 200,
+                message: "Xóa tất cả sản phẩm thành công",
+            });
+        } catch (err) {
+            return res.status(500).json({ code: 500, error: err });
+        }
+    },
+
 };

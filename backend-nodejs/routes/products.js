@@ -16,6 +16,8 @@ mongoose.connect(CONNECTION_STRING);
 router.get('/', validateSchema(getProductsSchema), async (req, res) => {
   try {
     const {
+      categoryName,
+      supplierName,
       category,
       supplier,
       skip,
@@ -31,7 +33,14 @@ router.get('/', validateSchema(getProductsSchema), async (req, res) => {
     const conditionFind = {};
 
     if (category) conditionFind.categoryId = category;
+    if (categoryName) {
+      conditionFind.name = new RegExp(`${categoryName}`)
+    }
+
     if (supplier) conditionFind.supplierId = supplier;
+    if (supplierName) {
+      conditionFind.name = new RegExp(`${supplierName}`)
+    }
 
     if (productName) {
       conditionFind.name = new RegExp(`${productName}`)

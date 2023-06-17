@@ -49,13 +49,13 @@ const Navigation = () => {
                                 Shop <ShopOutlined />
                             </Link>
                         </li>
-                        <li>
-                            <Link href="/cart">
-                                Cart <ShoppingCartOutlined />
-                            </Link>
-                        </li>
                         {isLogin ? (
                             <>
+                                <li>
+                                    <Link href="/cart">
+                                        Cart <ShoppingCartOutlined />
+                                    </Link>
+                                </li>
                                 <li>
                                     <Link href="/profile">
                                         Profile <UserOutlined />

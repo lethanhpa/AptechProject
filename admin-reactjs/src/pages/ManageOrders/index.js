@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Button, Space, Table, message } from 'antd';
+import Moment from "moment";
 import { DeleteOutlined } from "@ant-design/icons";
 import axios from "../../libraries/axiosClient.js";
 const { Column } = Table;
@@ -24,7 +25,9 @@ export default function ManageOrder() {
         <>
             <Table dataSource={data} rowKey="_id">
                 <Column title="Shipping Address" dataIndex="shippingAddress" key="shippingAddress" />
-                <Column title="Shipped Date" dataIndex="shippedDate" key="shippedDate" />
+                <Column title="Shipped Date" dataIndex="shippedDate" key="shippedDate" render={(text) => {
+                    return <span>{Moment(text).format("DD/MM/YYYY")}</span>;
+                }} />
                 <Column title="Payment Type" dataIndex="paymentType" key="paymentType" />
                 <Column title="Status" dataIndex="status" key="status" />
                 <Column title="Customers" dataIndex="customer.fullName" key="customer.fullName" render={(_text, record) => {
@@ -39,6 +42,10 @@ export default function ManageOrder() {
                             Quantity: {record.orderDetails[0].quantity}
                             <br />
                             Product: {record.orderDetails[0].productId}
+                            <br />
+                            Price: ${record.orderDetails[0].price}
+                            <br />
+                            Discount: {record.orderDetails[0].discount}%
                         </span>
                     );
                 }} />

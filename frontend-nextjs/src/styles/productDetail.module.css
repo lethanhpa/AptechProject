@@ -1,10 +1,10 @@
 .productDetail {
     color: #000;
-    background-color: #f4f4f4;
+    background-color: #F8F9F9;
     display: flex;
     max-width: 100%;
     justify-content: center;
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .productDetail_information {
@@ -12,10 +12,15 @@
     line-height: 2;
 }
 
+.productDetail_img {
+    display: block;
+}
+
 .productDetail_img img {
     width: 400px;
     margin-right: 64px;
     object-fit: cover;
+    position: relative;
 }
 
 .productDetail_name {
@@ -24,39 +29,48 @@
     font-size: 28px;
 }
 
-.productDetail_description {
-    font-size: 22px;
-    color: #7e7e7e;
+.productDetail_category {
+    display: flex;
 }
 
 .productDetail_price {
-    font-size: 22px;
     color: #818181;
     font-weight: 300;
     text-decoration: line-through 1.25px solid #000000;
 }
 
-.productDetail_not_discount {
+.productDetail_category,
+.productDetail_price,
+.productDetail_total,
+.productDetail_not_discount,
+.productDetail_discount,
+.productDetail_stock {
+    font-weight: 300;
     font-size: 22px;
 }
 
-.productDetail_discount,
-.productDetail_stock {
-    font-size: 22px;
+.productDetail_description {
+    font-size: 18px;
+    color: #818181;
+    max-width: 400px;
+    font-weight: 300;
 }
 
 .productDetail_total {
-    font-size: 22px;
     margin-left: 20px;
 }
 
+.productDetail_add_cart {
+    padding-bottom: 48px;
+}
+
 .productDetail_add_cart button {
-    width: 300px;
-    height: auto;
+    width: 270px;
+    height: 70px;
     padding: 18px 24px;
     border-radius: 30px;
     font-weight: 600;
-    font-size: 20px;
+    font-size: 22px;
     background: rgb(17, 17, 17);
     color: rgb(255, 255, 255);
     margin-top: 24px;
@@ -67,6 +81,9 @@
 .productDetail_add_cart button:hover {
     background: rgba(0, 0, 0, 0.75);
     transition: 1s linear;
+    background: none;
+    border: 1px solid #000;
+    color: #000;
 }
 
 @media (max-width: 500px) {
@@ -102,7 +119,8 @@
 .quantity {
     display: flex;
     align-items: center;
-    font-size: 20px;
+    font-size: 22px;
+    font-weight: 300;
     background: none;
 }
 
@@ -113,7 +131,7 @@
 }
 
 .quantity_btn .btn {
-    font-size: 20px;
+    font-size: 22px;
     display: flex;
     cursor: pointer;
 }
@@ -121,7 +139,7 @@
 .quantity_input {
     width: 70px;
     text-align: center;
-    font-size: 20px;
+    font-size: 22px;
     border: none;
     background: none;
 }

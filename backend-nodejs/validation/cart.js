@@ -22,6 +22,14 @@ module.exports = {
         }),
     }),
 
+    removeAllSchema: yup.object({
+        params: yup.object({
+            customerId: yup.string().test('validationID', 'ID sai định dạng', (value) => {
+                return ObjectId.isValid(value);
+            }),
+        }),
+    }),
+
     createSchema: yup.object({
         body: yup.object({
             customerId: yup

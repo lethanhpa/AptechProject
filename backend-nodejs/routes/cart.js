@@ -6,16 +6,17 @@ const {
     getDetailSchema,
     removeSchema,
     createSchema,
+    removeAllSchema
 } = require('../validation/cart');
 const {
     getDetail,
     create,
     remove,
+    removeAllProducts
 } = require('./controller');
 
 router.route('/')
     .post(validateSchema(createSchema), create)
-    .delete(validateSchema(removeSchema), remove)
 
 router.route('/')
     .get(validateSchema(getDetailSchema), getDetail)
@@ -25,5 +26,8 @@ router.route('/:id')
 
 router.route('/:customerId/:productId')
     .delete(validateSchema(removeSchema), remove)
+
+router.route('/:customerId')
+    .delete(validateSchema(removeAllSchema), removeAllProducts)
 
 module.exports = router;

@@ -3,6 +3,7 @@ import Styles from "../styles/home.module.css"
 import { Row } from 'antd';
 import { TagOutlined } from '@ant-design/icons'
 import axiosClient from "../libraries/axiosClient";
+import Link from "next/link"
 
 function Home(props) {
   const { suppliers } = props;
@@ -22,7 +23,7 @@ function Home(props) {
               <div className={Styles.home_label}>
                 <p>A specialist label creating luxury essentials. Ethically crafted<br />with an unwavering commitment to exceptional quality.</p>
               </div>
-              <button><a href="#sellers">SHOP NOW</a><i className="bx bx-right-arrow-alt" /></button>
+              <button><a href={"/products"}>SHOP NOW</a><i className="bx bx-right-arrow-alt" /></button>
               <div className={Styles.home_social_icons}>
                 <a href="#"><i className="bx bxl-facebook" /></a>
                 <a href="#"><i className="bx bxl-twitter" /></a>
@@ -67,32 +68,31 @@ function Home(props) {
                 })
                 .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
                 .map((item) => (
-                  <div className={Styles.best_p1} key={item._id}>
-                    <img src={item.img} alt="img" />
-                    <div className={Styles.best_p1_txt}>
-                      <div className={Styles.name}>
-                        <p>{item.name}</p>
-                      </div>
-                      <div className="rating">
-                        <i className="bx bxs-star" />
-                        <i className="bx bxs-star" />
-                        <i className="bx bxs-star" />
-                        <i className="bx bxs-star" />
-                        <i className="bx bxs-star" />
-                      </div>
-                      <div className={Styles.description}>
-                        {item.description}
-                        <div className="colors">
-                          <i className="bx bxs-circle blank" />
-                          <i className="bx bxs-circle blue" />
-                          <i className="bx bxs-circle brown" />
+                  <Link href={`/products/t/${item.slug}`}>
+                    <div className={Styles.best_p1} key={item._id}>
+                      <img src={item.img} alt="img" />
+                      <div className={Styles.best_p1_txt}>
+                        <div className={Styles.name}>
+                          <p>{item.name}</p>
+                        </div>
+                        <div className="rating">
+                          <i className="bx bxs-star" />
+                          <i className="bx bxs-star" />
+                          <i className="bx bxs-star" />
+                          <i className="bx bxs-star" />
+                          <i className="bx bxs-star" />
+                        </div>
+                        <div className={Styles.description}>
+                          {item.category.name}
+                          <div className="colors">
+                            <i className="bx bxs-circle blank" />
+                            <i className="bx bxs-circle blue" />
+                            <i className="bx bxs-circle brown" />
+                          </div>
                         </div>
                       </div>
-                      <div className={Styles.buy_now}>
-                        <button><a href={`/products/t/${item.slug}`}>Buy Now</a></button>
-                      </div>
                     </div>
-                  </div>
+                  </Link>
                 ))}
             </div>
 
@@ -102,30 +102,29 @@ function Home(props) {
             <div className={Styles.best_seller}>
               {products.map((item) => (
                 item.discount > 0 && (
-                  <div key={item._id} className={Styles.best_p1}>
-                    <img src={item.img} alt="img" />
-                    <div className={Styles.best_p1_txt}>
-                      <div className={Styles.name}>
-                        <p>{item.name}</p>
-                      </div>
-                      <div className={Styles.description}>
-                        <p>{item.description}</p>
-                      </div>
-                      <div className={Styles.discount}>
-                        <p><TagOutlined /> {item.discount}%</p>
-                      </div>
-                      <div className={Styles.rating}>
-                        <i className={`${Styles.bx}  ${Styles.bxs_star}`} />
-                        <i className={`${Styles.bx}  ${Styles.bxs_star}`} />
-                        <i className={`${Styles.bx}  ${Styles.bxs_star}`} />
-                        <i className={`${Styles.bx}  ${Styles.bxs_star}`} />
-                        <i className={`${Styles.bx}  ${Styles.bxs_star}`} />
-                      </div>
-                      <div className={Styles.buy_now}>
-                        <button><a href={`/products/t/${item.slug}`}>Buy  Now</a></button>
+                  <Link href={`/products/t/${item.slug}`}>
+                    <div key={item._id} className={Styles.best_p1}>
+                      <img src={item.img} alt="img" />
+                      <div className={Styles.best_p1_txt}>
+                        <div className={Styles.name}>
+                          <p>{item.name}</p>
+                        </div>
+                        <div className={Styles.description}>
+                          <p>{item.category.name}</p>
+                        </div>
+                        <div className={Styles.discount}>
+                          <p><TagOutlined /> {item.discount}%</p>
+                        </div>
+                        <div className={Styles.rating}>
+                          <i className={`${Styles.bx}  ${Styles.bxs_star}`} />
+                          <i className={`${Styles.bx}  ${Styles.bxs_star}`} />
+                          <i className={`${Styles.bx}  ${Styles.bxs_star}`} />
+                          <i className={`${Styles.bx}  ${Styles.bxs_star}`} />
+                          <i className={`${Styles.bx}  ${Styles.bxs_star}`} />
+                        </div>
                       </div>
                     </div>
-                  </div>
+                  </Link>
                 )))}
             </div>
           </div>
@@ -144,7 +143,7 @@ function Home(props) {
                   </div>
                   <div className={Styles.news1_conte}>
                     <div className={Styles.date_news1}>
-                      <p><i className={`${Styles.bx}  ${Styles.bxs_calendar}`} />{item.description}</p>
+                      <p><i className={`${Styles.bx}  ${Styles.bxs_calendar}`} />{item.category.name}</p>
                       <h4>{item.name}</h4>
                       <a href={`/products/t/${item.slug}`} >More</a>
                     </div>

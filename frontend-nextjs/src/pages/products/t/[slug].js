@@ -17,8 +17,13 @@ function ProductDetail(props) {
   const [quantity, setQuantity] = useState(1);
 
   const handleAddToCart = async () => {
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+      router.push('/signin');
+      return;
+    }
     try {
-      const token = localStorage.getItem("token");
       const decoded = jwt_decode(token);
       const customerId = decoded._id;
 
@@ -46,17 +51,17 @@ function ProductDetail(props) {
             </div >
             <div className={Styles.productDetail_information}>
               <div className={Styles.productDetail_name}>{product.name}</div>
-              <div className={Styles.productDetail_description}>{product.description}</div>
-              <div className={Styles.productDetail_stock}>Stock: {product.stock}</div>
+              <div className={Styles.productDetail_category}>{product.category?.name}</div>
+              <div className={Styles.productDetail_stock}>In stock: {product.stock}</div>
               {product.discount > 0 ? (
                 <div>
                   <div className={Styles.productDetail_discount}>Sale off: {product.discount}%</div>
                   <div style={{ display: 'flex' }}>
-                    <div className={Styles.productDetail_price}>{numeral(product.price).format("0,0")}$</div>
-                    <div className={Styles.productDetail_total}>{numeral(product.total).format("0,0")}$</div>
+                    <div className={Styles.productDetail_price}>${numeral(product.price).format("0,0")}</div>
+                    <div className={Styles.productDetail_total}>${numeral(product.total).format("0,0")}</div>
                   </div>
                 </div>
-              ) : (<div className={Styles.productDetail_not_discount}>{numeral(product.price).format("0,0")}$</div>)}
+              ) : (<div className={Styles.productDetail_not_discount}>${numeral(product.price).format("0,0")}</div>)}
               <div className={Styles.quantity}>
                 <span>Quantity:</span>
                 <div className={Styles.quantity_btn}>
@@ -68,9 +73,9 @@ function ProductDetail(props) {
                     value={quantity}
                     onChange={(e) => setQuantity(parseInt(e.target.value))}
                   />
-
                 </div>
               </div>
+              <div className={Styles.productDetail_description}>{product.description}</div>
               <div className={Styles.productDetail_add_cart}>
                 <Button onClick={handleAddToCart} type="submit" htmlType="submit">Add To Cart</Button>
               </div>
