@@ -57,49 +57,69 @@ router.get("/:id", async function (req, res, next) {
       });
     });
 });
-router.post("/", function (req, res, next) {
-  // Validate
-  const validationSchema = yup.object({
-    body: yup.object({
-      orderDetails: yup.array().required(),
-      createdDate: yup.date().required(),
-      shippedDate: yup.date().required(),
-      paymentType: yup.string().max(20).required(),
-      shippingAddress: yup.string().max(500).required(),
-      status: yup.string().max(50).required(),
-      description: yup.string().required(),
-      customerId: yup
-        .string()
-        .required()
-        .test("Validate ObjectID", "${path} is not valid ObjectID", (value) => {
-          return ObjectId.isValid(value);
-        }),
-      employeeId: yup
-        .string()
-        .required()
-        .test("Validate ObjectID", "${path} is not valid ObjectID", (value) => {
-          return ObjectId.isValid(value);
-        }),
-    }),
-  });
 
-  validationSchema
-    .validate({ body: req.body }, { abortEarly: false })
-    .then(async () => {
-      const data = req.body;
-      let newItem = new Order(data);
-      await newItem.save();
-      res.send({ ok: true, message: "Created", result: newItem });
-    })
-    .catch((err) => {
-      return res.status(400).json({
-        type: err.name,
-        errors: err.errors,
-        message: err.message,
-        provider: "yup",
+// router.post("/", function (req, res, next) {
+//   // Validate
+//   const validationSchema = yup.object({
+//     body: yup.object({
+//       orderDetails: yup.array().required(),
+//       createdDate: yup.date().required(),
+//       shippedDate: yup.date().required(),
+//       paymentType: yup.string().max(20).required(),
+//       shippingAddress: yup.string().max(500).required(),
+//       status: yup.string().max(50).required(),
+//       description: yup.string(),
+//       customerId: yup
+//         .string()
+//         .required()
+//         .test("Validate ObjectID", "${path} is not valid ObjectID", (value) => {
+//           return ObjectId.isValid(value);
+//         }),
+//       employeeId: yup
+//         .string()
+//         .test("Validate ObjectID", "${path} is not valid ObjectID", (value) => {
+//           return ObjectId.isValid(value);
+//         }),
+//     }),
+//   });
+
+//   validationSchema
+//     .validate({ body: req.body }, { abortEarly: false })
+//     .then(async () => {
+//       const data = req.body;
+//       let newItem = new Order(data);
+//       await newItem.save();
+//       res.send({ ok: true, message: "Created", result: newItem });
+//     })
+//     .catch((err) => {
+//       return res.status(400).json({
+//         type: err.name,
+//         errors: err.errors,
+//         message: err.message,
+//         provider: "yup",
+//       });
+//     });
+// });
+
+router.post("/", function (req, res, next) {
+  try {
+    const data = req.body;
+    console.log("req.body", req.body);
+
+    const newItem = new Order(data);
+    newItem
+      .save()
+      .then((result) => {
+        res.send(result);
+      })
+      .catch((err) => {
+        res.status(400).send({ message: err.message });
       });
-    });
+  } catch (err) {
+    res.sendStatus(500);
+  }
 });
+
 router.delete("/:id", function (req, res, next) {
   const validationSchema = yup.object().shape({
     params: yup.object({
@@ -136,6 +156,19 @@ router.delete("/:id", function (req, res, next) {
         provider: "yup",
       });
     });
+});
+
+
+router.patch("/:id", async function (req, res, next) {
+  try {
+    const id = req.params.id;
+    const patchData = req.body;
+    await Order.findByIdAndUpdate(id, patchData);
+
+    res.send({ ok: true, message: "Updated" });
+  } catch (error) {
+    res.status(500).send({ ok: false, error });
+  }
 });
 
 module.exports = router;

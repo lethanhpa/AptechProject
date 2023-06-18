@@ -1,14 +1,19 @@
 import React, { useEffect, useState } from 'react'
-import { Button, Space, Table, message } from 'antd';
+import { Button, Space, Table, message, Form, Popconfirm, Option, Modal, Select } from 'antd';
+import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import Moment from "moment";
-import { DeleteOutlined } from "@ant-design/icons";
 import axios from "../../libraries/axiosClient.js";
 const { Column } = Table;
 const apiName = "/orders";
 
 export default function ManageOrder() {
     const [data, setData] = useState([]);
-    const [refresh, setRefresh] = React.useState(0);
+    const [updateForm] = Form.useForm();
+    const [open, setOpen] = useState(false);
+    const [updateId, setUpdateId] = useState(0);
+    const [refresh, setRefresh] = useState(0);
+    const [employees, setEmployees] = useState([]);
+
     useEffect(() => {
         axios
             .get(apiName)
@@ -21,6 +26,37 @@ export default function ManageOrder() {
                 console.error(err);
             });
     }, [refresh]);
+
+    // Get employees
+    useEffect(() => {
+        axios
+            .get("/employees")
+            .then((response) => {
+                const { data } = response;
+                setEmployees(data);
+            })
+            .catch((err) => {
+                console.error(err);
+            });
+    }, [refresh]);
+
+    const onUpdateFinish = (values) => {
+        axios
+            .patch(apiName + "/" + updateId, values)
+            .then((_response) => {
+                setRefresh((f) => f + 1);
+                updateForm.resetFields();
+                message.success("Update successfully!", 1.5);
+                setOpen(false);
+            })
+            .catch((err) => {
+                console.error(err);
+            });
+    };
+
+    const text = 'Are you sure you want to delete?';
+    const description = 'Delete the it';
+
     return (
         <>
             <Table dataSource={data} rowKey="_id">
@@ -30,15 +66,16 @@ export default function ManageOrder() {
                 }} />
                 <Column title="Payment Type" dataIndex="paymentType" key="paymentType" />
                 <Column title="Status" dataIndex="status" key="status" />
+                <Column title="Description" dataIndex="description" key="description" />
                 <Column title="Customers" dataIndex="customer.fullName" key="customer.fullName" render={(_text, record) => {
-                    return <span>{record.customer.lastName} {record.customer.firstName}</span>;
+                    return <span>{record.customer?.lastName} {record.customer?.firstName}</span>;
                 }} />
                 <Column title="Employees" dataIndex="employee.fullName" key="employee.fullName" render={(_text, record) => {
-                    return <span>{record.employee.lastName} {record.employee.firstName}</span>;
+                    return <span>{record.employee?.lastName} {record.employee?.firstName}</span>;
                 }} />
                 <Column title="Order Details" dataIndex="orderDetails" key="orderDetails" render={(_text, record) => {
                     return (
-                        <span>
+                        <span style={{ lineHeight: "1.5" }}>
                             Quantity: {record.orderDetails[0].quantity}
                             <br />
                             Product: {record.orderDetails[0].productId}
@@ -55,20 +92,94 @@ export default function ManageOrder() {
                     render={(record) => (
                         <Space size="middle">
                             <Button
-                                danger
-                                icon={<DeleteOutlined />}
+                                type="primary"
+                                ghost
+                                icon={<EditOutlined />}
                                 onClick={() => {
-                                    console.log(record._id);
-                                    axios.delete(apiName + "/" + record._id).then(() => {
+                                    setOpen(true);
+                                    setUpdateId(record._id);
+                                    updateForm.setFieldsValue(record);
+                                }}
+                            >Edit</Button>
+
+                            <Popconfirm
+                                placement="topRight"
+                                title={text}
+                                description={description}
+                                onConfirm={() => {
+                                    axios.delete(apiName + "/" + record.id).then(() => {
                                         setRefresh((f) => f + 1);
-                                        message.success("Xóa danh mục thành công!", 1.5);
+                                        message.success("Delete successfully!", 1.5);
                                     });
                                 }}
-                            >Xóa</Button>
+                                okText="Yes"
+                                cancelText="No"
+                            >
+                                <Button
+                                    danger
+                                    icon={<DeleteOutlined />}
+                                >Delete</Button>
+                            </Popconfirm>
                         </Space>
                     )}
                 />
             </Table>
+            <Modal
+                open={open}
+                title="Update"
+                onCancel={() => {
+                    setOpen(false);
+                }}
+                cancelText="Close"
+                okText="Submit"
+                onOk={() => {
+                    updateForm.submit();
+                }}
+            >
+                <Form
+                    form={updateForm}
+                    name="update-form"
+                    onFinish={onUpdateFinish}
+                    labelCol={{
+                        span: 8,
+                    }}
+                    wrapperCol={{
+                        span: 16,
+                    }}
+                >
+
+                    <Form.Item
+                        label="Employees"
+                        name="employeeId"
+                        hasFeedback
+                        required={true}
+                        rules={[
+                            {
+                                required: true,
+                                message: "Required to choose",
+                            },
+                        ]}
+                    >
+                        <Select
+                            style={{ width: "80%" }}
+                            options={employees.map((c) => {
+                                return { value: c._id, label: c.lastName + " " + c.firstName };
+                            })}
+                        />
+                    </Form.Item>
+
+                    <Form.Item label="Status" name="status">
+                        <Select
+                            style={{ width: "80%" }}
+
+                        >
+                            <Select.Option value="WAITING">WAITING</Select.Option>
+                            <Select.Option value="COMPLETED">COMPLETED</Select.Option>
+                            <Select.Option value="CANCELED">CANCELED</Select.Option>
+                        </Select>
+                    </Form.Item>
+                </Form>
+            </Modal>
         </>
     )
 }

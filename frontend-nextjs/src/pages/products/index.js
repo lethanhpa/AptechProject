@@ -13,7 +13,6 @@ function Products(props) {
   const { products } = props;
   const { total } = props;
 
-
   const [priceStartSearch, setPriceStartSearch] = useState("");
   const [priceEndSearch, setPriceEndSearch] = useState("");
   const [discountEndSearch, setDiscountEndSearch] = useState("");
@@ -154,24 +153,6 @@ function Products(props) {
                 />
               </Form.Item>
 
-              {/* <Form.Item
-                label="Supplier"
-                name="supplier"
-                hasFeedback={supplierSearch === "" ? false : true}
-                valuePropName={supplierSearch}
-              >
-                <Select
-                  style={{ width: "100%" }}
-                  onChange={(value) => {
-                    setSupplierSearch(value);
-                  }}
-                  value={supplierSearch}
-                  options={suppliers.map((c) => {
-                    return { value: c._id, label: c.name };
-                  })}
-                />
-              </Form.Item> */}
-
               <Form.Item label="Price">
                 <Space>
                   <InputNumber
@@ -237,7 +218,7 @@ function Products(props) {
                   if (categorySearch !== "" && !item.category?.name.toLowerCase().includes(categorySearch.toLowerCase())) {
                     return false;
                   }
-                  if (supplierSearch !== "" && !item.category?.name.toLowerCase().includes(supplierSearch.toLowerCase())) {
+                  if (supplierSearch !== "" && !item.supplier?.name.toLowerCase().includes(supplierSearch.toLowerCase())) {
                     return false;
                   }
                   if (

@@ -1,7 +1,7 @@
-import React, { useState, useEffect, memo } from "react";
+import React, { useState, useEffect } from "react";
 import Styles from "../../styles/checkout.module.css";
 import axiosClient from "@/libraries/axiosClient";
-import { Button, Result, Popconfirm, message } from "antd";
+import { Button, Result, Input, Select } from "antd";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import numeral from "numeral";
@@ -12,6 +12,11 @@ import { toast, ToastContainer } from "react-toastify";
 function Checkout() {
     const [cart, setCart] = useState([]);
     const [totalPrice, setTotalPrice] = useState(0);
+    const [shippingAddress, setShippingAddress] = useState("");
+    const [paymentType, setPaymentType] = useState("CASH");
+    const [description, setDescription] = useState("");
+    const [customers, setCustomers] = useState([]);
+
     const router = useRouter();
 
     useEffect(() => {
@@ -52,6 +57,26 @@ function Checkout() {
         fetchCart();
     }, []);
 
+    useEffect(() => {
+        const fetchCustomers = async () => {
+            try {
+                const token = localStorage.getItem("token");
+                const decoded = jwt_decode(token);
+                const customerId = decoded._id;
+                console.log('customerId', customerId);
+
+                const response = await axiosClient.get(`/customers/${customerId}`);
+                console.log('««««« response »»»»»', response);
+                const data = response.data;
+
+                setCustomers(data);
+            } catch (error) {
+                console.log(error);
+            }
+        };
+        fetchCustomers();
+    }, []);
+
     const handleAddOrder = async () => {
         const token = localStorage.getItem("token");
         const decoded = jwt_decode(token);
@@ -67,17 +92,19 @@ function Checkout() {
             };
         });
 
-        const shippedDate = new Date("2023-07-07T00:00:00.000Z");
+        const createdDate = new Date();
+        const shippedDate = new Date(createdDate);
+        shippedDate.setDate(createdDate.getDate() + 1);
 
         const order = {
             createdDate: new Date(),
             shippedDate: shippedDate,
-            paymentType: "CASH",
-            shippingAddress: "38 Yên Bái - Đà Nẵng",
+            paymentType: paymentType,
+            shippingAddress: shippingAddress,
             status: "WAITING",
-            description: "Hàng dễ vỡ xin nhẹ tay ",
+            description: description,
             customerId: customerId,
-            employeeId: "645e2007f8943dba6e56cd15",
+            employeeId: null,
             orderDetails: orderDetails,
         };
 
@@ -85,100 +112,162 @@ function Checkout() {
         try {
             const response = await axiosClient.post("/orders", order);
             console.log("response", response);
-
-            if (response) {
-                await axiosClient.delete(`/cart/${customerId}`);
-                message.success("Đặt hàng thành công!");
-
-                router.push("/orders")
-            } else {
-                message.success("Đặt hàng thất bại!", 1.5);
-            }
+            await axiosClient.delete(`/cart/${customerId}`);
+            toast.success("Đặt hàng thành công!", 1.5);
+            router.push("/orders")
         } catch (error) {
             console.error(error);
+            toast.error("Đặt hàng thất bại!");
         }
+    };
+
+    const handleChange = (e) => {
+        setPaymentType(e.value);
     };
     return (
         <>
             <div className={Styles.container}>
-                <div className={Styles.cart_wrap}>
-                    <div className={Styles.enter_}>
-                        <p>How would you like to get your order?</p>
-                        <input placeholder="Enter your address"></input>
-                        <select className={Styles.payments}>
-                            <option>CASH</option>
-                            <option>CREDIT CARD</option>
-                        </select>
-                    </div>
-                    <div className={Styles.card_right_button}>
-                        <button onClick={handleAddOrder}>Buy Now</button>
+                <div className={Styles.div_left}>
+                    <div className={Styles.content_div_left}>
+                        <h4>How would you like to get your order?</h4>
+
+                        <div className={Styles.info_div_left}>
+                            {customers && (
+                                <div key={customers._id}>
+                                    <p>{customers.lastName} {customers.firstName}</p>
+                                    <p>{customers.email}</p>
+                                    <p>{customers.phoneNumber}</p>
+                                </div>
+                            )}
+                        </div>
+
+                        <h4>Please enter your shipping address</h4>
+                        <div className={Styles.info_div_left}>
+                            <p className={Styles.label_div_left}>Shipping address:</p>
+                            <Input
+                                required={true}
+                                className={Styles.enter_div_left}
+                                placeholder="Enter your address"
+                                value={shippingAddress}
+                                onChange={(e) => setShippingAddress(e.target.value)}
+                            />
+
+                            <p className={Styles.label_div_left}>Your notes about the order to us:</p>
+                            <Input
+                                className={Styles.enter_div_left}
+                                required
+                                placeholder="Enter description"
+                                value={description}
+                                onChange={(e) => setDescription(e.target.value)} />
+
+
+                            <p className={Styles.label_div_left}>Payment type:</p>
+                            <Select
+                                className={Styles.select_div_left}
+                                labelInValue
+                                defaultValue={{
+                                    value: 'CASH',
+                                    label: 'CASH',
+                                }}
+                                value={paymentType}
+                                onChange={handleChange}
+                                options={[
+                                    {
+                                        value: 'CASH',
+                                        label: 'CASH',
+                                    },
+                                    {
+                                        value: 'CREDIT CARD',
+                                        label: 'CREDIT CARD',
+                                    },
+                                ]}
+                            />
+                        </div>
                     </div>
                 </div>
-                <div className={Styles.cart_left_wrap}>
-
-                    <div className={Styles.cart_right_wrap}>
-                        <div className={Styles.cart_title}>Order Summary</div>
-                        <div className={Styles.card_right_content}>
-                            <div className={Styles.card_right_top}>
-                                <div className={Styles.card_right_text}>
+                <div className={Styles.div_right}>
+                    <div className={Styles.checkout_div_right}>
+                        <div className={Styles.checkout_title}>Order Summary</div>
+                        <div className={Styles.checkout_right_content}>
+                            <div className={Styles.checkout_right_top}>
+                                <div className={Styles.checkout_right_text}>
                                     <span>Subtotal</span>
                                     Price: ${numeral(totalPrice).format("0,0")}
                                 </div>
-                                <div className={Styles.card_right_text}>
+                                <div className={Styles.checkout_right_text}>
                                     <span>Estimated Delivery & Handling</span>
                                     <p>Free</p>
                                 </div>
                             </div>
-                            <div className={Styles.card_right_bottom}>
-                                <div className={Styles.card_right_text}>
+                            <div className={Styles.checkout_right_bottom}>
+                                <div className={Styles.checkout_right_text}>
                                     <span>Total:</span>
                                     <p>${numeral(totalPrice).format("0,0")}</p>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div className={Styles.cart_left_list}>
-                        <div className={Styles.cart_left_item}>
-                            {
+                    <div className={Styles.checkout_left_list}>
+                        <div className={Styles.checkout_left_item}>
+                            {cart.length > 0 && (
                                 cart.map((item) => (
-                                    item.products.map((product) => (
-                                        <div key={product._id} className={Styles.cart_item_wrap}>
-                                            <div className={Styles.card_wrap_info}>
-                                                <div className={Styles.cart_product_img}>
-                                                    <Link href={`/products/t/${product.product?.slug}`}>
-                                                        <img src={product.product?.img} />
-                                                    </Link>
-                                                </div>
-                                                <div className={Styles.cart_product_info}>
-                                                    <Link href={`/products/t/${product.product?.slug}`}>
-                                                        <div
-                                                            className={Styles.cart_product_name}
-                                                        >{product.product?.name}</div>
-                                                        <div
-                                                            className={Styles.card_product_type}
-                                                        >In stock: {product.product?.stock}</div>
-                                                        <div
-                                                            style={{
-                                                                display: "flex",
-                                                                alignItems: "center",
-                                                                gap: "0 15px",
-                                                            }}
-                                                        >
-                                                            <div className={Styles.sizeQty}>
-                                                                <span>
-                                                                    Quantity: {product.quantity}
-                                                                </span>
+                                    item.products.length > 0 ? (
+                                        item.products.map((product) => (
+                                            <div key={product._id} className={Styles.checkout_item_wrap}>
+                                                <div className={Styles.checkout_wrap_info}>
+                                                    <div className={Styles.checkout_product_img}>
+                                                        <Link href={`/products/t/${product.product?.slug}`}>
+                                                            <img src={product.product?.img} />
+                                                        </Link>
+                                                    </div>
+                                                    <div className={Styles.checkout_product_info}>
+                                                        <Link href={`/products/t/${product.product?.slug}`}>
+                                                            <div
+                                                                className={Styles.checkout_product_name}
+                                                            >{product.product?.name}</div>
+                                                            <div
+                                                                className={Styles.checkout_product_type}
+                                                            >In stock: {product.product?.stock}</div>
+                                                            <div
+                                                                style={{
+                                                                    display: "flex",
+                                                                    alignItems: "center",
+                                                                    gap: "0 15px",
+                                                                }}
+                                                            >
+                                                                <div className={Styles.sizeQty}>
+                                                                    <span>
+                                                                        Quantity: {product.quantity}
+                                                                    </span>
+                                                                </div>
                                                             </div>
-                                                        </div>
-                                                        <div className={Styles.cart_product_price}>
-                                                            <span>Price: ${numeral(((product.product.price * (100 - product.product.discount)) / 100) * product.quantity).format("0,0")}</span>
-                                                        </div>
-                                                    </Link>
+                                                            <div className={Styles.checkout_product_price}>
+                                                                <span>Price: ${numeral(((product.product.price * (100 - product.product.discount)) / 100) * product.quantity).format("0,0")}</span>
+                                                            </div>
+                                                        </Link>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    ))))}
+                                        ))) : (
+                                        <Result
+                                            title="There are no products in your cart yet"
+                                            extra={
+                                                <Button
+                                                    type="submit"
+                                                    style={{ backgroundColor: "#1C86EE", color: "#fff" }}
+                                                    key="console"
+                                                >
+                                                    <Link href="/products">Keep Shopping</Link>
+                                                </Button>
+                                            }
+                                        />
+                                    )
+                                ))
+                            )}
                         </div>
+                        <div className={Styles.checkout_right_button}>
+                            <button onClick={handleAddOrder}>Buy Now</button>
+                        </div><ToastContainer />
                     </div>
                 </div>
             </div>

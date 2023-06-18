@@ -139,8 +139,8 @@ function Cart() {
                               >
                                 <button className={Styles.icon}>
                                   <DeleteOutlined />
-                                </button><ToastContainer />
-                              </Popconfirm>
+                                </button>
+                              </Popconfirm><ToastContainer />
                             </div>
                           </div>
                         </div>

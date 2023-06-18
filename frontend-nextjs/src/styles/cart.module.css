@@ -37,7 +37,6 @@
 .card_wrap_info {
     display: flex;
     font-size: 18px;
-    font-weight: 350;
     line-height: 28px;
 }
 
@@ -79,7 +78,6 @@
 
 .cart_product_price span {
     font-size: 18px;
-    font-weight: 300;
 }
 
 .card_icon .icon {
@@ -90,10 +88,11 @@
     padding-top: 6px;
     background: none;
     cursor: pointer;
+    color: #757575;
 }
 
 .icon:hover {
-    color: #757575;
+    color: #9f9f9f;
 }
 
 .card_right_text {

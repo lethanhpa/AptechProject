@@ -31,13 +31,13 @@ orderDetailSchema.set('toJSON', { virtuals: true });
 
 const orderSchema = new Schema({
   shippingAddress: { type: String, required: true },
-  description: { type: String, required: true },
+  description: { type: String },
 
-  // createdDate: {
-  //   type: Date,
-  //   // required: true,
-  //   default: Date.now,
-  // },
+  createdDate: {
+    type: Date,
+    // required: true,
+    default: Date.now,
+  },
 
   shippedDate: {
     type: Date,
@@ -85,7 +85,7 @@ const orderSchema = new Schema({
   },
 
   customerId: { type: Schema.Types.ObjectId, ref: 'Customer', required: false },
-  employeeId: { type: Schema.Types.ObjectId, ref: 'Employee', required: false },
+  employeeId: { type: Schema.Types.ObjectId, ref: 'Employee' },
 
   orderDetails: [orderDetailSchema],
 }

@@ -42,7 +42,7 @@
 }
 
 .product_button button {
-    max-width: max-content;
+    width: 150px;
     padding: 10px 15px;
     margin-top: 15px;
     font-size: 14px;
