@@ -154,7 +154,7 @@ router.patch('/:id', function (req, res, next) {
     console.log('««««« req.body »»»»»', req.body);
     const data = req.body;
 
-    Employee.findByIdAndUpdate(id, data, {
+    Customer.findByIdAndUpdate(id, data, {
       new: true,
     })
       .then((result) => {

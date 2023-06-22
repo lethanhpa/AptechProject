@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import {
     UserOutlined,
-    HomeOutlined,
     FileDoneOutlined,
     DropboxOutlined,
     FileTextOutlined,
@@ -16,11 +15,6 @@ const { Content, Footer, Sider } = Layout;
 
 const items = [
     {
-        label: 'Home',
-        key: '',
-        icon: <HomeOutlined />,
-    },
-    {
         label: 'Manager Customers',
         key: 'manageCustomers',
         icon: <UserOutlined />,
@@ -29,11 +23,6 @@ const items = [
         label: 'Manager Employees',
         key: 'manageEmployees',
         icon: <UserOutlined />,
-    },
-    {
-        label: 'Manager Order',
-        key: 'manageOrders',
-        icon: <FileDoneOutlined />,
     },
     {
         label: 'Manager Products',
@@ -50,7 +39,11 @@ const items = [
         key: 'manageSuppliers',
         icon: <IdcardOutlined />,
     },
-
+    {
+        label: 'Manager Order',
+        icon: <FileDoneOutlined />,
+        key: 'manageOrders',
+    },
 ];
 
 

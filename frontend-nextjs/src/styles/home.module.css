@@ -6,7 +6,7 @@
 
 
 .home {
-    font-family: "Nike Futura", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 /* //........top text ........// */
@@ -46,8 +46,8 @@
     width: 100%;
     background: #fff;
     color: #000;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     z-index: 100;
-    font-family: Helvetica, Arial, sans-serif;
 }
 
 .navbar_container {
@@ -74,18 +74,18 @@
 .navbar_container ul a {
     text-decoration: none;
     color: #000;
-    font-size: 18px;
+    font-size: 22px;
     position: relative;
 }
 
-.navbar_container ul a:after {
+.navbar_container ul a::after {
     content: "";
     position: absolute;
     background: #ff3c78;
-    height: 3px;
+    height: 2px;
     width: 0;
     left: 0;
-    bottom: -10px;
+    bottom: -3px;
     transition: 0.3s;
 }
 
@@ -93,19 +93,6 @@
     width: 100%;
 }
 
-.btn_logout {
-    background-color: #ff0000;
-    color: #fff;
-    width: 100px;
-    border: none;
-}
-
-.btn_logout:hover {
-    background-color: #fff;
-    border: 0.5px solid #000;
-    color: #000;
-    transition: 2s;
-}
 
 @media (max-width: 768px) {
     .navbar {
@@ -496,9 +483,10 @@
 
 .seller .best_p1 .discount {
     color: #ff0000;
+    margin-bottom: 24px;
 }
 
-.seller .best_p1 .description {
+.seller .best_p1 .category {
     color: #818181;
     font-size: 16px;
 }
@@ -834,6 +822,7 @@
 }
 
 .footer_container .content_1 p,
+.footer_container .content_3 p,
 .footer_container .content_4 p {
     color: grey;
     margin: 25px 0;
@@ -902,6 +891,7 @@
 .form .form_txt span {
     color: #454545;
     font-size: 14px;
+    line-height: 1.5;
 }
 
 .form .form_txt h3 {

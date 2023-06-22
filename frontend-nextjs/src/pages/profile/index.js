@@ -2,19 +2,34 @@ import Moment from "moment";
 import React, { useState, useEffect, memo } from "react";
 import axiosClient from "@/libraries/axiosClient";
 import jwt_decode from "jwt-decode";
+import Styles from "../../styles/profile.module.css"
+import { Input, Form, Button, Modal, message, Table, Column, Space } from "antd"
+import { EyeOutlined } from "@ant-design/icons"
+import { useRouter } from 'next/router';
+import numeral from "numeral";
+
+const apiName = '/customers'
 
 const ProfilePage = () => {
     const [customers, setCustomers] = useState([]);
+    const [open, setOpen] = useState(false);
+    const [updateId, setUpdateId] = useState(0);
+    const router = useRouter();
+    const [updateForm] = Form.useForm();
+    const [dataOrders, setDataOrders] = useState([]);
+    const [openOrderDetail, setOpenOrderDetail] = useState(false);
+    const [isLogin, setIsLogin] = useState(false);
+    const [selectedOrderId, setSelectedOrderId] = useState(null);
+
+
     useEffect(() => {
         const fetchCustomers = async () => {
             try {
                 const token = localStorage.getItem("token");
                 const decoded = jwt_decode(token);
                 const customerId = decoded._id;
-                console.log('customerId', customerId);
 
                 const response = await axiosClient.get(`/customers/${customerId}`);
-                console.log('««««« response »»»»»', response);
                 const data = response.data;
 
                 setCustomers(data);
@@ -24,22 +39,273 @@ const ProfilePage = () => {
         };
         fetchCustomers();
     }, []);
+
+    useEffect(() => {
+        const fetchOrders = async () => {
+            try {
+                const token = localStorage.getItem("token");
+                const decoded = jwt_decode(token);
+                const customerId = decoded._id;
+
+                const response = await axiosClient.get(`/orders/${customerId}`)
+
+                const data = response.data;
+                setDataOrders(data);
+            } catch (err) {
+                console.error(err);
+            };
+        };
+        fetchOrders();
+    }, []);
+
+    const onUpdateFinish = (values) => {
+        axiosClient
+            .patch(apiName + "/" + updateId, values)
+            .then((_response) => {
+                updateForm.resetFields();
+                message.success("Update successfully!", 1.5);
+                setOpen(false);
+            })
+            .catch((err) => {
+                console.error(err);
+            }), [router]
+    };
+
+    const handleLogout = () => {
+        localStorage.removeItem('token');
+
+        setIsLogin(false);
+
+        router.push('/');
+    };
+
+    useEffect(() => {
+        const token = localStorage.getItem('token');
+
+        if (token) {
+            setIsLogin(true);
+        }
+
+    }, [router]);
+
+
     return (
         <>
-            {customers ? (
-                <div key={customers._id}>
-                    <h1>Profile User</h1>
-                    <p>Name: {customers.lastName} {customers.firstName}</p>
-                    <p>Email: {customers.email}</p>
-                    <p>Phone Number: {customers.phoneNumber}</p>
-                    <p>Address: {customers.address}</p>
-                    <p>Birthday: {Moment(customers.birthday).format("DD/MM/YYYY")}</p>
+            {isLogin ? (
+                <div className={Styles.container}>
+                    {customers && (
+                        <>
+                            <div className={Styles.content} key={customers._id}>
+                                <div className={Styles.content_profile}>
+                                    <h1>Your Profile</h1>
+                                    <Form
+                                        className={Styles.form_item}
+                                        form={updateForm}
+                                        name="update-form"
+                                        onFinish={onUpdateFinish}
+                                        labelCol={{
+                                            span: 8,
+                                        }}
+                                        wrapperCol={{
+                                            span: 22,
+                                        }}
+                                    >
+
+                                        <span>First Name:</span>
+                                        <Form.Item >
+                                            <Input value={customers.firstName} />
+                                        </Form.Item>
+
+                                        <span>Last Name:</span>
+                                        <Form.Item hasFeedback>
+                                            <Input value={customers.lastName} />
+                                        </Form.Item>
+
+                                        <span>Email:</span>
+                                        <Form.Item rules={[
+                                            {
+                                                required: true,
+                                                message: 'Please input your email!',
+                                            },
+                                        ]} hasFeedback>
+                                            <Input value={customers.email} />
+                                        </Form.Item>
+
+                                        <span>Phone Number:</span>
+                                        <Form.Item rules={[
+                                            {
+                                                required: true,
+                                                message: 'Please input your phone number!',
+                                            },
+                                        ]} hasFeedback>
+                                            <Input value={customers.phoneNumber} />
+                                        </Form.Item>
+
+                                        <span>Address:</span>
+                                        <Form.Item hasFeedback>
+                                            <Input value={customers.address} />
+                                        </Form.Item>
+
+                                        <span>Birthday:</span>
+                                        <Form.Item hasFeedback>
+                                            <Input value={Moment(customers.birthday).format("DD/MM/YYYY")} />
+                                        </Form.Item>
+
+                                        <Form.Item
+                                            wrapperCol={{
+                                                offset: 5,
+                                            }}
+                                        >
+                                            <Space>
+                                                <Button
+                                                    className={Styles.btn}
+                                                    onClick={() => {
+                                                        setOpen(true);
+                                                        setUpdateId(customers._id);
+                                                        updateForm.setFieldsValue(customers)
+                                                    }}>
+                                                    Edit Profile
+                                                </Button>
+
+                                                <Button type='error' className={Styles.btn_logout} onClick={handleLogout}>
+                                                    Logout
+                                                </Button>
+                                            </Space>
+                                        </Form.Item>
+                                    </Form>
+
+                                </div>
+                            </div>
+
+                            <Modal
+                                open={open}
+                                title="Update Profile"
+                                onCancel={() => {
+                                    setOpen(false);
+                                }}
+                                cancelText="Close"
+                                okText="Update"
+                                onOk={() => {
+                                    updateForm.submit();
+                                }}
+                            >
+                                <Form
+                                    className={Styles.form_update}
+                                    form={updateForm}
+                                    name="update-form"
+                                    onFinish={onUpdateFinish}
+                                    labelCol={{
+                                        span: 8,
+                                    }}
+                                    wrapperCol={{
+                                        span: 16,
+                                    }}
+                                >
+                                    <span>First Name:</span>
+                                    <Form.Item name="firstName" hasFeedback>
+                                        <Input style={{ width: 450 }} />
+                                    </Form.Item>
+
+                                    <span>Last Name:</span>
+                                    <Form.Item name="lastName" hasFeedback>
+                                        <Input style={{ width: 450 }} />
+                                    </Form.Item>
+
+                                    <span>Email:</span>
+                                    <Form.Item name="email" hasFeedback>
+                                        <Input style={{ width: 450 }} />
+                                    </Form.Item>
+
+                                    <span>Phone Number:</span>
+                                    <Form.Item name="phoneNumber" hasFeedback>
+                                        <Input style={{ width: 450 }} />
+                                    </Form.Item>
+
+                                    <span>Address:</span>
+                                    <Form.Item name="address" hasFeedback>
+                                        <Input style={{ width: 450 }} />
+                                    </Form.Item>
+
+                                    <span>Birthday:</span>
+                                    <Form.Item name="birthday" hasFeedback>
+                                        <Input style={{ width: 450 }} />
+                                    </Form.Item>
+                                </Form>
+                            </Modal>
+                        </>
+                    )}
+
+                    <div className={Styles.content_order}>
+                        <h1>Your Order</h1>
+                        <Table dataSource={dataOrders.results} pagination={false} rowKey="_id">
+                            <Column title="Created Date" dataIndex="createdDate" key="createdDate" render={(text) => {
+                                return <span>{Moment(text).format("DD/MM/YYYY")}</span>;
+                            }} />
+                            <Column title="Shipped Date" dataIndex="shippedDate" key="shippedDate" render={(text) => {
+                                return <span>{Moment(text).format("DD/MM/YYYY")}</span>;
+                            }} />
+                            <Column title="Payment Type" dataIndex="paymentType" key="paymentType" />
+                            <Column title="Status" dataIndex="status" key="status" />
+                            <Column
+                                title="Action"
+                                key="action"
+                                render={(record) => (
+                                    <Space size="middle">
+                                        <Button
+                                            onClick={() => {
+                                                setOpenOrderDetail(true);
+                                                setSelectedOrderId(record);
+                                            }}
+                                        ><EyeOutlined /></Button>
+                                    </Space>
+                                )}
+                            />
+                        </Table>
+
+                        <Modal
+                            width={1000}
+                            orderDetails={selectedOrderId}
+                            open={openOrderDetail}
+                            title="Order Detail"
+                            onCancel={() => {
+                                setOpenOrderDetail(false);
+                            }}
+                            cancelText="Close"
+                            onOk={() => {
+                                setOpenOrderDetail(false);
+                                setSelectedOrderId(null);
+                            }}
+                        >
+                            <Table className={Styles.orderDetails} dataSource={selectedOrderId?.orderDetails} pagination={false} rowKey="_id">
+                                <Column title="Product Name" dataIndex="name" key="name"
+                                    render={(_text, record) => {
+                                        return <span>{record.product.name}</span>;
+                                    }} />
+                                <Column title="Product" dataIndex="img" key="img"
+                                    render={(_text, record) => {
+                                        return <img className={Styles.product_img} src={record.product.img} alt="img" />;
+                                    }} />
+                                <Column title="Quantity" dataIndex="quantity" key="quantity"
+                                    render={(_text, record) => {
+                                        return <span>{record.quantity}</span>;
+                                    }} />
+                                <Column title="Price" dataIndex="price" key="price"
+                                    render={(_text, record) => {
+                                        return <span>${numeral(record.price).format("0,0")}</span>;
+                                    }} />
+                                <Column title="Discount" dataIndex="discount" key="discount"
+                                    render={(_text, record) => {
+                                        return <span>{record.discount}%</span>;
+                                    }} />
+                                <Column title="Total" key="total" render={(text, record) => {
+                                    const total = record.quantity * record.price * (1 - record.discount / 100);
+                                    return <span>${numeral(total).format("0,0")}</span>;
+                                }} />
+                            </Table>
+                        </Modal>
+                    </div>
                 </div>
-            ) : (
-                <div>
-                    <h1>Thông tin người dùng không khả dụng</h1>
-                </div>
-            )}
+            ) : <span>Not found</span>}
         </>
     );
 };

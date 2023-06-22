@@ -40,7 +40,6 @@ function Cart() {
         const customerId = decoded._id;
 
         const response = await axiosClient.get(`/cart/${customerId}`);
-        console.log('««««« response »»»»»', response);
 
         const data = response.data;
 
@@ -51,7 +50,7 @@ function Cart() {
       }
     };
     fetchCart();
-  }, []);
+  }, [router]);
 
   const handleRemoveCart = async (productId) => {
     try {
@@ -157,7 +156,7 @@ function Cart() {
                           style={{ backgroundColor: "#1C86EE", color: "#fff" }}
                           key="console"
                         >
-                          <Link href="/products">Keep Shopping</Link>
+                          <Link href="/products">Come buy now</Link>
                         </Button>
                       }
                     />

@@ -97,14 +97,33 @@
 .shop_wrapper {
     margin: 48px auto 0;
     padding: 0 48px 0 48px;
+    background-color: #f05e8a;
+}
+
+.shop_wrapper img {
+    margin: auto;
+    justify-content: center;
+    object-fit: cover;
+    width: 900px;
+    height: auto;
+}
+
+.contentStyle {
+    height: 500px;
+    color: #fff;
+    width: 85%;
+    margin: auto;
+    justify-content: center;
+    line-height: 160px;
+    text-align: center;
+    background-color: rgb(255, 101, 91);
 }
 
 .header_content {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-top: 64px;
-    margin-bottom: 32px;
+    margin: 56px 64px 32px 64px;
 }
 
 .header_title {

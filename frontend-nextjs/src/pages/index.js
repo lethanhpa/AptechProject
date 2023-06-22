@@ -33,7 +33,7 @@ function Home(props) {
             </div>
           </div>
         </div>
-        <div id="collection" className={Styles.collection}>
+        <div id="supplier" className={Styles.collection}>
           {suppliers.map((item) => {
             return (
               <Row key={item._id}>
@@ -53,8 +53,8 @@ function Home(props) {
           })
           }
         </div>
-        <div id="sellers">
-          <div className={`${Styles.container}  ${Styles.seller}`}>
+        <div>
+          <div id="new" className={`${Styles.container}  ${Styles.seller}`}>
             <h2>New Fashion Of The Month</h2>
             <div className={Styles.best_seller}>
               {products
@@ -66,6 +66,7 @@ function Home(props) {
 
                   return productMonth === currentMonth && item.discount <= 0 && item.stock > 10;
                 })
+                .slice(0, 4)
                 .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
                 .map((item) => (
                   <Link href={`/products/t/${item.slug}`}>
@@ -82,7 +83,7 @@ function Home(props) {
                           <i className="bx bxs-star" />
                           <i className="bx bxs-star" />
                         </div>
-                        <div className={Styles.description}>
+                        <div className={Styles.category}>
                           {item.category.name}
                           <div className="colors">
                             <i className="bx bxs-circle blank" />
@@ -95,10 +96,9 @@ function Home(props) {
                   </Link>
                 ))}
             </div>
-
           </div>
           <div className={`${Styles.seller}  ${Styles.container}`}>
-            <h2>Hot Sales</h2>
+            <h2 id="sale">Hot Sales</h2>
             <div className={Styles.best_seller}>
               {products.map((item) => (
                 item.discount > 0 && (
@@ -109,7 +109,7 @@ function Home(props) {
                         <div className={Styles.name}>
                           <p>{item.name}</p>
                         </div>
-                        <div className={Styles.description}>
+                        <div className={Styles.category}>
                           <p>{item.category.name}</p>
                         </div>
                         <div className={Styles.discount}>
@@ -129,7 +129,7 @@ function Home(props) {
             </div>
           </div>
         </div>
-        <div id="news">
+        <div id="limited">
           <div className={Styles.news_heading}>
             <p>LATEST NEWS</p>
             <h2>Limited Edition</h2>
@@ -163,18 +163,11 @@ function Home(props) {
                 <div className={Styles.form_txt}>
                   <h4>INFORMATION</h4>
                   <h1>Contact Us</h1>
-                  <span>As you might expect of a company that began as a high-end interiors contractor, we pay strict
-                    attention.</span>
-                  <h3>USA</h3>
-                  <p>195 E Parker Square Dr, Parker, CO 801<br />+43 982-314-0958</p>
+                  <span>👟 Featuring style and variety, YAME - Shoes for your style! 👟
+                    <br />
+                    Welcome to YAME - the premier shoe store for fashion and beauty lovers. We pride ourselves on being a place where you can find high-quality shoes that give you comfort and confidence every step of the way.</span>
                   <h3>Viet Nam</h3>
-                  <p>254 Nguyen Van Linh, Thach Gian, Thanh Khe, Da Nang<br />+84 337-219-023</p>
-                </div>
-                <div className={Styles.form_details}>
-                  <input type="text" name="name" id="name" placeholder="Name" required />
-                  <input type="email" name="email" id="email" placeholder="Email" required />
-                  <textarea name="message" id="message" cols={52} rows={7} placeholder="Message" required defaultValue={""} />
-                  <button>SEND MESSAGE</button>
+                  <p>K29 Ho Xuan Huong, Bac My An, Ngu Hanh Son, Da Nang<br />+84 337-219-023</p>
                 </div>
               </div>
             </form>

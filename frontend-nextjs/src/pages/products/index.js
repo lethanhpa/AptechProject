@@ -2,11 +2,12 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import PropTypes from "prop-types";
 import numeral from "numeral";
-import { Button, InputNumber, Space, Select, Input, Layout, Row, Drawer, Form } from 'antd';
+import { Button, InputNumber, Space, Select, Input, Layout, Row, Drawer, Form, Carousel } from 'antd';
 import { ControlOutlined, ClearOutlined, SearchOutlined, TagOutlined } from '@ant-design/icons';
 const { Content } = Layout;
 import Styles from "../../styles/products.module.css"
 import axiosClient from "../../libraries/axiosClient";
+
 
 
 function Products(props) {
@@ -89,18 +90,27 @@ function Products(props) {
       <Layout className={Styles.container} >
         <Content>
           <div className={Styles.shop_wrapper}>
-            <div className={Styles.shop_slider}>
-              <img src="https://partner-images.bluecore.com/nike_singapore/Left.jpg" alt="" />
-              <img src="https://partner-images.bluecore.com/nike_singapore/CENTER.jpg" alt="" />
-              <img src="https://partner-images.bluecore.com/nike_singapore/RIGHT.jpg" alt="" />
-            </div>
-            <div className={Styles.header_content}>
-              <h2 className={Styles.header_title}>Shop Shoes({total})</h2>
-              <button onClick={showDrawer} className={Styles.header_nav_button}>
-                <span>Hide Filters</span>
-                <ControlOutlined />
-              </button>
-            </div>
+            <Carousel autoplay>
+              <div>
+                <h3 className={Styles.contentStyle}><img src="https://partner-images.bluecore.com/nike_singapore/Left.jpg" alt="" /></h3>
+              </div>
+              <div>
+                <h3 className={Styles.contentStyle}><img src="https://partner-images.bluecore.com/nike_singapore/CENTER.jpg" alt="" /></h3>
+              </div>
+              <div>
+                <h3 className={Styles.contentStyle}><img src="https://partner-images.bluecore.com/nike_singapore/RIGHT.jpg" alt="" /></h3>
+              </div>
+              <div>
+                <h3 className={Styles.contentStyle}><img src="https://static.nike.com/a/images/f_auto/dpr_1.3,cs_srgb/w_706,c_limit/7639bac5-4fa2-4438-9af0-3ceda5900f21/nike-just-do-it.jpg" alt="" /></h3>
+              </div>
+            </Carousel>
+          </div>
+          <div className={Styles.header_content}>
+            <h2 className={Styles.header_title}>Shop Shoes({total})</h2>
+            <button onClick={showDrawer} className={Styles.header_nav_button}>
+              <span>Hide Filters</span>
+              <ControlOutlined />
+            </button>
           </div>
           <Drawer
             title="Filter Products"
@@ -208,6 +218,7 @@ function Products(props) {
               </Form.Item>
             </Form>
           </Drawer>
+
           <Row justify="space-around">
             {products.length > 0 ?
               products

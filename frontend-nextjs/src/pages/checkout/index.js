@@ -113,11 +113,11 @@ function Checkout() {
             const response = await axiosClient.post("/orders", order);
             console.log("response", response);
             await axiosClient.delete(`/cart/${customerId}`);
-            toast.success("Đặt hàng thành công!", 1.5);
-            router.push("/orders")
+            toast.success("Order Success!", 1.5);
+            router.push("/thanks")
         } catch (error) {
             console.error(error);
-            toast.error("Đặt hàng thất bại!");
+            toast.error("Order failed!");
         }
     };
 
@@ -175,10 +175,6 @@ function Checkout() {
                                     {
                                         value: 'CASH',
                                         label: 'CASH',
-                                    },
-                                    {
-                                        value: 'CREDIT CARD',
-                                        label: 'CREDIT CARD',
                                     },
                                 ]}
                             />

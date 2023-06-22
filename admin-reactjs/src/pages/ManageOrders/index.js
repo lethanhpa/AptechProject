@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from 'react'
-import { Button, Space, Table, message, Form, Popconfirm, Option, Modal, Select } from 'antd';
-import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
+import { Button, Space, Table, message, Form, Popconfirm, Modal, Select } from 'antd';
+import { DeleteOutlined, EditOutlined, EyeOutlined } from "@ant-design/icons";
 import Moment from "moment";
 import axios from "../../libraries/axiosClient.js";
+import numeral from "numeral";
+
 const { Column } = Table;
+
 const apiName = "/orders";
 
 export default function ManageOrder() {
@@ -13,6 +16,9 @@ export default function ManageOrder() {
     const [updateId, setUpdateId] = useState(0);
     const [refresh, setRefresh] = useState(0);
     const [employees, setEmployees] = useState([]);
+    const [openOrderDetail, setOpenOrderDetail] = useState(false);
+    const [selectedOrderId, setSelectedOrderId] = useState(null);
+
 
     useEffect(() => {
         axios
@@ -25,7 +31,7 @@ export default function ManageOrder() {
             .catch((err) => {
                 console.error(err);
             });
-    }, [refresh]);
+    }, []);
 
     // Get employees
     useEffect(() => {
@@ -73,19 +79,6 @@ export default function ManageOrder() {
                 <Column title="Employees" dataIndex="employee.fullName" key="employee.fullName" render={(_text, record) => {
                     return <span>{record.employee?.lastName} {record.employee?.firstName}</span>;
                 }} />
-                <Column title="Order Details" dataIndex="orderDetails" key="orderDetails" render={(_text, record) => {
-                    return (
-                        <span style={{ lineHeight: "1.5" }}>
-                            Quantity: {record.orderDetails[0].quantity}
-                            <br />
-                            Product: {record.orderDetails[0].productId}
-                            <br />
-                            Price: ${record.orderDetails[0].price}
-                            <br />
-                            Discount: {record.orderDetails[0].discount}%
-                        </span>
-                    );
-                }} />
                 <Column
                     title="Action"
                     key="action"
@@ -107,7 +100,7 @@ export default function ManageOrder() {
                                 title={text}
                                 description={description}
                                 onConfirm={() => {
-                                    axios.delete(apiName + "/" + record.id).then(() => {
+                                    axios.delete(apiName + "/" + record._id).then(() => {
                                         setRefresh((f) => f + 1);
                                         message.success("Delete successfully!", 1.5);
                                     });
@@ -120,6 +113,13 @@ export default function ManageOrder() {
                                     icon={<DeleteOutlined />}
                                 >Delete</Button>
                             </Popconfirm>
+
+                            <Button
+                                onClick={() => {
+                                    setOpenOrderDetail(true);
+                                    setSelectedOrderId(record);
+                                }}
+                            ><EyeOutlined />View</Button>
                         </Space>
                     )}
                 />
@@ -179,6 +179,44 @@ export default function ManageOrder() {
                         </Select>
                     </Form.Item>
                 </Form>
+            </Modal>
+
+            <Modal
+                width={1000}
+                orderDetails={selectedOrderId}
+                open={openOrderDetail}
+                title="Order Detail"
+                onCancel={() => {
+                    setOpenOrderDetail(false);
+                }}
+                cancelText="Close"
+                onOk={() => {
+                    setOpenOrderDetail(false);
+                    setSelectedOrderId(null);
+                }}
+            >
+                <Table dataSource={selectedOrderId?.orderDetails} pagination={false} rowKey="_id">
+                    <Column title="Product" dataIndex="productId" key="productId"
+                        render={(_text, record) => {
+                            return <span>{record.productId}</span>;
+                        }} />
+                    <Column title="Quantity" dataIndex="quantity" key="quantity"
+                        render={(_text, record) => {
+                            return <span>{record.quantity}</span>;
+                        }} />
+                    <Column title="Price" dataIndex="price" key="price"
+                        render={(_text, record) => {
+                            return <span>${numeral(record.price).format("0,0")}</span>;
+                        }} />
+                    <Column title="Discount" dataIndex="discount" key="discount"
+                        render={(_text, record) => {
+                            return <span>{record.discount}%</span>;
+                        }} />
+                    <Column title="Total" key="total" render={(text, record) => {
+                        const total = record.quantity * record.price * (1 - record.discount / 100);
+                        return <span>${numeral(total).format("0,0")}</span>;
+                    }} />
+                </Table>
             </Modal>
         </>
     )

@@ -1,4 +1,4 @@
-const { Cart, Customer, Product } = require('../models/index');
+const { Cart, Customer, Product, Order } = require('../models/index');
 
 module.exports = {
     getDetail: async (req, res, next) => {
@@ -13,7 +13,14 @@ module.exports = {
                 .lean({ virtual: true });
 
             if (found) {
-                return res.send({ code: 200, payload: { found, results } });
+                let total = 0;
+                results.forEach((item) => {
+                    item.products.forEach((product) => {
+                        total += product.quantity;
+                    });
+                });
+                return res.send({ code: 200, payload: { found, results, total } });
+
             }
 
             return res.status(410).send({ code: 404, message: 'Không tìm thấy' });

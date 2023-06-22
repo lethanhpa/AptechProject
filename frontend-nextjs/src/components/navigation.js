@@ -1,14 +1,17 @@
 import React, { useState, useEffect } from 'react'
 import Image from "next/image";
-import Link from "next/link";
+import { Badge } from "antd"
 import { ShoppingCartOutlined, HomeOutlined, ShopOutlined, UserAddOutlined, UserOutlined } from "@ant-design/icons";
-import { Button } from "antd"
 import Styles from "../styles/home.module.css";
 import logo from "../images/logo.png";
 import { useRouter } from 'next/router';
+import axiosClient from "@/libraries/axiosClient";
+import jwt_decode from "jwt-decode";
+
 
 const Navigation = () => {
     const [isLogin, setIsLogin] = useState(false);
+    const [total, setTotal] = useState(0);
 
     const router = useRouter();
     useEffect(() => {
@@ -20,13 +23,28 @@ const Navigation = () => {
 
     }, [router]);
 
-    const handleLogout = () => {
-        localStorage.removeItem('token');
+    useEffect(() => {
+        const fetchCart = async () => {
+            try {
+                const token = localStorage.getItem("token");
 
-        setIsLogin(false);
+                const decoded = jwt_decode(token);
 
-        router.push('/');
-    };
+                const customerId = decoded._id;
+
+                const response = await axiosClient.get(`/cart/${customerId}`);
+
+                const total = response.data.payload;
+
+                setTotal(total);
+
+            } catch (error) {
+                console.log(error);
+            }
+        };
+        fetchCart();
+    }, [router]);
+
     return (
         <>
             <nav className={Styles.navbar}>
@@ -39,48 +57,45 @@ const Navigation = () => {
                     </div>
                     <ul className={Styles.menu_items}>
                         <li>
-                            <Link href="/">
+                            <a href="/">
                                 Home <HomeOutlined />
-                            </Link>
+                            </a>
                         </li>
 
                         <li>
-                            <Link href="/products">
+                            <a href="/products">
                                 Shop <ShopOutlined />
-                            </Link>
+                            </a>
                         </li>
                         {isLogin ? (
                             <>
                                 <li>
-                                    <Link href="/cart">
+                                    {/* <Badge count={total}> */}
+                                    <a href="/cart">
                                         Cart <ShoppingCartOutlined />
-                                    </Link>
+                                    </a>
+                                    {/* </Badge> */}
                                 </li>
                                 <li>
-                                    <Link href="/profile">
+                                    <a href="/profile">
                                         Profile <UserOutlined />
-                                    </Link>
+                                    </a>
                                 </li>
                             </>
                         ) : (
                             <>
                                 <li>
-                                    <Link href="/signup">
+                                    <a href="/signup">
                                         Sign Up <UserAddOutlined />
-                                    </Link>
+                                    </a>
                                 </li>
 
-                                <li >
-                                    <Link href="/signin">
+                                <li>
+                                    <a href="/signin">
                                         Sign In <UserOutlined />
-                                    </Link>
+                                    </a>
                                 </li>
                             </>
-                        )}
-                        {isLogin && (
-                            <Button type='error' className={Styles.btn_logout} onClick={handleLogout}>
-                                Logout
-                            </Button>
                         )}
                     </ul>
                     <div className={Styles.logo}>

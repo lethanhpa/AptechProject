@@ -1,0 +1,75 @@
+.container {
+    display: flex;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.content {
+    margin: 0;
+    width: 50%;
+    padding: 32px 32px 64px 128px;
+}
+
+.content_profile {
+    line-height: 2;
+    box-shadow: 10px 10px 5px #aaaaaa;
+    border: 0.5px solid #9a9a9a3b;
+    padding: 32px;
+}
+
+.content_profile h1,
+.content_order h1 {
+    text-align: center;
+    font-weight: 500;
+}
+
+
+.content_profile .btn {
+    text-align: center;
+}
+
+.btn {
+    width: 150px;
+    height: 45px;
+    background-color: #000;
+    color: #fff;
+    text-align: center;
+    font-size: 16px;
+    border-radius: 15px;
+}
+
+.btn:hover {
+    color: #000000;
+    background-color: #ffffff;
+    border: 0.5px solid #878787;
+    transition: 1.5s;
+}
+
+
+.content_order {
+    width: 50%;
+    padding: 64px 32px 64px 32px;
+}
+
+
+.btn_logout {
+    background-color: #ff0000;
+    color: #fff;
+    width: 150px;
+    height: 45px;
+    font-size: 16px;
+    border: none;
+    border-radius: 15px;
+}
+
+.btn_logout:hover {
+    background-color: #fff;
+    border: 0.5px solid #000;
+    color: #000;
+    transition: 2s;
+}
+
+.product_img {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+}
