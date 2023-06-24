@@ -37,7 +37,7 @@ function ProductDetail(props) {
       router.push('/cart');
 
     } catch (error) {
-      console.log("error", error);
+      console.error(error);
     }
   };
 

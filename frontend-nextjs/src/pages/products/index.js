@@ -7,12 +7,14 @@ import { ControlOutlined, ClearOutlined, SearchOutlined, TagOutlined } from '@an
 const { Content } = Layout;
 import Styles from "../../styles/products.module.css"
 import axiosClient from "../../libraries/axiosClient";
-
+import { useRouter } from 'next/router';
 
 
 function Products(props) {
   const { products } = props;
   const { total } = props;
+
+  const router = useRouter();
 
   const [priceStartSearch, setPriceStartSearch] = useState("");
   const [priceEndSearch, setPriceEndSearch] = useState("");
@@ -56,7 +58,6 @@ function Products(props) {
       ...(discountStartSearch !== "" && { discountStart: discountStartSearch }),
       ...(discountEndSearch !== "" && { discountEnd: discountEndSearch }),
     });
-    console.log(dataSearch);
   };
   const [handleSearch] = Form.useForm();
 
@@ -83,7 +84,7 @@ function Products(props) {
       .catch((err) => {
         console.error(err);
       });
-  }, [dataSearch]);
+  }, [router, dataSearch]);
 
   return (
     <>
@@ -106,9 +107,9 @@ function Products(props) {
             </Carousel>
           </div>
           <div className={Styles.header_content}>
-            <h2 className={Styles.header_title}>Shop Shoes({total})</h2>
+            <h2 className={Styles.header_title}>Shop Shoes ({total} products)</h2>
             <button onClick={showDrawer} className={Styles.header_nav_button}>
-              <span>Hide Filters</span>
+              <span>Filter</span>
               <ControlOutlined />
             </button>
           </div>

@@ -68,7 +68,6 @@ export default function ManageProducts() {
             ...(discountStartSearch !== "" && { discountStart: discountStartSearch }),
             ...(discountEndSearch !== "" && { discountEnd: discountEndSearch }),
         });
-        console.log(dataSearch);
         setTotal(data.length);
     };
 

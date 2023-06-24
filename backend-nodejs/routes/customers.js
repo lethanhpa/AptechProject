@@ -20,12 +20,11 @@ mongoose.connect(CONNECTION_STRING);
 router.post(
   "/login",
   validateSchema(loginSchema),
-  /* passport.authenticate("local", { session: false }) */
   async (req, res, next) => {
     try {
-      const { email /* , password */ } = req.body;
+      const { email } = req.body;
 
-      const customer = await Customer.findOne({ email /* , password */ });
+      const customer = await Customer.findOne({ email });
 
       if (!customer) return res.status(404).send({ message: "Not found" });
 
@@ -76,20 +75,6 @@ router.get('/', function (req, res, next) {
     res.sendStatus(500);
   }
 });
-
-// router.get('/', validateSchema(getCustomersSchema), async (req, res, next) => {
-//   try {
-//     const { email } = req.query;
-//     const existingCustomer = await Customer.findOne({ email });
-//     if (existingCustomer) {
-//       return res.send({ message: 'Email đã tồn tại' });
-//     }
-//     return res.send({ message: 'Email chưa tồn tại' });
-//   } catch (error) {
-//     console.error(error);
-//     res.sendStatus(500);
-//   }
-// });
 
 
 //GET id
@@ -151,7 +136,6 @@ router.delete('/:id', function (req, res, next) {
 router.patch('/:id', function (req, res, next) {
   try {
     const { id } = req.params;
-    console.log('««««« req.body »»»»»', req.body);
     const data = req.body;
 
     Customer.findByIdAndUpdate(id, data, {

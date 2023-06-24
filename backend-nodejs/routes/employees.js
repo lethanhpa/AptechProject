@@ -120,7 +120,7 @@ router.post('/', async (req, res, next) => {
         res.send(result);
       })
       .catch((err) => {
-        console.log(err);
+        console.error(err);
         res.status(400).send({ message: err.message });
       });
   } catch (err) {
@@ -132,7 +132,6 @@ router.post('/', async (req, res, next) => {
 router.patch('/:id', function (req, res, next) {
   try {
     const { id } = req.params;
-    console.log('««««« req.body »»»»»', req.body);
     const data = req.body;
 
     Employee.findByIdAndUpdate(id, data, {

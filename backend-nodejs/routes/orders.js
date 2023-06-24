@@ -65,7 +65,6 @@ router.get("/:id", async function (req, res, next) {
 router.post("/", async function (req, res, next) {
   try {
     const data = req.body;
-    console.log("req.body", req.body);
 
     const newItem = new Order(data);
     const savedItem = await newItem.save();

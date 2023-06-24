@@ -2,8 +2,7 @@ const mongoose = require('mongoose');
 const { Schema, model } = mongoose;
 const slug = require('mongoose-slug-generator');
 mongoose.plugin(slug);
-// Mongoose Datatypes:
-// https://mongoosejs.com/docs/schematypes.html
+
 const categorySchema = new Schema(
   {
     name: { type: String, required: [true, 'Category bắt buộc phải nhập'] },

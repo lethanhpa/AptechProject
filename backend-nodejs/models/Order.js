@@ -22,9 +22,8 @@ orderDetailSchema.virtual('product', {
   justOne: true,
 });
 
-// Virtuals in console.log()
 orderDetailSchema.set('toObject', { virtuals: true });
-// Virtuals in JSON
+
 orderDetailSchema.set('toJSON', { virtuals: true });
 
 // ------------------------------------------------------------------------------------------------
@@ -35,7 +34,6 @@ const orderSchema = new Schema({
 
   createdDate: {
     type: Date,
-    // required: true,
     default: Date.now,
   },
 
@@ -95,7 +93,6 @@ const orderSchema = new Schema({
   }
 );
 
-// Virtual with Populate
 orderSchema.virtual('customer', {
   ref: 'Customer',
   localField: 'customerId',
@@ -110,9 +107,7 @@ orderSchema.virtual('employee', {
   justOne: true,
 });
 
-// Virtuals in console.log()
 orderSchema.set('toObject', { virtuals: true });
-// Virtuals in JSON
 orderSchema.set('toJSON', { virtuals: true });
 
 const Order = model('Order', orderSchema);

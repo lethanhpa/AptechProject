@@ -51,7 +51,6 @@ function Products(props) {
             ...(discountStartSearch !== "" && { discountStart: discountStartSearch }),
             ...(discountEndSearch !== "" && { discountEnd: discountEndSearch }),
         });
-        console.log(dataSearch);
     };
     const [handleSearch] = Form.useForm();
 

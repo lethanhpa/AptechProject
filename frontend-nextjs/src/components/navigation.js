@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react'
 import Image from "next/image";
-import { Badge } from "antd"
 import { ShoppingCartOutlined, HomeOutlined, ShopOutlined, UserAddOutlined, UserOutlined } from "@ant-design/icons";
 import Styles from "../styles/home.module.css";
 import logo from "../images/logo.png";
@@ -11,7 +10,6 @@ import jwt_decode from "jwt-decode";
 
 const Navigation = () => {
     const [isLogin, setIsLogin] = useState(false);
-    const [total, setTotal] = useState(0);
 
     const router = useRouter();
     useEffect(() => {
@@ -32,14 +30,10 @@ const Navigation = () => {
 
                 const customerId = decoded._id;
 
-                const response = await axiosClient.get(`/cart/${customerId}`);
-
-                const total = response.data.payload;
-
-                setTotal(total);
+                await axiosClient.get(`/cart/${customerId}`);
 
             } catch (error) {
-                console.log(error);
+                console.error(error);
             }
         };
         fetchCart();
@@ -70,11 +64,9 @@ const Navigation = () => {
                         {isLogin ? (
                             <>
                                 <li>
-                                    {/* <Badge count={total}> */}
                                     <a href="/cart">
                                         Cart <ShoppingCartOutlined />
                                     </a>
-                                    {/* </Badge> */}
                                 </li>
                                 <li>
                                     <a href="/profile">

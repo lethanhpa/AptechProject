@@ -80,7 +80,6 @@ router.get('/', validateSchema(getProductsSchema), async (req, res) => {
     const countAllProduct = await Product.count();
     res.json({ total: countAllProduct, data: results });
   } catch (error) {
-    console.log('««««« error »»»»»', error);
     res.status(500).json({ ok: false, error });
   }
 });
@@ -116,7 +115,6 @@ router.get('/:id', async function (req, res) {
         .findById(id)
         .populate('category')
         .populate('supplier');
-      console.log('««««« found »»»»»', found);
       if (found) {
         return res.send({ ok: true, result: found });
       }

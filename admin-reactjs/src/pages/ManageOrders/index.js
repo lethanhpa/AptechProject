@@ -26,14 +26,12 @@ export default function ManageOrder() {
             .then((response) => {
                 const { data } = response;
                 setData(data);
-                console.log(data);
             })
             .catch((err) => {
                 console.error(err);
             });
-    }, []);
+    }, [refresh]);
 
-    // Get employees
     useEffect(() => {
         axios
             .get("/employees")

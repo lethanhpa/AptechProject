@@ -71,7 +71,6 @@ export default function ManageCategories() {
                         </Button>
                     </div>
                     <h1 style={{ fontSize: "32px", textAlign: "center" }}>ADD LIST</h1>
-                    {/* CREATE FORM */}
                     <Form
                         style={{ width: "80%" }}
                         form={createForm}

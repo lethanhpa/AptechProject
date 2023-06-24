@@ -44,14 +44,13 @@ function Checkout() {
                 const customerId = decoded._id;
 
                 const response = await axiosClient.get(`/cart/${customerId}`);
-                console.log('««««« response »»»»»', response);
 
                 const data = response.data;
 
                 setCart(data.payload.results);
 
             } catch (error) {
-                console.log(error);
+                console.error(error);
             }
         };
         fetchCart();
@@ -63,15 +62,13 @@ function Checkout() {
                 const token = localStorage.getItem("token");
                 const decoded = jwt_decode(token);
                 const customerId = decoded._id;
-                console.log('customerId', customerId);
 
                 const response = await axiosClient.get(`/customers/${customerId}`);
-                console.log('««««« response »»»»»', response);
                 const data = response.data;
 
                 setCustomers(data);
             } catch (error) {
-                console.log(error);
+                console.error(error);
             }
         };
         fetchCustomers();
@@ -81,7 +78,6 @@ function Checkout() {
         const token = localStorage.getItem("token");
         const decoded = jwt_decode(token);
         const customerId = decoded._id;
-        console.log("customerId", customerId);
 
         const orderDetails = cart[0].products.map((p) => {
             return {
@@ -108,10 +104,8 @@ function Checkout() {
             orderDetails: orderDetails,
         };
 
-        console.log("order", order);
         try {
-            const response = await axiosClient.post("/orders", order);
-            console.log("response", response);
+            await axiosClient.post("/orders", order);
             await axiosClient.delete(`/cart/${customerId}`);
             toast.success("Order Success!", 1.5);
             router.push("/thanks")

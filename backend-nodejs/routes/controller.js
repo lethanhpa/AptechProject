@@ -120,7 +120,6 @@ module.exports = {
                 payload: result,
             });
         } catch (err) {
-            console.log('««««« err »»»»»', err);
             return res.status(500).json({ code: 500, error: err });
         }
     },

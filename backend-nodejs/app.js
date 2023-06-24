@@ -13,8 +13,7 @@ const { CONNECTION_STRING } = require('./constants/dbSettings');
 
 const { passportConfigEmployee, passportConfigCustomer, passportConfigLocal } = require('./middlewares/passport');
 
-// const indexRouter = require('./routes/index');
-// const usersRouter = require('./routes/users');
+
 const productsRouter = require('./routes/products');
 const categoriesRouter = require('./routes/categories');
 const customersRouter = require('./routes/customers');
@@ -22,9 +21,6 @@ const employeesRouter = require('./routes/employees');
 const suppliersRouter = require('./routes/suppliers');
 const ordersRouter = require('./routes/orders');
 const cartRouter = require('./routes/cart');
-const questionsRouter = require('./routes/questions');
-
-const uploadRouter = require('./routes/upload');
 
 const app = express();
 
@@ -64,8 +60,7 @@ passport.use(passportConfigEmployee);
 passport.use(passportConfigCustomer);
 passport.use(passportConfigLocal);
 
-// app.use('/', indexRouter);
-// app.use('/users', usersRouter);
+
 app.use('/products', productsRouter);
 app.use('/categories', categoriesRouter);
 app.use('/customers', customersRouter);
@@ -74,9 +69,6 @@ app.use('/suppliers', suppliersRouter);
 app.use('/orders', ordersRouter);
 app.use('/cart', cartRouter);
 
-app.use('/questions', questionsRouter);
-
-app.use('/upload', uploadRouter);
 
 app.get('/chat', (req, res) => {
   res.sendFile(__dirname + '/index.html')

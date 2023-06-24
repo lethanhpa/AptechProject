@@ -12,7 +12,7 @@ const encodeToken = (userId, email, firstName, lastName) => {
     email: email,
     // fullName: firstName + '-' + lastName,
     fullName: `${firstName} - ${lastName}`,
-    algorithm: 'HS512', // default có thể không có
+    algorithm: 'HS512',
   }, jwtSettings.SECRET)
 }
 

@@ -15,13 +15,13 @@ const { Content, Footer, Sider } = Layout;
 
 const items = [
     {
-        label: 'Manager Customers',
-        key: 'manageCustomers',
+        label: 'Manager Employees',
+        key: '',
         icon: <UserOutlined />,
     },
     {
-        label: 'Manager Employees',
-        key: 'manageEmployees',
+        label: 'Manager Customers',
+        key: 'manageCustomers',
         icon: <UserOutlined />,
     },
     {
@@ -48,8 +48,7 @@ const items = [
 
 
 
-export default function DefaultLayout({ children }, props) {
-    // eslint-disable-next-line react-hooks/rules-of-hooks
+export default function DefaultLayout({ children }) {
     const [current, setCurrent] = useState('/');
     const navigate = useNavigate();
     const [isLogin, setIsLogin] = useState(false);
@@ -74,7 +73,6 @@ export default function DefaultLayout({ children }, props) {
         <>
             {isLogin ? (
                 <Layout
-                    setIsLogin={setIsLogin}
                     style={{
                         minHeight: "100vh",
                     }}
@@ -94,9 +92,7 @@ export default function DefaultLayout({ children }, props) {
                         />
                     </Sider>
                     <Layout className="site-layout">
-                        <Header style={{ textAlign: "end" }}>
-                            <Button style={{ width: "100px", backgroundColor: "red", border: "none", color: "white" }} onClick={handleLogout}>Logout</Button>
-                        </Header>
+                        <Header style={{ color: "white", fontSize: '28px', fontWeight: '700', fontFamily: 'cursive' }} >YOU ARE MY EVERYTHING</Header>
                         <Content
                             style={{
                                 margin: "0 16px",
@@ -112,15 +108,18 @@ export default function DefaultLayout({ children }, props) {
                                 {children}
                             </div>
                         </Content>
+
                         <Footer
                             style={{
                                 backgroundColor: '#000028',
                                 color: '#cecece',
                                 textAlign: "center",
-                                height: "48px"
+                                height: "70px"
                             }}
                         >
-                            Admin
+                            <div style={{ textAlign: "right" }}>
+                                <Button style={{ width: "100px", backgroundColor: "red", border: "none", color: "white" }} onClick={handleLogout}>Logout</Button>
+                            </div>
                         </Footer>
                     </Layout>
                 </Layout>

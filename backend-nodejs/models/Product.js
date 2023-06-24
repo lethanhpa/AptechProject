@@ -3,11 +3,6 @@ const { Schema, model } = mongoose;
 const mongooseLeanVirtuals = require('mongoose-lean-virtuals');
 const slug = require('mongoose-slug-generator');
 mongoose.plugin(slug);
-// Mongoose Datatypes:
-// https://mongoosejs.com/docs/schematypes.html
-
-// Validator
-// https://mongoosejs.com/docs/validation.html#built-in-validators
 
 const productSchema = Schema(
   {
@@ -34,12 +29,11 @@ productSchema.pre("create", function (next) {
   this.slug = this.name.split(" ").join("-");
   next();
 });
-// Virtuals
+
 productSchema.virtual('total').get(function () {
   return (this.price * (100 - this.discount)) / 100;
 });
 
-// Virtual with Populate
 productSchema.virtual('category', {
   ref: 'Category',
   localField: 'categoryId',
@@ -54,11 +48,8 @@ productSchema.virtual('supplier', {
   justOne: true,
 });
 
-// Include virtuals
-
-// Virtuals in console.log()
 productSchema.set('toObject', { virtuals: true });
-// Virtuals in JSON
+
 productSchema.set('toJSON', { virtuals: true });
 
 productSchema.plugin(mongooseLeanVirtuals);

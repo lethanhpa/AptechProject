@@ -3,12 +3,6 @@ const { Schema, model } = mongoose;
 const mongooseLeanVirtuals = require('mongoose-lean-virtuals');
 const bcrypt = require('bcryptjs');
 
-// Mongoose Datatypes:
-// https://mongoosejs.com/docs/schematypes.html
-
-// Validator
-// https://mongoosejs.com/docs/validation.html#built-in-validators
-
 const employeeSchema = new Schema({
   firstName: { type: String, required: true },
   lastName: { type: String, required: true },
@@ -20,7 +14,6 @@ const employeeSchema = new Schema({
         return emailRegex.test(value);
       },
       message: `{VALUE} is not a valid email!`,
-      // message: (props) => `{props.value} is not a valid email!`,
     },
     required: [true, 'email is required'],
   },
@@ -32,7 +25,6 @@ const employeeSchema = new Schema({
         return phoneRegex.test(value);
       },
       message: `{VALUE} is not a valid phone!`,
-      // message: (props) => `{props.value} is not a valid email!`,
     },
   },
   password: { type: String, require: true },
@@ -47,11 +39,11 @@ const employeeSchema = new Schema({
 
 employeeSchema.pre('save', async function (next) {
   try {
-    // generate salt key
-    const salt = await bcrypt.genSalt(10); // 10 ký tự
-    // generate password = salt key + hash key
+
+    const salt = await bcrypt.genSalt(10);
+
     const hashPass = await bcrypt.hash(this.password, salt);
-    // override password
+
     this.password = hashPass;
     next();
   } catch (err) {
@@ -66,13 +58,13 @@ employeeSchema.methods.isValidPass = async function (pass) {
     throw new Error(err);
   }
 }
-// Virtuals
+
 employeeSchema.virtual('fullName').get(function () {
   return this.firstName + ' ' + this.lastName;
 });
-// Virtuals in console.log()
+
 employeeSchema.set('toObject', { virtuals: true });
-// Virtuals in JSON
+
 employeeSchema.set('toJSON', { virtuals: true });
 employeeSchema.plugin(mongooseLeanVirtuals);
 const Employee = model('Employee', employeeSchema);

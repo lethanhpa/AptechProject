@@ -1,9 +1,9 @@
 import Moment from "moment";
-import React, { useState, useEffect, memo } from "react";
+import React, { useState, useEffect } from "react";
 import axiosClient from "@/libraries/axiosClient";
 import jwt_decode from "jwt-decode";
 import Styles from "../../styles/profile.module.css"
-import { Input, Form, Button, Modal, message, Table, Column, Space } from "antd"
+import { Input, Form, Button, Modal, message, Table, Space, Spin } from "antd"
 import { EyeOutlined } from "@ant-design/icons"
 import { useRouter } from 'next/router';
 import numeral from "numeral";
@@ -34,7 +34,7 @@ const ProfilePage = () => {
 
                 setCustomers(data);
             } catch (error) {
-                console.log(error);
+                console.error(error);
             }
         };
         fetchCustomers();
@@ -76,7 +76,7 @@ const ProfilePage = () => {
 
         setIsLogin(false);
 
-        router.push('/');
+        router.push('/products');
     };
 
     useEffect(() => {
@@ -238,15 +238,15 @@ const ProfilePage = () => {
                     <div className={Styles.content_order}>
                         <h1>Your Order</h1>
                         <Table dataSource={dataOrders.results} pagination={false} rowKey="_id">
-                            <Column title="Created Date" dataIndex="createdDate" key="createdDate" render={(text) => {
+                            <Table.Column title="Created Date" dataIndex="createdDate" key="createdDate" render={(text) => {
                                 return <span>{Moment(text).format("DD/MM/YYYY")}</span>;
                             }} />
-                            <Column title="Shipped Date" dataIndex="shippedDate" key="shippedDate" render={(text) => {
+                            <Table.Column title="Shipped Date" dataIndex="shippedDate" key="shippedDate" render={(text) => {
                                 return <span>{Moment(text).format("DD/MM/YYYY")}</span>;
                             }} />
-                            <Column title="Payment Type" dataIndex="paymentType" key="paymentType" />
-                            <Column title="Status" dataIndex="status" key="status" />
-                            <Column
+                            <Table.Column title="Payment Type" dataIndex="paymentType" key="paymentType" />
+                            <Table.Column title="Status" dataIndex="status" key="status" />
+                            <Table.Column
                                 title="Action"
                                 key="action"
                                 render={(record) => (
@@ -277,27 +277,27 @@ const ProfilePage = () => {
                             }}
                         >
                             <Table className={Styles.orderDetails} dataSource={selectedOrderId?.orderDetails} pagination={false} rowKey="_id">
-                                <Column title="Product Name" dataIndex="name" key="name"
+                                <Table.Column title="Product Name" dataIndex="name" key="name"
                                     render={(_text, record) => {
                                         return <span>{record.product.name}</span>;
                                     }} />
-                                <Column title="Product" dataIndex="img" key="img"
+                                <Table.Column title="Product" dataIndex="img" key="img"
                                     render={(_text, record) => {
                                         return <img className={Styles.product_img} src={record.product.img} alt="img" />;
                                     }} />
-                                <Column title="Quantity" dataIndex="quantity" key="quantity"
+                                <Table.Column title="Quantity" dataIndex="quantity" key="quantity"
                                     render={(_text, record) => {
                                         return <span>{record.quantity}</span>;
                                     }} />
-                                <Column title="Price" dataIndex="price" key="price"
+                                <Table.Column title="Price" dataIndex="price" key="price"
                                     render={(_text, record) => {
                                         return <span>${numeral(record.price).format("0,0")}</span>;
                                     }} />
-                                <Column title="Discount" dataIndex="discount" key="discount"
+                                <Table.Column title="Discount" dataIndex="discount" key="discount"
                                     render={(_text, record) => {
                                         return <span>{record.discount}%</span>;
                                     }} />
-                                <Column title="Total" key="total" render={(text, record) => {
+                                <Table.Column title="Total" key="total" render={(text, record) => {
                                     const total = record.quantity * record.price * (1 - record.discount / 100);
                                     return <span>${numeral(total).format("0,0")}</span>;
                                 }} />
@@ -305,9 +305,11 @@ const ProfilePage = () => {
                         </Modal>
                     </div>
                 </div>
-            ) : <span>Not found</span>}
+            ) : <Spin tip="Loading" size="large">
+                <div className="content" />
+            </Spin>}
         </>
     );
 };
 
-export default memo(ProfilePage);
+export default ProfilePage;

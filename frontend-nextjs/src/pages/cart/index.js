@@ -46,7 +46,7 @@ function Cart() {
         setCart(data.payload.results);
 
       } catch (error) {
-        console.log(error);
+        console.error(error);
       }
     };
     fetchCart();
@@ -71,7 +71,7 @@ function Cart() {
 
       await axiosClient.delete(`/cart/${customerId}/${productId}`);
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 

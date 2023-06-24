@@ -6,15 +6,12 @@ import ManageOrders from "../pages/ManageOrders"
 import ManageProducts from "../pages/ManageProducts"
 import ManageSuppliers from "../pages/ManageSuppliers"
 const publicRoutes = [
+    { path: '/', component: ManageEmployees },
     { path: '/manageCustomers', component: ManageCustomers },
-    { path: '/manageEmployees', component: ManageEmployees },
     { path: '/manageOrders', component: ManageOrders },
     { path: '/manageProducts', component: ManageProducts },
     { path: '/manageCategories', component: ManageCategories },
     { path: '/manageSuppliers', component: ManageSuppliers },
-
-
-
 ]
 const privateRoutes = [
 ]
