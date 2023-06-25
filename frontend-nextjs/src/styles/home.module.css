@@ -9,7 +9,6 @@
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-/* //........top text ........// */
 
 
 /* //........top text ........// */
@@ -41,7 +40,6 @@
 }
 
 .navbar {
-    box-shadow: 0 5px 4px rgb(146 161 176 / 15%);
     top: 0;
     width: 100%;
     background: #fff;
@@ -159,17 +157,15 @@
 
     .navbar .menu_items {
         padding-top: 100px;
-        background: #9898987f;
+        background: #989898;
         height: 100vh;
         max-width: 100%;
         transform: translate(-150%);
-        display: flex;
+        display: block;
         flex-direction: column;
-        /* margin-left: -40px;
-        padding-left: 40px; */
         text-align: center;
         transition: transform 0.5s ease-in-out;
-        /* box-shadow: 5px 0px 10px 0px #aaa; */
+        box-shadow: 5px 0px 10px 0px #aaa;
         overflow: scroll;
     }
 

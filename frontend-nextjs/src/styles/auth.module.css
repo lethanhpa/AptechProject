@@ -58,3 +58,26 @@
 .form_content {
     margin-left: 230px;
 }
+
+@media (max-width: 768px) {
+    .form {
+        background-color: #fff;
+        padding: 24px;
+        line-height: 0.5;
+        margin: auto;
+    }
+
+    .form_item {
+        padding: 0 0 0 20px;
+        max-width: 900px;
+        display: block;
+        margin: auto;
+    }
+
+    .form_item p {
+        text-align: center;
+        width: 220px;
+        padding: 12px 0 12px 0;
+    }
+
+}

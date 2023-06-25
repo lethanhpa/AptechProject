@@ -93,16 +93,13 @@ function Products(props) {
           <div className={Styles.shop_wrapper}>
             <Carousel autoplay>
               <div>
-                <h3 className={Styles.contentStyle}><img src="https://partner-images.bluecore.com/nike_singapore/Left.jpg" alt="" /></h3>
+                <h3 className={Styles.contentStyle}><img src="https://static.nike.com/a/images/f_auto/dpr_1.3,cs_srgb/w_1423,c_limit/5ba3d11d-c826-498b-90c8-8c8479267697/nike-kids.png" alt="" /></h3>
               </div>
               <div>
-                <h3 className={Styles.contentStyle}><img src="https://partner-images.bluecore.com/nike_singapore/CENTER.jpg" alt="" /></h3>
+                <h3 className={Styles.contentStyle}><img src="https://static.nike.com/a/images/f_auto/dpr_1.3,cs_srgb/w_1423,c_limit/6c89c8a0-c443-4a75-9932-14a715aaec06/men-s-shoes-clothing-accessories.png" alt="" /></h3>
               </div>
               <div>
-                <h3 className={Styles.contentStyle}><img src="https://partner-images.bluecore.com/nike_singapore/RIGHT.jpg" alt="" /></h3>
-              </div>
-              <div>
-                <h3 className={Styles.contentStyle}><img src="https://static.nike.com/a/images/f_auto/dpr_1.3,cs_srgb/w_706,c_limit/7639bac5-4fa2-4438-9af0-3ceda5900f21/nike-just-do-it.jpg" alt="" /></h3>
+                <h3 className={Styles.contentStyle}><img src="https://static.nike.com/a/images/f_auto/dpr_1.3,cs_srgb/w_1423,c_limit/71960002-7601-4cb7-b9d0-0334ba6a2363/women-s-shoes-clothing-accessories.png" alt="" /></h3>
               </div>
             </Carousel>
           </div>
