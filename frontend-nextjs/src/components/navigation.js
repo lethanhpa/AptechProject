@@ -1,17 +1,31 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
-import { ShoppingCartOutlined, HomeOutlined, ShopOutlined, UserAddOutlined, UserOutlined } from "@ant-design/icons";
+import {
+    ShoppingCartOutlined,
+    HomeOutlined,
+    ShopOutlined,
+    UserAddOutlined,
+    UserOutlined,
+} from "@ant-design/icons";
+import { Button } from "antd";
 import Styles from "../styles/home.module.css";
 import logo from "../images/logo.png";
-import { useRouter } from 'next/router';
+import { useRouter } from "next/router";
 import axiosClient from "@/libraries/axiosClient";
 import jwt_decode from "jwt-decode";
-
 
 const Navigation = () => {
     const [isLogin, setIsLogin] = useState(false);
 
     const router = useRouter();
+    useEffect(() => {
+        const token = localStorage.getItem("token");
+
+        if (token) {
+            setIsLogin(true);
+        }
+    }, [router]);
+
     useEffect(() => {
         const token = localStorage.getItem('token');
 
@@ -20,6 +34,15 @@ const Navigation = () => {
         }
 
     }, [router]);
+
+    const handleLogout = () => {
+        localStorage.removeItem('token');
+
+        setIsLogin(false);
+
+        router.push('/products');
+    };
+
 
     useEffect(() => {
         const fetchCart = async () => {
@@ -31,7 +54,6 @@ const Navigation = () => {
                 const customerId = decoded._id;
 
                 await axiosClient.get(`/cart/${customerId}`);
-
             } catch (error) {
                 console.error(error);
             }
@@ -63,6 +85,7 @@ const Navigation = () => {
                         </li>
                         {isLogin ? (
                             <>
+                                <div setIsLogin={setIsLogin}></div>
                                 <li>
                                     <a href="/cart">
                                         Cart <ShoppingCartOutlined />
@@ -73,6 +96,13 @@ const Navigation = () => {
                                         Profile <UserOutlined />
                                     </a>
                                 </li>
+                                <Button
+                                    type="error"
+                                    className={Styles.btn_logout}
+                                    onClick={handleLogout}
+                                >
+                                    Logout
+                                </Button>
                             </>
                         ) : (
                             <>
@@ -94,7 +124,7 @@ const Navigation = () => {
                         <Image src={logo} alt="logo" width={58} height={58} />
                     </div>
                 </div>
-            </nav >
+            </nav>
         </>
     );
 };

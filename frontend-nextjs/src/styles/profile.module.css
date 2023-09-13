@@ -20,14 +20,15 @@
 .content_order h1 {
     text-align: center;
     font-weight: 500;
+    color: #000;
 }
 
 
-.content_profile .btn {
+.content_profile .btn_edit {
     text-align: center;
 }
 
-.btn {
+.btn_edit {
     width: 150px;
     height: 45px;
     background-color: #000;
@@ -37,7 +38,7 @@
     border-radius: 15px;
 }
 
-.btn:hover {
+.btn_edit:hover {
     color: #000000;
     background-color: #ffffff;
     border: 0.5px solid #878787;
@@ -72,4 +73,45 @@
     width: 150px;
     height: 150px;
     object-fit: cover;
+}
+
+@media (max-width: 768px) {
+    .container {
+        display: block;
+    }
+
+    .content {
+        width: 100%;
+        padding: 24px;
+    }
+
+    .content_profile {
+        border: 1px solid #9292925f;
+        box-shadow: none;
+    }
+
+    .btn_edit,
+    .btn_logout {
+        width: 120px;
+        font-size: 14px;
+    }
+
+    .btn {
+        text-align: center;
+        width: 80px;
+    }
+
+    .content_order {
+        margin: 0;
+        padding: 0;
+    }
+
+    .content_order h1 {
+        width: 350px;
+        text-align: center;
+    }
+
+    .content_order .column_order {
+        font-size: 10px;
+    }
 }

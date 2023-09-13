@@ -264,7 +264,7 @@ function Products(props) {
                         </div>
                         {item.discount > 0 ? (
                           <div style={{ display: 'flex' }}>
-                            <div className={Styles.product_category}>
+                            <div className={Styles.product_discount}>
                               <span><TagOutlined /> {item.discount}%</span>
                             </div>
                             <div className={Styles.product_price}>${numeral(item.price).format("0,0")}</div>

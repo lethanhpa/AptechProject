@@ -12,7 +12,7 @@ const AppFooter = () => {
                     <p>We would like to introduce to you the leading shoe brand - YAME.<br />YAME brings you shoes that are not only sophisticated in design but<br />also extremely comfortable and suitable for all your activities</p>
                 </div>
                 <div className={Styles.content_2}>
-                    <h4>SHOPPING</h4>
+                    <h4>FASHION</h4>
                     <a href="#supplier">Supplier</a>
                     <a href="#new">New Fashion Of The Month</a>
                     <a href="#sale">Hot Sales</a>
@@ -25,7 +25,7 @@ const AppFooter = () => {
                     <p>Return and Exchange</p>
                 </div>
                 <div className={Styles.content_4}>
-                    <h4>NEWLETTER</h4>
+                    <h4>NEW TREND</h4>
                     <p>Be the first to know about new<br />arrivals, look books, sales &amp; promos!</p>
                     <hr />
                 </div>

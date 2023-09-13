@@ -13,6 +13,8 @@ function Checkout() {
     const [cart, setCart] = useState([]);
     const [totalPrice, setTotalPrice] = useState(0);
     const [shippingAddress, setShippingAddress] = useState("");
+    const [emailOrder, setEmailOrder] = useState("");
+    const [phoneNumberOrder, setPhoneNumberOrder] = useState("");
     const [paymentType, setPaymentType] = useState("CASH");
     const [description, setDescription] = useState("");
     const [customers, setCustomers] = useState([]);
@@ -102,6 +104,8 @@ function Checkout() {
             customerId: customerId,
             employeeId: null,
             orderDetails: orderDetails,
+            emailOrder: emailOrder,
+            phoneNumberOrder: phoneNumberOrder
         };
 
         try {
@@ -124,7 +128,6 @@ function Checkout() {
                 <div className={Styles.div_left}>
                     <div className={Styles.content_div_left}>
                         <h4>How would you like to get your order?</h4>
-
                         <div className={Styles.info_div_left}>
                             {customers && (
                                 <div key={customers._id}>
@@ -144,6 +147,24 @@ function Checkout() {
                                 placeholder="Enter your address"
                                 value={shippingAddress}
                                 onChange={(e) => setShippingAddress(e.target.value)}
+                            />
+
+                            <p className={Styles.label_div_left}>Email:</p>
+                            <Input
+                                required={true}
+                                className={Styles.enter_div_left}
+                                placeholder="Enter your email"
+                                value={emailOrder}
+                                onChange={(e) => setEmailOrder(e.target.value)}
+                            />
+
+                            <p className={Styles.label_div_left}>Phone Number:</p>
+                            <Input
+                                required={true}
+                                className={Styles.enter_div_left}
+                                placeholder="Enter your phone number"
+                                value={phoneNumberOrder}
+                                onChange={(e) => setPhoneNumberOrder(e.target.value)}
                             />
 
                             <p className={Styles.label_div_left}>Your notes about the order to us:</p>
@@ -255,7 +276,7 @@ function Checkout() {
                                 ))
                             )}
                         </div>
-                        <div className={Styles.checkout_right_button}>
+                        <div className={Styles.checkout_button}>
                             <button onClick={handleAddOrder}>Buy Now</button>
                         </div><ToastContainer />
                     </div>

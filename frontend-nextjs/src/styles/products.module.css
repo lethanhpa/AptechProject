@@ -1,5 +1,6 @@
 .container {
     background-color: #F8F9F9;
+    color: #000000;
 }
 
 .product_item {
@@ -19,21 +20,26 @@
     font-weight: 600;
 }
 
-.product_category {
-    font-size: 18px;
+.product_category,
+.product_supplier,
+.product_price {
+    font-size: 20px;
+    color: #787878;
 }
 
-.product_price {
-    font-size: 18px
+.product_discount,
+.product_total,
+.product_not_discount {
+    color: red;
 }
 
 .product_supplier,
 .product_total,
 .product_not_discount,
 .product_price,
-.product_category {
+.product_discount {
     font-size: 20px;
-    font-weight: 300;
+    font-weight: 400;
 }
 
 .product_price {
@@ -61,12 +67,13 @@
 .product_button button:hover {
     background-color: #fff;
     font-weight: 600;
-    color: #f05e8a !important;
+    color: #ff004c !important;
 }
 
 .product_item :hover {
     opacity: 0.9;
-    color: #f05e8a;
+    color: #787878;
+
 }
 
 @media (max-width: 500px) {
@@ -161,6 +168,7 @@
 .header_nav_button span {
     display: block;
     padding-right: 8px;
+    color: #000000;
 }
 
 

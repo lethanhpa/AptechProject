@@ -35,14 +35,13 @@
 
 .productDetail_price {
     color: #818181;
+    margin-right: 20px;
     font-weight: 300;
     text-decoration: line-through 1.25px solid #000000;
 }
 
 .productDetail_category,
 .productDetail_price,
-.productDetail_total,
-.productDetail_not_discount,
 .productDetail_discount,
 .productDetail_stock {
     font-weight: 300;
@@ -56,8 +55,11 @@
     font-weight: 300;
 }
 
-.productDetail_total {
-    margin-left: 20px;
+.productDetail_total,
+.productDetail_not_discount {
+    color: red;
+    font-weight: 400;
+    font-size: 22px;
 }
 
 .productDetail_add_cart {

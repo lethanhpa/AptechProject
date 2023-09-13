@@ -70,6 +70,10 @@ export default function ManageOrder() {
                 }} />
                 <Column title="Payment Type" dataIndex="paymentType" key="paymentType" />
                 <Column title="Status" dataIndex="status" key="status" />
+                <Column title="Phone Number" dataIndex="phoneNumberOrder" key="phoneNumberOrder" />
+                <Column title="Email" dataIndex="emailOrder" key="emailOrder" render={(_text, record) => {
+                    return <span>{record.emailOrder}</span>;
+                }} />
                 <Column title="Description" dataIndex="description" key="description" />
                 <Column title="Customers" dataIndex="customer.fullName" key="customer.fullName" render={(_text, record) => {
                     return <span>{record.customer?.lastName} {record.customer?.firstName}</span>;

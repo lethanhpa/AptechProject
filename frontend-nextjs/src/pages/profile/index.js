@@ -71,14 +71,6 @@ const ProfilePage = () => {
             }), [router]
     };
 
-    const handleLogout = () => {
-        localStorage.removeItem('token');
-
-        setIsLogin(false);
-
-        router.push('/products');
-    };
-
     useEffect(() => {
         const token = localStorage.getItem('token');
 
@@ -167,9 +159,7 @@ const ProfilePage = () => {
                                                     Edit Profile
                                                 </Button>
 
-                                                <Button type='error' className={Styles.btn_logout} onClick={handleLogout}>
-                                                    Logout
-                                                </Button>
+
                                             </Space>
                                         </Form.Item>
                                     </Form>

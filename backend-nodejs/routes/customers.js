@@ -1,6 +1,5 @@
 const passport = require('passport');
 const express = require("express");
-const yup = require('yup');
 
 const router = express.Router();
 const { Customer } = require("../models");
@@ -20,6 +19,7 @@ mongoose.connect(CONNECTION_STRING);
 router.post(
   "/login",
   validateSchema(loginSchema),
+  passport.authenticate('local', { session: false }),
   async (req, res, next) => {
     try {
       const { email } = req.body;
@@ -28,9 +28,9 @@ router.post(
 
       if (!customer) return res.status(404).send({ message: "Not found" });
 
-      const { _id, email: empEmail, firstName, lastName } = customer;
+      const { _id, email: cusEmail, firstName, lastName } = customer;
 
-      const token = encodeToken(_id, empEmail, firstName, lastName);
+      const token = encodeToken(_id, cusEmail, firstName, lastName);
 
       res.status(200).json({
         token,
