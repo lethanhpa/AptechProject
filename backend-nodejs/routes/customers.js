@@ -132,6 +132,56 @@ router.delete('/:id', function (req, res, next) {
   }
 });
 
+// POST để khóa tài khoản khách hàng
+router.post('/:id/lock', async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    // Tìm khách hàng theo ID
+    const customer = await Customer.findById(id);
+
+    if (!customer) {
+      return res.status(404).json({ message: 'Không tìm thấy khách hàng' });
+    }
+
+    // Đặt trạng thái isLocked của khách hàng thành true
+    customer.isLocked = true;
+
+    // Lưu thay đổi
+    await customer.save();
+
+    res.status(200).json({ message: 'Tài khoản đã bị khóa thành công' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Đã xảy ra lỗi khi khóa tài khoản' });
+  }
+});
+
+// POST để mở khóa tài khoản khách hàng
+router.post('/:id/unlock', async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    // Tìm khách hàng theo ID
+    const customer = await Customer.findById(id);
+
+    if (!customer) {
+      return res.status(404).json({ message: 'Không tìm thấy khách hàng' });
+    }
+
+    // Đặt trạng thái isLocked của khách hàng thành false
+    customer.isLocked = false;
+
+    // Lưu thay đổi
+    await customer.save();
+
+    res.status(200).json({ message: 'Tài khoản đã được mở khóa thành công' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Đã xảy ra lỗi khi mở khóa tài khoản' });
+  }
+});
+
 //PATCH
 router.patch('/:id', function (req, res, next) {
   try {

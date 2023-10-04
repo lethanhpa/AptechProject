@@ -30,6 +30,7 @@ const employeeSchema = new Schema({
   password: { type: String, require: true },
   address: { type: String, required: true },
   birthday: { type: Date },
+  role: { type: String, required: true },
 },
   {
     versionKey: false,

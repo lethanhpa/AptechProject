@@ -1,15 +1,18 @@
 import React, { useEffect, useState } from 'react'
 import Moment from "moment";
-import { Button, Space, Table, message, Popconfirm, Form, Input } from 'antd';
-import { DeleteOutlined, UnorderedListOutlined } from "@ant-design/icons";
+import { Button, Space, Table, message, Popconfirm, Modal, Form, Input } from 'antd';
+import { DeleteOutlined, EditOutlined, UnorderedListOutlined } from "@ant-design/icons";
 import axios from "../../libraries/axiosClient.js";
 const { Column } = Table;
 const apiName = "/employees";
 
 export default function ManageEmployees() {
     const [data, setData] = useState([]);
+    const [open, setOpen] = useState(false);
+    const [updateId, setUpdateId] = useState(0);
     const [showTable, setShowTable] = useState(true);
     const [createForm] = Form.useForm();
+    const [updateForm] = Form.useForm();
     const [refresh, setRefresh] = React.useState(0);
     const text = 'Are you sure you want to delete?';
     const description = 'Delete the it';
@@ -39,6 +42,22 @@ export default function ManageEmployees() {
                 console.error(err);
             });
     };
+
+
+    const onUpdateFinish = (values) => {
+        axios
+            .patch(apiName + "/" + updateId, values)
+            .then((_response) => {
+                setRefresh((f) => f + 1);
+                updateForm.resetFields();
+                message.success("Update successfully!", 1.5);
+                setOpen(false);
+            })
+            .catch((err) => {
+                console.error(err);
+            });
+    };
+
     return (
         <div>
             {showTable === false ? (
@@ -53,7 +72,7 @@ export default function ManageEmployees() {
                             <UnorderedListOutlined />
                         </Button>
                     </div>
-                    <h1 style={{ fontSize: "32px" }}>ADD LIST</h1>
+                    <h1 style={{ fontSize: "32px" }}>ADD EMPLOYEES</h1>
                     {/* CREATE FORM */}
                     <Form
                         style={{ width: "80%" }}
@@ -115,6 +134,9 @@ export default function ManageEmployees() {
                         <Form.Item label="Birthday" name="birthday" hasFeedback>
                             <Input />
                         </Form.Item>
+                        <Form.Item label="Role" name="role" hasFeedback>
+                            <Input />
+                        </Form.Item>
 
                         <Form.Item
                             wrapperCol={{
@@ -140,7 +162,7 @@ export default function ManageEmployees() {
                             <UnorderedListOutlined />
                         </Button>
                     </div>
-                    <h1 style={{ fontSize: "32px", textAlign: "center" }}>LIST</h1>
+                    <h1 style={{ fontSize: "32px", textAlign: "center" }}>EMPLOYEES</h1>
                     <Table dataSource={data} rowKey="_id">
                         <Column title="First Name" dataIndex="firstName" key="firstName" />
                         <Column title="Last Name" dataIndex="lastName" key="lastName" />
@@ -150,11 +172,22 @@ export default function ManageEmployees() {
                         }} />
                         <Column title="Phone Number" dataIndex="phoneNumber" key="phoneNumber" />
                         <Column title="Address" dataIndex="address" key="address" />
+                        <Column title="Role" dataIndex="role" key="role" />
                         <Column
                             title="Action"
                             key="action"
                             render={(record) => (
                                 <Space size="middle">
+                                    <Button
+                                        type="primary"
+                                        ghost
+                                        icon={<EditOutlined />}
+                                        onClick={() => {
+                                            setOpen(true);
+                                            setUpdateId(record._id);
+                                            updateForm.setFieldsValue(record);
+                                        }}
+                                    >Edit</Button>
                                     <Popconfirm
                                         placement="topRight"
                                         title={text}
@@ -177,6 +210,71 @@ export default function ManageEmployees() {
                             )}
                         />
                     </Table>
+                    <Modal
+                        open={open}
+                        title="Update"
+                        onCancel={() => {
+                            setOpen(false);
+                        }}
+                        cancelText="Close"
+                        okText="Update"
+                        onOk={() => {
+                            updateForm.submit();
+                        }}
+                    >
+                        <Form
+                            form={updateForm}
+                            name="update-form"
+                            onFinish={onUpdateFinish}
+                            labelCol={{
+                                span: 8,
+                            }}
+                            wrapperCol={{
+                                span: 16,
+                            }}
+                        >
+                            <Form.Item label="First Name" name="firstName" hasFeedback>
+                                <Input />
+                            </Form.Item>
+
+                            <Form.Item label="Last Name" name="lastName" hasFeedback>
+                                <Input />
+                            </Form.Item>
+
+                            <Form.Item label="Email" name="email"
+                                rules={[
+                                    {
+                                        required: true,
+                                        message: "Email to required",
+                                    },
+                                ]}
+                                hasFeedback>
+                                <Input />
+                            </Form.Item>
+
+                            <Form.Item label="Phone Number" name="phoneNumber"
+                                rules={[
+                                    {
+                                        required: true,
+                                        message: "Phone Number to required",
+                                    },
+                                ]}
+                                hasFeedback>
+                                <Input />
+                            </Form.Item>
+
+                            <Form.Item label="Address" name="address" hasFeedback>
+                                <Input />
+                            </Form.Item>
+
+                            <Form.Item label="Birthday" name="birthday" hasFeedback>
+                                <Input />
+                            </Form.Item>
+                            <Form.Item label="Role" name="role" hasFeedback>
+                                <Input />
+                            </Form.Item>
+                        </Form>
+                    </Modal>
                 </>
             )}
         </div>

@@ -1,31 +1,19 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react'
 import Image from "next/image";
-import {
-    ShoppingCartOutlined,
-    HomeOutlined,
-    ShopOutlined,
-    UserAddOutlined,
-    UserOutlined,
-} from "@ant-design/icons";
-import { Button } from "antd";
+import { ShoppingCartOutlined, HomeOutlined, ShopOutlined, UserAddOutlined, UserOutlined, LoginOutlined } from "@ant-design/icons";
 import Styles from "../styles/home.module.css";
+import { Button, Popconfirm } from 'antd';
 import logo from "../images/logo.png";
-import { useRouter } from "next/router";
+import { useRouter } from 'next/router';
 import axiosClient from "@/libraries/axiosClient";
 import jwt_decode from "jwt-decode";
+import Link from 'next/link';
 
 const Navigation = () => {
     const [isLogin, setIsLogin] = useState(false);
-
+    const text = 'Do you want to log out?';
+    const description = 'Log out now!!!';
     const router = useRouter();
-    useEffect(() => {
-        const token = localStorage.getItem("token");
-
-        if (token) {
-            setIsLogin(true);
-        }
-    }, [router]);
-
     useEffect(() => {
         const token = localStorage.getItem('token');
 
@@ -34,15 +22,6 @@ const Navigation = () => {
         }
 
     }, [router]);
-
-    const handleLogout = () => {
-        localStorage.removeItem('token');
-
-        setIsLogin(false);
-
-        router.push('/products');
-    };
-
 
     useEffect(() => {
         const fetchCart = async () => {
@@ -54,12 +33,19 @@ const Navigation = () => {
                 const customerId = decoded._id;
 
                 await axiosClient.get(`/cart/${customerId}`);
+
             } catch (error) {
                 console.error(error);
             }
         };
         fetchCart();
     }, [router]);
+
+    const handleLogout = () => {
+        localStorage.removeItem('token');
+        setIsLogin(false);
+        router.push('/products');
+    };
 
     return (
         <>
@@ -73,49 +59,56 @@ const Navigation = () => {
                     </div>
                     <ul className={Styles.menu_items}>
                         <li>
-                            <a href="/">
+                            <Link href="/">
                                 Home <HomeOutlined />
-                            </a>
+                            </Link>
                         </li>
 
                         <li>
-                            <a href="/products">
+                            <Link href="/products">
                                 Shop <ShopOutlined />
-                            </a>
+                            </Link>
                         </li>
                         {isLogin ? (
                             <>
-                                <div setIsLogin={setIsLogin}></div>
                                 <li>
-                                    <a href="/cart">
+                                    <Link href="/cart">
                                         Cart <ShoppingCartOutlined />
-                                    </a>
+                                    </Link>
                                 </li>
                                 <li>
-                                    <a href="/profile">
+                                    <Link href='/profile'>
                                         Profile <UserOutlined />
-                                    </a>
+                                    </Link>
                                 </li>
-                                <Button
-                                    type="error"
-                                    className={Styles.btn_logout}
-                                    onClick={handleLogout}
+                                <Popconfirm
+                                    placement="topRight"
+                                    title={text}
+                                    description={description}
+                                    onConfirm={handleLogout}
+                                    okText="Yes"
+                                    cancelText="No"
                                 >
-                                    Logout
-                                </Button>
+                                    <Button
+                                        type="error"
+                                        className={Styles.btn_logout}
+                                    >
+                                        <a>Logout <LoginOutlined /></a>
+                                    </Button>
+                                </Popconfirm>
                             </>
                         ) : (
                             <>
                                 <li>
-                                    <a href="/signup">
+                                    <Link href="/signup">
                                         Sign Up <UserAddOutlined />
-                                    </a>
+                                    </Link>
                                 </li>
 
                                 <li>
-                                    <a href="/signin">
+                                    <Link href="/signin">
                                         Sign In <UserOutlined />
-                                    </a>
+                                    </Link>
                                 </li>
                             </>
                         )}
@@ -124,7 +117,7 @@ const Navigation = () => {
                         <Image src={logo} alt="logo" width={58} height={58} />
                     </div>
                 </div>
-            </nav>
+            </nav >
         </>
     );
 };

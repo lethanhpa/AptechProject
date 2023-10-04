@@ -24,6 +24,9 @@ function Products(props) {
   const [supplierSearch, setSupplierSearch] = useState("");
   const [dataSearch, setDataSearch] = useState({});
   const [nameSearch, setNameSearch] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const productsPerPage = 16;
+  const displayedProducts = products;
 
   const onClearSearch = () => {
     setNameSearch("");
@@ -37,7 +40,7 @@ function Products(props) {
   };
 
   const onSearch = () => {
-
+    setCurrentPage(1);
     if (
       nameSearch === "" &&
       categorySearch === "" &&
@@ -59,17 +62,6 @@ function Products(props) {
       ...(discountEndSearch !== "" && { discountEnd: discountEndSearch }),
     });
   };
-  const [handleSearch] = Form.useForm();
-
-  const [openFilter, setOpenFilter] = useState(false);
-
-  const showDrawer = () => {
-    setOpenFilter(true);
-  };
-
-  const onClose = () => {
-    setOpenFilter(false);
-  };
 
   useEffect(() => {
     axiosClient
@@ -85,6 +77,7 @@ function Products(props) {
         console.error(err);
       });
   }, [router, dataSearch]);
+
 
   return (
     <>
@@ -105,118 +98,32 @@ function Products(props) {
           </div>
           <div className={Styles.header_content}>
             <h2 className={Styles.header_title}>Shop Shoes ({total} products)</h2>
-            <button onClick={showDrawer} className={Styles.header_nav_button}>
-              <span>Filter</span>
-              <ControlOutlined />
-            </button>
-          </div>
-          <Drawer
-            title="Filter Products"
-            placement="right"
-            width={500}
-            onClose={onClose}
-            open={openFilter}
-          >
-            {/* Search name product */}
-            <Form
-              form={handleSearch}
-              name="search-form"
-              labelCol={{
-                span: 8,
-              }}
-              wrapperCol={{
-                span: 16,
-              }}
+            <Form.Item
+              name="name"
+              hasFeedback={nameSearch === "" ? false : true}
+              valuePropName={nameSearch}
+              style={{ marginTop: "30px" }}
             >
-              <Form.Item
-                label="Name"
-                name="name"
-                hasFeedback={nameSearch === "" ? false : true}
-                valuePropName={nameSearch}
-              >
+              <Space>
+                <span className={Styles.product_search}>Product name: </span>
                 <Input
+                  style={{ width: "400px" }}
                   value={nameSearch}
                   onChange={(e) => {
                     setNameSearch(e.target.value);
                   }}
                 />
-              </Form.Item>
-              <Form.Item label="Category">
-                <Input
-                  value={categorySearch}
-                  onChange={(e) => {
-                    setCategorySearch(e.target.value);
-                  }}
-                  placeholder="Enter Category"
-                />
-              </Form.Item>
-
-              <Form.Item label="Supplier">
-                <Input
-                  value={supplierSearch}
-                  onChange={(e) => {
-                    setSupplierSearch(e.target.value);
-                  }}
-                  placeholder="Enter Supplier"
-                />
-              </Form.Item>
-
-              <Form.Item label="Price">
-                <Space>
-                  <InputNumber
-                    min={0}
-                    onChange={(value) => {
-                      setPriceStartSearch(value);
-                    }}
-                    placeholder="From..."
-                    value={priceStartSearch}
-                  />
-                  <InputNumber
-                    min={0}
-                    onChange={(value) => {
-                      setPriceEndSearch(value);
-                    }}
-                    placeholder="To..."
-                    value={priceEndSearch}
-                  />
-                </Space>
-              </Form.Item>
-
-              <Form.Item label="Discount">
-                <Space>
-                  <InputNumber
-                    min={0}
-                    onChange={(value) => {
-                      setDiscountStartSearch(value);
-                    }}
-                    value={discountStartSearch}
-                    placeholder="From..."
-                  />
-                  <InputNumber
-                    max={99}
-                    min={0}
-                    onChange={(value) => {
-                      setDiscountEndSearch(value);
-                    }}
-                    value={discountEndSearch}
-                    placeholder="To..."
-                  />
-                </Space>
-              </Form.Item>
-
-              <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-                <Button onClick={onClearSearch} style={{ marginRight: "5px" }}>
-                  Clear
-                  <ClearOutlined />
-                </Button>
                 <Button onClick={onSearch}>
                   Search
                   <SearchOutlined />
                 </Button>
-              </Form.Item>
-            </Form>
-          </Drawer>
-
+                <Button onClick={onClearSearch}>
+                  Clear
+                  <ClearOutlined />
+                </Button>
+              </Space>
+            </Form.Item>
+          </div>
           <Row justify="space-around">
             {products.length > 0 ?
               products
@@ -246,6 +153,7 @@ function Products(props) {
                   }
                   return true;
                 })
+                .slice((currentPage - 1) * productsPerPage, currentPage * productsPerPage)
                 .map((item) => {
                   return (
                     <div key={item.slug} className={Styles.product_item}>
@@ -281,6 +189,20 @@ function Products(props) {
                 ) : <p>Không có dữ liệu</p>
             }
           </Row>
+          <div className={Styles.pagination}>
+            <button
+              disabled={currentPage === 1}
+              onClick={() => setCurrentPage(currentPage - 1)}
+            >
+              Prev
+            </button>
+            <button
+              disabled={currentPage * productsPerPage >= products.length}
+              onClick={() => setCurrentPage(currentPage + 1)}
+            >
+              Next
+            </button>
+          </div>
         </Content>
       </Layout >
     </>

@@ -30,6 +30,7 @@ const customerSchema = new Schema({
   },
   address: { type: String, required: true },
   birthday: { type: Date },
+  isLocked: { type: Boolean, default: false },
 },
   {
     versionKey: false,

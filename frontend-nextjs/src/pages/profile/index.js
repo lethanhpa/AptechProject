@@ -145,22 +145,18 @@ const ProfilePage = () => {
 
                                         <Form.Item
                                             wrapperCol={{
-                                                offset: 5,
+                                                offset: 8
                                             }}
                                         >
-                                            <Space>
-                                                <Button
-                                                    className={Styles.btn}
-                                                    onClick={() => {
-                                                        setOpen(true);
-                                                        setUpdateId(customers._id);
-                                                        updateForm.setFieldsValue(customers)
-                                                    }}>
-                                                    Edit Profile
-                                                </Button>
-
-
-                                            </Space>
+                                            <Button
+                                                className={Styles.btn_edit}
+                                                onClick={() => {
+                                                    setOpen(true);
+                                                    setUpdateId(customers._id);
+                                                    updateForm.setFieldsValue(customers)
+                                                }}>
+                                                Edit Profile
+                                            </Button>
                                         </Form.Item>
                                     </Form>
 
@@ -260,20 +256,25 @@ const ProfilePage = () => {
                             onCancel={() => {
                                 setOpenOrderDetail(false);
                             }}
-                            cancelText="Close"
-                            onOk={() => {
-                                setOpenOrderDetail(false);
-                                setSelectedOrderId(null);
-                            }}
+                            footer={[
+                                <Button
+                                    key="close"
+                                    onClick={() => {
+                                        setOpenOrderDetail(false);
+                                    }}
+                                >
+                                    Close
+                                </Button>,
+                            ]}
                         >
                             <Table className={Styles.orderDetails} dataSource={selectedOrderId?.orderDetails} pagination={false} rowKey="_id">
                                 <Table.Column title="Product Name" dataIndex="name" key="name"
                                     render={(_text, record) => {
-                                        return <span>{record.product.name}</span>;
+                                        return <span>{record.product?.name}</span>;
                                     }} />
                                 <Table.Column title="Product" dataIndex="img" key="img"
                                     render={(_text, record) => {
-                                        return <img className={Styles.product_img} src={record.product.img} alt="img" />;
+                                        return <img className={Styles.product_img} src={record.product?.img} alt="img" />;
                                     }} />
                                 <Table.Column title="Quantity" dataIndex="quantity" key="quantity"
                                     render={(_text, record) => {

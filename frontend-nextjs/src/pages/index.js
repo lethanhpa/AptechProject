@@ -1,6 +1,6 @@
 import React from "react";
 import Styles from "../styles/home.module.css"
-import { Row } from 'antd';
+import { Row, Carousel, Pagination } from 'antd';
 import { TagOutlined } from '@ant-design/icons'
 import axiosClient from "../libraries/axiosClient";
 import Link from "next/link"
@@ -9,28 +9,27 @@ function Home(props) {
   const { suppliers } = props;
   const { products } = props;
 
+  const [currentPage, setCurrentPage] = React.useState(1);
+  const pageSize = 4;
+  const totalProduct = products.filter((item) => item.discount > 0).length;
+  const totalPages = Math.ceil(totalProduct / pageSize);
+
   return (
     <>
       <div className={Styles.home}>
         <div id="home">
-          <div className={Styles.home_page}>
-            <div className={Styles.home_img}>
-              <img src="https://static.nike.com/a/images/w_1423,c_limit/b05de187-a4ca-4f37-867b-b7f011d98cb6/nike-just-do-it.jpg" alt="img " />
-            </div>
-            <div className={Styles.home_txt}>
-              <p className={Styles.collections}>SUMMER COLLECTION</p>
-              <h2>SUMMER - AUTUMN<br />Collection 2023</h2>
-              <div className={Styles.home_label}>
-                <p>A specialist label creating luxury essentials. Ethically crafted<br />with an unwavering commitment to exceptional quality.</p>
+          <div className={Styles.shop_wrapper}>
+            <Carousel autoplay>
+              <div>
+                <h3 className={Styles.contentStyle}><img src="https://static.nike.com/a/images/f_auto/dpr_1.3,cs_srgb/w_1423,c_limit/5ba3d11d-c826-498b-90c8-8c8479267697/nike-kids.png" alt="" /></h3>
               </div>
-              <button><a href={"/products"}>SHOP NOW</a><i className="bx bx-right-arrow-alt" /></button>
-              <div className={Styles.home_social_icons}>
-                <a href="#"><i className="bx bxl-facebook" /></a>
-                <a href="#"><i className="bx bxl-twitter" /></a>
-                <a href="#"><i className="bx bxl-pinterest" /></a>
-                <a href="#"><i className="bx bxl-instagram" /></a>
+              <div>
+                <h3 className={Styles.contentStyle}><img src="https://static.nike.com/a/images/f_auto/dpr_1.3,cs_srgb/w_1423,c_limit/6c89c8a0-c443-4a75-9932-14a715aaec06/men-s-shoes-clothing-accessories.png" alt="" /></h3>
               </div>
-            </div>
+              <div>
+                <h3 className={Styles.contentStyle}><img src="https://static.nike.com/a/images/f_auto/dpr_1.3,cs_srgb/w_1423,c_limit/71960002-7601-4cb7-b9d0-0334ba6a2363/women-s-shoes-clothing-accessories.png" alt="" /></h3>
+              </div>
+            </Carousel>
           </div>
         </div>
         <div id="supplier" className={Styles.collection}>
@@ -97,13 +96,15 @@ function Home(props) {
                 ))}
             </div>
           </div>
-          <div className={`${Styles.seller}  ${Styles.container}`}>
+          <div className={`${Styles.seller} ${Styles.container}`}>
             <h2 id="sale">Hot Sales</h2>
-            <div className={Styles.best_seller}>
-              {products.map((item) => (
-                item.discount > 0 && (
-                  <Link href={`/products/t/${item.slug}`}>
-                    <div key={item._id} className={Styles.best_p1}>
+            <div className={Styles.product_grid}>
+              {products
+                .filter((item) => item.discount > 0)
+                .slice((currentPage - 1) * pageSize, currentPage * pageSize)
+                .map((item) => (
+                  <Link href={`/products/t/${item.slug}`} key={item.slug}>
+                    <div className={Styles.best_p1}>
                       <img src={item.img} alt="img" />
                       <div className={Styles.best_p1_txt}>
                         <div className={Styles.name}>
@@ -125,9 +126,19 @@ function Home(props) {
                       </div>
                     </div>
                   </Link>
-                )))}
+                ))}
             </div>
+            {totalPages > 1 && (
+              <Pagination
+                style={{ marginTop: "16px", textAlign: "center" }}
+                current={currentPage}
+                pageSize={pageSize}
+                total={totalProduct}
+                onChange={(page) => setCurrentPage(page)}
+              />
+            )}
           </div>
+
         </div>
         <div id="limited">
           <div className={Styles.news_heading}>

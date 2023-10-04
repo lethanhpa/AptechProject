@@ -47,6 +47,10 @@
     padding: 0 15px 0 15px;
 }
 
+.product_search {
+    font-size: 20px;
+}
+
 .product_button button {
     width: 150px;
     padding: 10px 15px;
@@ -171,6 +175,29 @@
     color: #000000;
 }
 
+
+.pagination {
+    margin-bottom: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.pagination button {
+    margin: 0 5px;
+    padding: 5px 10px;
+    cursor: pointer;
+    background-color: #f05e8a;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    outline: none;
+}
+
+.pagination button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
 
 
 @media (max-width: 768px) {

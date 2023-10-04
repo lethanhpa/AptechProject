@@ -4,12 +4,9 @@
     margin: 0 auto;
 }
 
-
 .home {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
-
-
 
 /* //........top text ........// */
 
@@ -31,7 +28,6 @@
     margin: 0 10px;
 }
 
-
 /* //........ Navbar ........// */
 
 .navbar input[type="checkbox"],
@@ -44,14 +40,26 @@
     width: 100%;
     background: #fff;
     color: #000;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
     z-index: 100;
 }
 
+/* .navbar_container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+  } */
 .navbar_container {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background-color: #ffffff;
+    z-index: 999;
+    /* Để đảm bảo thanh điều hướng hiển thị trên các phần tử khác */
 }
 
 .navbar img {
@@ -91,8 +99,28 @@
     width: 100%;
 }
 
+.shop_wrapper {
+    margin: 48px auto 0;
+    padding: 0 48px 0 48px;
+    background-color: #f05e8a;
+}
+
+.shop_wrapper img {
+    margin: auto;
+    justify-content: center;
+    object-fit: cover;
+    width: 900px;
+    height: auto;
+}
 
 @media (max-width: 768px) {
+    .shop_wrapper {
+        margin: auto;
+        justify-content: center;
+        padding: 0;
+        background-color: #fff;
+    }
+
     .navbar {
         opacity: 0.95;
     }
@@ -218,7 +246,6 @@
     }
 }
 
-
 /* //........ Home ........// */
 
 .home_page img {
@@ -291,7 +318,6 @@
     font-size: 18px;
 }
 
-
 /* //........ Collections ........// */
 
 .collections {
@@ -314,7 +340,6 @@
     position: relative;
     display: flex;
 }
-
 
 .content::after {
     content: "";
@@ -354,8 +379,8 @@
 }
 
 /* .img_content p {
-    font-size: 1.6rem;
-} */
+      font-size: 1.6rem;
+  } */
 
 .img_content button {
     border: none;
@@ -397,7 +422,6 @@
     opacity: 1;
     top: 50%;
 }
-
 
 /* //........ seller  ........// */
 
@@ -455,6 +479,15 @@
     color: #000;
 }
 
+.product_grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    /* Hiển thị 4 sản phẩm trên mỗi hàng */
+    gap: 16px;
+    /* Khoảng cách giữa các sản phẩm */
+}
+
+
 .seller .best_p1 {
     width: 250px;
     color: #000;
@@ -475,7 +508,6 @@
 .seller .best_p1 .name {
     font-size: 18px;
 }
-
 
 .seller .best_p1 .discount {
     color: #ff0000;
@@ -523,14 +555,12 @@
     color: #f05e8a;
 }
 
-
 /* .best_seller .add-cart button {
-    padding: 5px 5px;
-    margin-top: 5px;
-    font-size: 14px;
-    cursor: pointer;
-} */
-
+      padding: 5px 5px;
+      margin-top: 5px;
+      font-size: 14px;
+      cursor: pointer;
+  } */
 
 /* //........ deal of week ........// */
 
@@ -599,7 +629,6 @@
     color: #ff3c78;
 }
 
-
 /* //........ NEWS ........// */
 
 #news {
@@ -648,6 +677,7 @@
     bottom: -60%;
     left: 7%;
     background: #fff;
+    color: #000;
     padding: 25px;
 }
 
@@ -662,7 +692,6 @@
     text-align: center;
     font-weight: 600;
     padding-bottom: 15px;
-    color: #000;
 }
 
 .l_news1 .news1_conte .date_news1 a {
@@ -777,7 +806,6 @@
     color: #000;
 }
 
-
 /* //........ Footer ...... // */
 
 .footer {
@@ -844,19 +872,16 @@
     color: #fff;
 }
 
-
 /* //........ contact ...... // */
 
 .contact {
     margin-top: 150px;
-
 }
 
 .contact iframe {
     height: 72vh;
     width: 100%;
 }
-
 
 .form {
     display: flex;
@@ -940,7 +965,6 @@
     cursor: pointer;
 }
 
-
 /* //....... Media Queries .......// */
 
 @media (max-width: 500px) {
@@ -1014,7 +1038,7 @@
     }
 }
 
-@media(min-width: 501px) and (max-width: 768px) {
+@media (min-width: 501px) and (max-width: 768px) {
     .head {
         display: none;
     }
@@ -1084,12 +1108,11 @@
     }
 }
 
-@media(orientation: landscape) and (max-height: 500px) {
+@media (orientation: landscape) and (max-height: 500px) {
     .header {
         height: 90vmax;
     }
 }
-
 
 /* //....... Media Queries For Contact .......// */
 
@@ -1115,7 +1138,7 @@
     }
 }
 
-@media(min-width: 501px) and (max-width: 768px) {
+@media (min-width: 501px) and (max-width: 768px) {
     .form {
         display: flex;
         flex-direction: column;

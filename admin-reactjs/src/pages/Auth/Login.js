@@ -2,11 +2,17 @@ import React, { useState } from 'react';
 import Styles from './Login.module.css';
 import axios from '../../libraries/axiosClient';
 import { message } from 'antd';
+import { useNavigate } from 'react-router-dom';
 
 const Login = (props) => {
   const { setIsLogin } = props;
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const navigate = useNavigate();
+
+  const redirectToManageProducts = () => {
+    navigate('/manageProducts')
+  }
 
   const handleEmailChange = (event) => {
     setEmail(event.target.value);
@@ -32,9 +38,13 @@ const Login = (props) => {
 
       axios.defaults.headers.Authorization = `Bearer ${token}`;
 
+      const payload = response.data.payload;
+      localStorage.setItem("payload", JSON.stringify(payload));
+
       setIsLogin(true);
 
       message.success("Login successfully!!!");
+
     } catch (error) {
       console.error(error);
       message.error("Login failed");
@@ -66,7 +76,7 @@ const Login = (props) => {
           <span></span>
           <span></span>
           <span></span>
-          <button type="submit" >L O G I N</button>
+          <button type="submit" onClick={redirectToManageProducts}>L O G I N</button>
         </div>
       </form>
     </div>

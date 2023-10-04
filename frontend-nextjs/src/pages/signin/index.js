@@ -22,6 +22,7 @@ const Index = () => {
     const handlePasswordChange = (e) => {
         setPassword(e.target.value);
     };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
 
@@ -34,14 +35,24 @@ const Index = () => {
             const response = await axios.post("/customers/login", account);
             const { token } = response.data;
 
-            localStorage.setItem('token', token);
+            // Kiểm tra trạng thái khóa trước khi cho phép đăng nhập
+            const customer = await axios.get("/customers/profile", {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
 
-            axiosClient.defaults.headers.Authorization = `Bearer ${token}`;
+            if (customer.data.isLocked) {
+                toast.error("Your account has been locked.");
+            } else {
+                localStorage.setItem('token', token);
 
-            toast.success("Login successfully!!!");
+                axiosClient.defaults.headers.Authorization = `Bearer ${token}`;
 
-            router.push('/products');
+                toast.success("Login successfully!!!");
 
+                router.push('/products');
+            }
         } catch (error) {
             console.error(error);
             toast.error("Login failed");
