@@ -72,6 +72,15 @@ router.route('/profile').get(passport.authenticate('jwt', { session: false }), a
   }
 },);
 
+router.get('/count', async (req, res, next) => {
+  try {
+    const employeeCount = await Employee.countDocuments();
+    res.status(200).json({ count: employeeCount });
+  } catch (err) {
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
+});
+
 // GET
 
 router.get('/', function (req, res, next) {

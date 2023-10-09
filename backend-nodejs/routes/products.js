@@ -84,6 +84,15 @@ router.get('/', validateSchema(getProductsSchema), async (req, res) => {
   }
 });
 
+router.get('/count', async (req, res, next) => {
+  try {
+    const productCount = await Product.countDocuments();
+    res.status(200).json({ count: productCount });
+  } catch (err) {
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
+});
+
 router.get("/", async (_req, res) => {
   try {
     let results = await Product.find()

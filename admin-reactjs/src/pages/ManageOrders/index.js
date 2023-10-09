@@ -83,7 +83,7 @@ export default function ManageOrder() {
                     title="Action"
                     key="action"
                     render={(record) => (
-                        <Space size="middle">
+                        <Space>
                             <Button
                                 type="primary"
                                 ghost
@@ -201,23 +201,27 @@ export default function ManageOrder() {
                 ]}
             >
                 <Table dataSource={selectedOrderId?.orderDetails} pagination={false} rowKey="_id">
-                    <Column title="Product" dataIndex="productId" key="productId"
+                    <Table.Column title="Product Name" dataIndex="name" key="name"
                         render={(_text, record) => {
-                            return <span>{record.productId}</span>;
+                            return <span>{record.name}</span>;
                         }} />
-                    <Column title="Quantity" dataIndex="quantity" key="quantity"
+                    <Table.Column title="Product" dataIndex="img" key="img"
+                        render={(_text, record) => {
+                            return <img style={{ width: "100px" }} src={record.img} alt="img" />;
+                        }} />
+                    <Table.Column title="Quantity" dataIndex="quantity" key="quantity"
                         render={(_text, record) => {
                             return <span>{record.quantity}</span>;
                         }} />
-                    <Column title="Price" dataIndex="price" key="price"
+                    <Table.Column title="Price" dataIndex="price" key="price"
                         render={(_text, record) => {
                             return <span>${numeral(record.price).format("0,0")}</span>;
                         }} />
-                    <Column title="Discount" dataIndex="discount" key="discount"
+                    <Table.Column title="Discount" dataIndex="discount" key="discount"
                         render={(_text, record) => {
                             return <span>{record.discount}%</span>;
                         }} />
-                    <Column title="Total" key="total" render={(text, record) => {
+                    <Table.Column title="Total" key="total" render={(_text, record) => {
                         const total = record.quantity * record.price * (1 - record.discount / 100);
                         return <span>${numeral(total).format("0,0")}</span>;
                     }} />

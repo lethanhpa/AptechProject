@@ -76,6 +76,14 @@ router.get('/', function (req, res, next) {
   }
 });
 
+router.get('/count', async (req, res, next) => {
+  try {
+    const customerCount = await Customer.countDocuments();
+    res.status(200).json({ count: customerCount });
+  } catch (err) {
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
+});
 
 //GET id
 router.get('/:id', function (req, res) {

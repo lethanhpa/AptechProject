@@ -5,6 +5,7 @@ import {
     DropboxOutlined,
     FileTextOutlined,
     IdcardOutlined,
+    HomeOutlined
 } from "@ant-design/icons";
 import { Layout, Menu, theme, Button } from "antd";
 import { useNavigate } from "react-router-dom";
@@ -18,7 +19,7 @@ const items = [
     {
         label: "Home",
         key: "",
-        icon: <UserOutlined />,
+        icon: <HomeOutlined />,
     },
     {
         label: "Manager Employees",
@@ -84,6 +85,7 @@ export default function DefaultLayout({ children }) {
     const [current, setCurrent] = useState("/");
     const navigate = useNavigate();
     const [isLogin, setIsLogin] = useState(false);
+    const [initialRedirect, setInitialRedirect] = useState(false);
 
     const handleMenuClick = (e) => {
         setCurrent(e.key);
@@ -95,18 +97,39 @@ export default function DefaultLayout({ children }) {
 
         if (token) {
             setIsLogin(true);
+            if (role === "Admin") {
+                setInitialRedirect(true);
+            } else {
+                setInitialRedirect(false);
+            }
         }
-    }, []);
+    }, [role]);
 
     const handleLogout = () => {
         localStorage.removeItem("token");
         setIsLogin(false);
+        setInitialRedirect(false);
         navigate(`/`);
     };
 
     const {
         token: { colorBgContainer },
     } = theme.useToken();
+
+    useEffect(() => {
+        if (isLogin) {
+            if (initialRedirect) {
+                return;
+            }
+            if (role === "Admin") {
+                navigate("/");
+                setInitialRedirect(true);
+            } else {
+                navigate("/manageProducts");
+                setInitialRedirect(true);
+            }
+        }
+    }, [isLogin, role, navigate, initialRedirect]);
     return (
         <>
             {isLogin ? (

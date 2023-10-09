@@ -12,6 +12,18 @@ mongoose.set('strictQuery', false);
 mongoose.connect(CONNECTION_STRING);
 
 // Methods: POST / PATCH / GET / DELETE / PUT
+
+
+router.get('/count', async (req, res, next) => {
+  try {
+    const orderCount = await Order.countDocuments();
+    res.status(200).json({ count: orderCount });
+  } catch (err) {
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
+});
+
+
 // Get all
 router.get('/', async (req, res, next) => {
   try {

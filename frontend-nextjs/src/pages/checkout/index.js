@@ -84,6 +84,8 @@ function Checkout() {
         const orderDetails = cart[0].products.map((p) => {
             return {
                 productId: p.product._id,
+                name: p.product.name,
+                img: p.product.img,
                 quantity: p.quantity,
                 price: p.product.price - (p.product.price * p.product.discount / 100),
                 discount: p.product.discount,

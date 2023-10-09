@@ -288,7 +288,7 @@ const ProfilePage = () => {
                                     render={(_text, record) => {
                                         return <span>{record.discount}%</span>;
                                     }} />
-                                <Table.Column title="Total" key="total" render={(text, record) => {
+                                <Table.Column title="Total" key="total" render={(_text, record) => {
                                     const total = record.quantity * record.price * (1 - record.discount / 100);
                                     return <span>${numeral(total).format("0,0")}</span>;
                                 }} />

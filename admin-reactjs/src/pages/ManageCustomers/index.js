@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import { Button, Space, Table, message, Popconfirm } from 'antd';
-import { DeleteOutlined, LockOutlined, UnlockOutlined } from "@ant-design/icons";
+import { Button, Space, Table, message } from 'antd';
+import { LockOutlined, UnlockOutlined } from "@ant-design/icons";
 import axios from "../../libraries/axiosClient.js";
 import Moment from "moment";
 
@@ -9,12 +9,9 @@ const apiName = "/customers";
 
 export default function ManageCustomers() {
     const [data, setData] = useState([]);
-    const text = 'Are you sure you want to delete?';
-    const description = 'Delete the it';
     const [refresh, setRefresh] = React.useState(0);
 
     const lockCustomer = (customerId) => {
-        // Gọi API để khóa tài khoản ở đây, ví dụ:
         axios.post(apiName + `/${customerId}/lock`)
             .then(() => {
                 setRefresh((f) => f + 1);
@@ -26,7 +23,6 @@ export default function ManageCustomers() {
     };
 
     const unlockCustomer = (customerId) => {
-        // Gọi API để mở khóa tài khoản ở đây, ví dụ:
         axios.post(apiName + `/${customerId}/unlock`)
             .then(() => {
                 setRefresh((f) => f + 1);
@@ -75,38 +71,23 @@ export default function ManageCustomers() {
                     key="action"
                     render={(record) => (
                         <Space size="middle">
-                            <Popconfirm
-                                placement="topRight"
-                                title={text}
-                                description={description}
-                                onConfirm={() => {
-                                    axios.delete(apiName + "/" + record.id).then(() => {
-                                        setRefresh((f) => f + 1);
-                                        message.success("Delete successfully!", 1.5);
-                                    });
-                                }}
-                                okText="Yes"
-                                cancelText="No"
-                            >
-                                <Button
-                                    danger
-                                    icon={<DeleteOutlined />}
-                                >Delete</Button>
-                            </Popconfirm>
                             <Button
                                 danger
                                 icon={<LockOutlined />}
-                                onClick={() => lockCustomer(record.id)} // Gọi hàm khóa tài khoản
+                                onClick={() => lockCustomer(record.id)}
+                                disabled={record.isLocked}
                             >Lock</Button>
                             <Button
                                 type="primary"
                                 ghost
                                 icon={<UnlockOutlined />}
-                                onClick={() => unlockCustomer(record.id)} // Gọi hàm mở khóa tài khoản
+                                onClick={() => unlockCustomer(record.id)}
+                                disabled={!record.isLocked}
                             >Unlock</Button>
                         </Space>
                     )}
                 />
+
             </Table>
         </>
     )
