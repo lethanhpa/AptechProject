@@ -93,7 +93,7 @@ export default function ManageOrder() {
                                     setUpdateId(record._id);
                                     updateForm.setFieldsValue(record);
                                 }}
-                            >Edit</Button>
+                            ></Button>
 
                             <Popconfirm
                                 placement="topRight"
@@ -111,7 +111,7 @@ export default function ManageOrder() {
                                 <Button
                                     danger
                                     icon={<DeleteOutlined />}
-                                >Delete</Button>
+                                ></Button>
                             </Popconfirm>
 
                             <Button
