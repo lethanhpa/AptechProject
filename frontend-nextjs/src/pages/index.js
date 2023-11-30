@@ -3,7 +3,8 @@ import Styles from "../styles/home.module.css"
 import { Row, Carousel, Pagination } from 'antd';
 import { TagOutlined } from '@ant-design/icons'
 import axiosClient from "../libraries/axiosClient";
-import Link from "next/link"
+import Link from "next/link";
+import FlaseSale from './FlaseSale/index';
 
 function Home(props) {
   const { suppliers } = props;
@@ -53,7 +54,7 @@ function Home(props) {
           }
         </div>
         <div>
-          <div id="new" className={`${Styles.container}  ${Styles.seller}`}>
+          {/* <div id="new" className={`${Styles.container}  ${Styles.seller}`}>
             <h2>New Fashion Of The Month</h2>
             <div className={Styles.best_seller}>
               {products
@@ -95,9 +96,13 @@ function Home(props) {
                   </Link>
                 ))}
             </div>
-          </div>
+          </div> */}
+         
           <div className={`${Styles.seller} ${Styles.container}`}>
-            <h2 id="sale">Hot Sales</h2>
+             <div className={Styles.flex}>
+             <h1 id="sale">Flash Sales</h1>
+              <FlaseSale/>
+             </div>
             <div className={Styles.product_grid}>
               {products
                 .filter((item) => item.discount > 0)
@@ -143,7 +148,7 @@ function Home(props) {
         <div id="limited">
           <div className={Styles.news_heading}>
             <p>LATEST NEWS</p>
-            <h2>Limited Edition</h2>
+            <h1>Limited Edition</h1>
           </div>
           <div className={`${Styles.l_news}  ${Styles.container}`}>
             {products.map((item) => (
@@ -169,10 +174,10 @@ function Home(props) {
             <div className="map">
               <iframe src="https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d837.4903189925518!2d108.24469424552568!3d16.039739029733948!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zMTbCsDAyJzIzLjAiTiAxMDjCsDE0JzQwLjIiRQ!5e1!3m2!1svi!2s!4v1684853146304!5m2!1svi!2s" width={600} height={450} style={{ border: 0 }} allowFullScreen loading="lazy" referrerPolicy="no-referrer-when-downgrade" />
             </div>
-            <form>
+            <form className={Styles.flex_form}>
               <div className={Styles.form}>
                 <div className={Styles.form_txt}>
-                  <h4>INFORMATION</h4>
+                  <h2>INFORMATION</h2>
                   <h1>Contact Us</h1>
                   <span>👟 Featuring style and variety, YAME - Shoes for your style! 👟
                     <br />
@@ -181,8 +186,35 @@ function Home(props) {
                   <p>K29 Ho Xuan Huong, Bac My An, Ngu Hanh Son, Da Nang<br />+84 337-219-023</p>
                 </div>
               </div>
+              <div class={Styles.form_details}>
+                <input
+                  type="text"
+                  name="name"
+                  id="name"
+                  placeholder="Name"
+                  required
+                  style={{ marginRight: "15px" }}
+                ></input>
+                <input
+                  type="email"
+                  name="email"
+                  id="email"
+                  placeholder="Email"
+                  required
+                ></input>
+                <textarea
+                  name="message"
+                  id="message"
+                  cols="52"
+                  rows="7"
+                  placeholder="Message"
+                  required
+                ></textarea>
+                <button>SEND MESSAGE</button>
+              </div>
             </form>
           </div>
+          
         </div>
       </div >
     </>

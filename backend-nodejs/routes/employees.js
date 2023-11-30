@@ -16,33 +16,71 @@ mongoose.connect(CONNECTION_STRING);
 
 const router = express.Router();
 
+// router.post(
+//   '/login',
+//   validateSchema(loginSchema),
+//   passport.authenticate('local', { session: false }),
+//   async (req, res, next) => {
+//     try {
+//       const { email } = req.body;
+//       const employee = await Employee.findOne({ email });
+
+//       if (!employee) return res.status(404).send({ message: 'Not found' });
+
+//       const { _id, email: empEmail, firstName, lastName } = employee;
+
+//       const token = encodeToken(_id, empEmail, firstName, lastName);
+
+//       res.status(200).json({
+//         token,
+//         payload: employee,
+//       });
+//     } catch (err) {
+//       res.status(401).json({
+//         statusCode: 401,
+//         message: 'Unauthorized',
+//       });
+//     }
+//   },
+// );
+
 router.post(
-  '/login',
+  "/login",
   validateSchema(loginSchema),
-  passport.authenticate('local', { session: false }),
+  /* passport.authenticate("local", { session: false }) */
   async (req, res, next) => {
-    try {
-      const { email } = req.body;
-      const employee = await Employee.findOne({ email });
+    const { email, password } = req.body;
 
-      if (!employee) return res.status(404).send({ message: 'Not found' });
+    const employee = await Employee.findOne({ email });
 
-      const { _id, email: empEmail, firstName, lastName } = employee;
+    const isComparePassWord = await bcrypt.compare(password, employee.password);
 
-      const token = encodeToken(_id, empEmail, firstName, lastName);
+    console.log("isComparePassWord", isComparePassWord);
 
-      res.status(200).json({
-        token,
-        payload: employee,
-      });
-    } catch (err) {
+    if (isComparePassWord) {
+      console.log("true");
+      if (!employee) return res.status(404).send({ message: "Not found" });
+
+      const { _id, email: empEmail, firstName, lastName, role } = employee;
+
+      const token = encodeToken(_id, empEmail, firstName, lastName, role);
+
+      res
+        .status(200)
+
+        .json({
+          token,
+          payload: employee,
+        });
+    } else {
       res.status(401).json({
         statusCode: 401,
-        message: 'Unauthorized',
+        message: "Unauthorized",
       });
     }
-  },
+  }
 );
+
 
 router.get(
   '/profile',

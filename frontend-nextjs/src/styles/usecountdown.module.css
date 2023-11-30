@@ -1,0 +1,25 @@
+.container {
+   font-size: 20px;
+   font-weight: 500;
+    display: flex;
+    gap: 10px;
+}
+
+.fontSize {
+    font-size: 14px;
+}
+
+.font {
+    font-size: 25px;
+    font-weight: 700;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.color_Red {
+    color: #ff3c78;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

@@ -38,11 +38,12 @@
 .navbar {
     top: 0;
     width: 100%;
-    background: #fff;
+    /* background: #fff; */
     color: #000;
     font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
     z-index: 100;
     margin-bottom: 20px;
+    box-shadow: 0px 1px 13px 0px rgba(0, 0, 0, 0.05);
 }
 
 /* .navbar_container {
@@ -60,7 +61,7 @@
     right: 0;
     background-color: #ffffff;
     z-index: 999;
-    /* Để đảm bảo thanh điều hướng hiển thị trên các phần tử khác */
+    box-shadow: 0px 1px 13px 0px rgba(0, 0, 0, 0.05);
 }
 
 .navbar img {
@@ -486,6 +487,7 @@
     /* Hiển thị 4 sản phẩm trên mỗi hàng */
     gap: 16px;
     /* Khoảng cách giữa các sản phẩm */
+    margin-top: 30px;
 }
 
 
@@ -493,6 +495,7 @@
     width: 250px;
     color: #000;
     /* border: 2px solid black; */
+    position: relative;
 }
 
 .best_p1:hover {
@@ -508,11 +511,18 @@
 
 .seller .best_p1 .name {
     font-size: 18px;
+    font-weight: 500;
 }
 
 .seller .best_p1 .discount {
-    color: #ff0000;
+    color: #ff3c78;
     margin-bottom: 24px;
+    position: absolute;
+    top: 0;
+    font-size: 20px;
+    font-weight: bold;
+    margin-top: 5px;
+    margin-left: 5px;
 }
 
 .seller .best_p1 .category {
@@ -638,19 +648,19 @@
 
 .news_heading p {
     text-align: center;
-    font-size: 18px;
+    font-size: 24px;
     color: #ff3c78;
     letter-spacing: 2px;
-    font-weight: 500;
+    font-weight: 600;
     margin-bottom: 15px;
     margin-top: 70px;
 }
 
-.news_heading h2 {
+.news_heading h1 {
     text-align: center;
     font-size: 32px;
-    font-weight: 600;
-    color: #454545;
+    font-weight: 700;
+    
 }
 
 .l_news {
@@ -891,10 +901,10 @@
 }
 
 .form .form_txt {
-    flex-basis: 48%;
+    flex-basis: 70%;
 }
 
-.form .form_txt h4 {
+.form .form_txt h2 {
     font-weight: 600;
     color: #ff3c78;
     letter-spacing: 1.5px;
@@ -908,11 +918,10 @@
     font-size: 40px;
     letter-spacing: 1.5px;
     margin-bottom: 10px;
-    color: #454545;
 }
 
 .form .form_txt span {
-    color: #454545;
+    color: #000;
     font-size: 14px;
     line-height: 1.5;
 }
@@ -921,11 +930,11 @@
     font-size: 22px;
     font-weight: 600;
     margin: 15px 0;
-    color: #454545;
+    color: #000;
 }
 
 .form .form_txt p {
-    color: #454545;
+    color: #000;
     font-size: 14px;
 }
 
@@ -1159,4 +1168,52 @@
     .form .form_details input[type="text"] {
         margin-bottom: 0px;
     }
+}
+
+.flex {
+    display: flex;
+    gap: 30px;
+    margin-top: 70px;
+}
+
+.flex_form {
+    display: flex;
+}
+
+.form_details {
+    flex-basis: 48%;
+    margin-top: 130px;
+}
+
+.form_details input {
+    color: grey;
+    outline: none;
+    border: 1px solid grey;
+    font-size: 14px;
+    height: 50px;
+    width: 229px;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.form_details textarea {
+    padding: 15px 20px;
+    color: grey;
+    outline: none;
+    border: 1px solid grey;
+    font-size: 14px;
+    resize: none;
+}
+
+.form_details button {
+    padding: 15px 25px;
+    color: white;
+    font-weight: 500;
+    background: black;
+    outline: none;
+    border: none;
+    margin-top: 15px;
+    font-size: 14px;
+    letter-spacing: 2px;
+    cursor: pointer;
 }

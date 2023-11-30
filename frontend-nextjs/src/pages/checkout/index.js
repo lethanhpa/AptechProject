@@ -18,6 +18,7 @@ function Checkout() {
     const [paymentType, setPaymentType] = useState("CASH");
     const [description, setDescription] = useState("");
     const [customers, setCustomers] = useState([]);
+    const [showBankInfo, setShowBankInfo] = useState(false);
 
     const router = useRouter();
 
@@ -45,7 +46,7 @@ function Checkout() {
 
                 const customerId = decoded._id;
 
-                const response = await axiosClient.get(`/cart/${customerId}`);
+                const response = await axiosClient.get(`http://localhost:9000/cart/${customerId}`);
 
                 const data = response.data;
 
@@ -121,9 +122,21 @@ function Checkout() {
         }
     };
 
-    const handleChange = (e) => {
-        setPaymentType(e.value);
-    };
+    const handleChange = (value) => {
+        setPaymentType(value);
+        if (value && value.value === 'BANK') {
+          setShowBankInfo(true);
+        } else {
+          setShowBankInfo(false);
+        }
+      };
+      
+    //   const handleBankSelection = () => {
+    //     console.log('aaa');
+    //     <div>
+    //         hello
+    //     </div>
+    //   };
     return (
         <>
             <div className={Styles.container}>
@@ -176,8 +189,6 @@ function Checkout() {
                                 placeholder="Enter description"
                                 value={description}
                                 onChange={(e) => setDescription(e.target.value)} />
-
-
                             <p className={Styles.label_div_left}>Payment type:</p>
                             <Select
                                 className={Styles.select_div_left}
@@ -193,8 +204,20 @@ function Checkout() {
                                         value: 'CASH',
                                         label: 'CASH',
                                     },
+                                    {
+                                        value: 'BANK',
+                                        label: 'BANK',
+                                
+                                      },
                                 ]}
                             />
+                            {showBankInfo && (
+                                <div className={Styles.boder}>
+                                    <p className={Styles.flex}>STK : 09776767777</p>
+                                    <p className={Styles.flex}>Bank : VietComBank</p>
+                                    <p className={Styles.flex}>Chủ TK : Phan Thị Hoàng Vinh</p>
+                                </div>
+                            )}
                         </div>
                     </div>
                 </div>

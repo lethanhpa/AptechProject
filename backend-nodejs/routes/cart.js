@@ -18,9 +18,6 @@ const {
 router.route('/')
     .post(validateSchema(createSchema), create)
 
-router.route('/')
-    .get(validateSchema(getDetailSchema), getDetail)
-
 router.route('/:id')
     .get(validateSchema(getDetailSchema), getDetail)
 

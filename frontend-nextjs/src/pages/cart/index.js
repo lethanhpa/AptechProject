@@ -11,9 +11,10 @@ import 'react-toastify/dist/ReactToastify.css';
 import { toast, ToastContainer } from "react-toastify";
 
 function Cart() {
+  const router = useRouter();
   const [cart, setCart] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
-  const router = useRouter();
+  
 
   useEffect(() => {
     const calculateTotalPrice = () => {
@@ -31,27 +32,29 @@ function Cart() {
   }, [cart]);
 
   useEffect(() => {
-    const fetchCart = async () => {
+    const fetchData = async () => {
       try {
         const token = localStorage.getItem("token");
-
         const decoded = jwt_decode(token);
-
         const customerId = decoded._id;
-
-        const response = await axiosClient.get(`/cart/${customerId}`);
-
+  
+        console.log('customerId', customerId);
+  
+        const response = await axiosClient.get(`http://localhost:9000/cart/${customerId}`);
         const data = response.data;
-
+  
+        console.log('data', data);
+  
         setCart(data.payload.results);
-
       } catch (error) {
         console.error(error);
       }
     };
-    fetchCart();
-  }, [router]);
-
+  
+    fetchData();
+  },[router]);
+  
+ 
   const handleRemoveCart = async (productId) => {
     try {
       const newCarts = [...cart];
@@ -153,10 +156,10 @@ function Cart() {
                       extra={
                         <Button
                           type="submit"
-                          style={{ backgroundColor: "#1C86EE", color: "#fff" }}
+                          style={{ backgroundColor: "#1677ff", color: "#fff" }}
                           key="console"
                         >
-                          <Link href="/products">Come buy now</Link>
+                          <Link href="/products">Return Shop!</Link>
                         </Button>
                       }
                     />
@@ -196,20 +199,3 @@ function Cart() {
 }
 
 export default memo(Cart);
-// export async function getStaticProps() {
-//   try {
-//     // const customerId = router?.query?.customerId;
-//     const response = await axiosClient.get("/cart/647f88f4373ea20d1d07ceee");
-//     const cart = response.data;
-
-//     return {
-//       props: {
-//         cart,
-//       },
-//     };
-//   } catch (error) {
-//     return {
-//       notFound: true,
-//     };
-//   }
-// }

@@ -1,25 +1,27 @@
 const passport = require('passport');
 const express = require("express");
+const bcrypt = require("bcryptjs");
 
-const router = express.Router();
-const { Customer } = require("../models");
+
+
 const { CONNECTION_STRING } = require('../constants/dbSettings');
 const { default: mongoose } = require('mongoose');
-
+const { Customer } = require("../models");
 const {
   validateSchema,
-  loginSchema,
-  getCustomersSchema
+  loginSchema
 } = require('../validation/customer');
 const encodeToken = require('../helpers/jwtHelper');
 
 mongoose.set('strictQuery', false);
 mongoose.connect(CONNECTION_STRING);
 
+const router = express.Router();
+
 router.post(
   "/login",
   validateSchema(loginSchema),
-  passport.authenticate('local', { session: false }),
+  // passport.authenticate('local', { session: false }),
   async (req, res, next) => {
     try {
       const { email } = req.body;
@@ -44,6 +46,7 @@ router.post(
     }
   }
 );
+
 
 router.get(
   '/profile',
@@ -105,21 +108,19 @@ router.get('/:id', function (req, res) {
 router.post('/', async (req, res) => {
   try {
     const data = req.body;
-    const email = data.email;
 
-    const existingCustomer = await Customer.findOne({ email });
-    const emailExists = await Customer.exists({ email });
-    if (emailExists) {
-      return res.status(400).send({ message: 'Email đã tồn tại trong cơ sở dữ liệu.' });
-    }
-
-    const newCustomer = new Customer(data);
-    await newCustomer.save();
-
-    res.status(200).send({ message: 'Đăng ký thành công' });
-  } catch (error) {
-    console.error(error);
-    res.status(500).send({ message: 'Đã xảy ra lỗi.' });
+    const newItem = new Customer(data);
+    newItem
+      .save()
+      .then((result) => {
+        res.send(result);
+      })
+      .catch((err) => {
+        console.log(err);
+        res.status(400).send({ message: err.message });
+      });
+  } catch (err) {
+    res.sendStatus(500);
   }
 });
 

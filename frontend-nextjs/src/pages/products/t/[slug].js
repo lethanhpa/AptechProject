@@ -20,24 +20,26 @@ function ProductDetail(props) {
     const token = localStorage.getItem("token");
 
     if (!token) {
+      toast.warning('Please Log in !');
       router.push('/signin');
       return;
     }
     try {
       const decoded = jwt_decode(token);
       const customerId = decoded._id;
+      console.log('customerId',customerId)
 
       await axiosClient.post(`/cart`, {
         customerId: customerId,
         productId: product._id,
         quantity: quantity,
       });
-
+      axiosClient.get(`http://localhost:9000/cart/${customerId}`);
       toast.success("Add to cart successfully!!!");
-      router.push('/cart');
 
     } catch (error) {
       console.error(error);
+      toast.warning("Add to cart fail !!!")
     }
   };
 

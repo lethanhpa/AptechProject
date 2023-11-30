@@ -157,7 +157,7 @@ function Products(props) {
                 .map((item) => {
                   return (
                     <div key={item.slug} className={Styles.product_item}>
-                      <Link href={`/products/t/${item.slug}`}>
+                      <Link href={`/products/t/${item.slug}`} className={Styles.product_link}>
                         <div className={Styles.product_img}>
                           <img src={item.img} alt='' />
                         </div>

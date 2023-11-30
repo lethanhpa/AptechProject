@@ -7,6 +7,8 @@
     "dev": "nodemon ./bin/www"
   },
   "dependencies": {
+    "@stripe/react-stripe-js": "^2.4.0",
+    "@stripe/stripe-js": "^2.2.0",
     "bcryptjs": "^2.4.3",
     "cookie-parser": "~1.4.4",
     "cors": "^2.8.5",
@@ -27,6 +29,7 @@
     "passport-jwt": "^4.0.1",
     "passport-local": "^1.0.0",
     "socket.io": "^4.6.1",
+    "swiper": "^11.0.5",
     "yup": "^1.2.0"
   }
 }

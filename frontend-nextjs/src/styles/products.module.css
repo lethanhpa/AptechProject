@@ -1,5 +1,5 @@
 .container {
-    background-color: #F8F9F9;
+    background-color: #fff;
     color: #000000;
 }
 
@@ -30,7 +30,7 @@
 .product_discount,
 .product_total,
 .product_not_discount {
-    color: red;
+    color: #ff3c78;
 }
 
 .product_supplier,
@@ -44,7 +44,8 @@
 
 .product_price {
     text-decoration: line-through 1.25px solid #000000;
-    padding: 0 15px 0 15px;
+    /* padding: 0 15px 0 15px; */
+    padding-right: 15px;
 }
 
 .product_search {
@@ -228,4 +229,17 @@
     .header_nav_button {
         font-size: 20px;
     }
+}
+
+.product_link {
+    position: relative;
+}
+
+.product_discount {
+    position: absolute;
+    top: 0;
+    font-size: 20px;
+    font-weight: 500;
+    margin-top: 15px;
+    margin-left: 15px;
 }

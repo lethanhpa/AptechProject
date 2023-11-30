@@ -1,8 +1,9 @@
 .productDetail {
     color: #000;
-    background-color: #F8F9F9;
+    background-color: #fff;
     display: flex;
     max-width: 100%;
+    margin-top: 60px;
     justify-content: center;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
@@ -13,7 +14,9 @@
 }
 
 .productDetail_img {
-    display: block;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .productDetail_img img {
@@ -25,12 +28,14 @@
 
 .productDetail_name {
     letter-spacing: 0.007em;
-    font-weight: 600;
+    font-weight: 700;
     font-size: 28px;
 }
 
 .productDetail_category {
     display: flex;
+    font-size: 25px;
+    font-weight: 500;
 }
 
 .productDetail_price {
@@ -40,7 +45,7 @@
     text-decoration: line-through 1.25px solid #000000;
 }
 
-.productDetail_category,
+
 .productDetail_price,
 .productDetail_discount,
 .productDetail_stock {
@@ -57,7 +62,7 @@
 
 .productDetail_total,
 .productDetail_not_discount {
-    color: red;
+    color: #ff3c78;
     font-weight: 400;
     font-size: 22px;
 }
