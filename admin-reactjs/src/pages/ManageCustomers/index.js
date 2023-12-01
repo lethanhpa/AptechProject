@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Button, Space, Table, message } from "antd";
 import {
-//   LockOutlined,
+  LockOutlined,
   UnlockOutlined,
-  FastForwardOutlined,
 } from "@ant-design/icons";
 import axios from "../../libraries/axiosClient.js";
 import Moment from "moment";
@@ -88,8 +87,8 @@ export default function ManageCustomers() {
             <Space size="middle">
               <Button
                 danger
-                icon={<FastForwardOutlined />}
-                onClick={() => lockCustomer(record.id)}
+                icon={<LockOutlined />}
+                onClick={() => lockCustomer(record._id)}
                 disabled={record.isLocked}
               >
                 Lock
@@ -98,7 +97,7 @@ export default function ManageCustomers() {
                 type="primary"
                 ghost
                 icon={<UnlockOutlined />}
-                onClick={() => unlockCustomer(record.id)}
+                onClick={() => unlockCustomer(record._id)}
                 disabled={!record.isLocked}
               >
                 Unlock

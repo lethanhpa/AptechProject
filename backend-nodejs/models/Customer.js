@@ -101,6 +101,7 @@ const customerSchema = new Schema(
     password: { type: String, required: true },
     address: { type: String, required: true },
     birthday: { type: Date },
+    isLocked: { type: Boolean, default: false },
   },
   {
     versionKey: false,
